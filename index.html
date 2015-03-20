@@ -2,15 +2,17 @@
 <head>
 <style>
   body {
+    /*
     background: white;
     display: -webkit-flex;
     -webkit-justify-content: center;
     -webkit-align-items: center;
     -webkit-flex-direction: column;
+    */
   }
   video {
-    width: 640px;
-    height: 480px;
+    width: 1280px;
+    height: 720px;
     background: rgba(0,0,0,0.25);
   }
   button {
@@ -48,8 +50,13 @@
 </style>
 </head>
 <body>
-  <video autoplay></video>
+  <ul id='recordingsList'></ul>
+  <video id='screen-share' autoplay controls></video>
   <p><button>Enable Capture</button></p>
-<script src="app.js"></script>
+  <script src="whammy.js"></script>
+  <script src="recorder.js"></script>
+  <script src="recorderWorker.js"></script>
+  <script src="app.js"></script>
+  <canvas width="1280" height="720" ></canvas>
 </body>
 </html>
