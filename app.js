@@ -23,196 +23,170 @@ Author: Dongseong Hwang (dongseong.hwang@intel.com)
  *
  * @see https://developer.chrome.com/apps/desktopCapture
  */
-var desktop_sharing = false;
-var local_stream = null;
-var audio_context = new AudioContext;
-
-function toggle() {
-    if (!desktop_sharing) {
-        chrome.desktopCapture.chooseDesktopMedia(["screen", "window"], onAccessApproved);
-    } else {
-        desktop_sharing = false;
-
-        if (local_stream)
-            local_stream.stop();
-        local_stream = null;
-
-        document.querySelector('button').innerHTML = "Enable Capture";
-        console.log('Desktop sharing stopped...');
-
-        stopRecording();
-    }
-}
-
-var totalTime = 0;
-var totalCount = 0;
-
-function onAccessApproved(desktop_id) {
-    if (!desktop_id) {
-        console.log('Desktop Capture access rejected.');
-        return;
-    }
-    desktop_sharing = true;
-    document.querySelector('button').innerHTML = "Disable Capture";
-    console.log("Desktop sharing started.. desktop_id:" + desktop_id);
-
-    var rafId;
-    var frames = [];
-
-    var canvas = document.querySelector('canvas');
-    var video = document.querySelector('#screen-share');
-
-    var CANVAS_WIDTH = 1280; //canvas.width;
-    var CANVAS_HEIGHT = 720; //canvas.height;
-
-    var ctx = canvas.getContext("2d");
-
-    function drawVideoFrame(time) {
-      //rafId = requestAnimationFrame(drawVideoFrame);
-      ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      var now = new Date();
-      frames.push(canvas.toDataURL('image/webp', 1.0));
-      totalTime += new Date() - now;
-      totalCount += 1;
-    };
-
-    navigator.webkitGetUserMedia({
-        audio: false,
-        video: {
-            mandatory: {
-                chromeMediaSource: 'desktop',
-                chromeMediaSourceId: desktop_id,
-                minWidth: 1280,
-                maxWidth: 1280,
-                minHeight: 720,
-                maxHeight: 720
-            }
-        }
-    }, gotStream, getUserMediaError);
-
-
-    function gotStream(stream) {
-        local_stream = stream;
-        video.src = URL.createObjectURL(stream);
-        var screenCapture = window.setInterval(drawVideoFrame, 100);
-        //rafId = requestAnimationFrame(drawVideoFrame);
-        stream.onended = function() {
-            if (desktop_sharing) {
-                toggle();
-            }
-            window.clearInterval(screenCapture);
-            //cancelAnimationFrame(rafId);
-            console.log("Frame time avg: " + (totalTime / totalCount));
-            debugger;
-            var webmBlob = Whammy.fromImageArray(frames, 1000 / 10);
-            //var videoResult = document.querySelector('#screen-share-result');
-            video.src = window.URL.createObjectURL(webmBlob);
-
-
-        };
-
-
-        navigator.webkitGetUserMedia({audio: true}, startUserMedia, function(e) {
-          __log('No live audio input: ' + e);
-        });
-
-    }
-
-    function getUserMediaError(e) {
-      console.log('getUserMediaError: ' + JSON.stringify(e, null, '---'));
-    }
+var MARGIN = 10;
+var WIDTH = 400;
+var HEIGHT = 125;
+var MINIMIZE_HEIGHT = 32;
 
 /*
-    navigator.webkitGetUserMedia({audio: true}, startUserMedia, function(e) {
-      __log('No live audio input: ' + e);
-    });
+var ws = new WebSocket("ws://localhost:5000/");
+ws.onopen = function(param) {
+  debugger;
+}
+ws.onclose = function(param) {
+  debugger;
+}
+ws.onmessage = function(param) {
+  debugger;
+}
+ws.ononerror = function(param) {
+  debugger;
+}
 */
 
 
+var port = chrome.runtime.connect({name: "sonar"});
+port.onMessage.addListener(function(msg) {
+  if (msg.command == 'started') {
+    started();
+  } else if (msg.command == 'stopped') {
+    stopped();
+  } else if (msg.command == 'closed') {
+    closed();
+  }
+});
+
+var currentStep = 0;
+var userScenario;
+
+
+$('#div-next').hide();
+$('#div-finish').hide();
+$('.top-titlebar-recording').hide();
+
+function resizeWindowToFit() {
+  chrome.app.window.current().outerBounds.height = $('#div-buttons').outerHeight(true) + $('#div-description').outerHeight(true) + $('#top-titlebar').outerHeight(true)
 }
 
-/**
- * Click handler to init the desktop capture grab
- */
-document.querySelector('button').addEventListener('click', function(e) {
-    toggle();
+function getUserScenarioUUID() {
+  return window.document.location.search.substring('?userScenarioUUID='.length);
+}
+
+chrome.storage.local.get(getUserScenarioUUID(), function(items) {
+  userScenario = items[getUserScenarioUUID()];
+  $('#div-description').html(userScenario.description);
+  resizeWindowToFit();
+});
+
+function getUserScenario() {
+  return userScenario;
+}
+
+function getCurrentStep() {
+  if (currentStep >= userScenario.steps.length) {
+    return null;
+  } else {
+    return userScenario.steps[currentStep];
+  }
+}
+
+$('.top-titlebar-close-button').click(function(){
+  port.postMessage({
+    'command': 'close',
+    'userScenarioUUID': getUserScenarioUUID(),
+    'currentStep': getCurrentStep()
+  });
+});
+
+function isMinimized() {
+  return $('#top-titlebar').hasClass('minimized');
+}
+
+function restore() {
+  $('#top-titlebar').removeClass('minimized');
+  chrome.app.window.current().outerBounds.height = HEIGHT;
+}
+
+function minimize() {
+  $('#top-titlebar').addClass('minimized');
+  chrome.app.window.current().outerBounds.height = MINIMIZE_HEIGHT;
+}
+
+$('.top-titlebar-minimize-button').click(function(){
+  if(isMinimized()) {
+    restore();
+  } else {
+    minimize();
+  }
+  return false;
+})
+
+$('#btn-start').click(function(){
+  port.postMessage({
+    'command': 'start',
+    'userScenarioUUID': getUserScenarioUUID(),
+    'currentStep': getCurrentStep()
+  });
+});
+
+$('#btn-delighted').click(function(){
+  console.log('=)');
+});
+
+$('#btn-confused').click(function(){
+  console.log('=(');
+});
+
+$('#btn-next').click(function(){
+  currentStep += 1;
+  var step = getCurrentStep();
+  if (step == null) {
+    port.postMessage({
+      'command': 'finish',
+      'userScenarioUUID': getUserScenarioUUID(),
+      'currentStep': getCurrentStep()
+    });
+    finish();
+  } else {
+    port.postMessage({
+      'command': 'next',
+      'userScenarioUUID': getUserScenarioUUID(),
+      'currentStep': getCurrentStep()
+    });
+    next();
+  }
+});
+
+function started() {
+  $('.top-titlebar-recording').show();
+  $('#div-start').hide();
+  $('#div-next').show();
+  currentStep = 0;
+  $('#div-description').html(getCurrentStep().description).css('opacity', 0).fadeTo('slow', 1);
+  resizeWindowToFit();
+}
+
+function stopped() {
+  $('.top-titlebar-recording').hide();
+}
+
+function closed() {
+  window.close();
+}
+
+function next() {
+  $('#div-description').html(getCurrentStep().description).css('opacity', 0).fadeTo('slow', 1);
+  resizeWindowToFit();
+}
+
+function finish() {
+  $('#div-description').html('Thanks for helping out!').css('opacity', 0).fadeTo('slow', 1)
+  $('#div-next').hide();
+  $("#div-finish").show();
+}
+
+$('#btn-close').click(function() {
+  closed();
 });
 
 
-function __log(e, data) {
-  console.log(e + " " + (data || ''));
-}
-
-var audio_context;
-var recorder;
-
-function startUserMedia(stream) {
-  var input = audio_context.createMediaStreamSource(stream);
-  __log('Media stream created.');
-  // Uncomment if you want the audio to feedback directly
-  //input.connect(audio_context.destination);
-  //__log('Input connected to audio context destination.');
-
-  recorder = new Recorder(input);
-  __log('Recorder initialised.');
-
-  startRecording();
-}
-function startRecording(button) {
-  recorder && recorder.record();
-  /*
-  button.disabled = true;
-  button.nextElementSibling.disabled = false;
-  */
-  __log('Recording...');
-}
-function stopRecording(button) {
-  recorder && recorder.stop();
-  /*
-  button.disabled = true;
-  button.previousElementSibling.disabled = false;
-  */
-  __log('Stopped recording.');
-
-  // create WAV download link using audio data blob
-  createDownloadLink();
-
-  recorder.clear();
-}
-function createDownloadLink() {
-  recorder && recorder.exportWAV(function(blob) {
-    var url = URL.createObjectURL(blob);
-    var li = document.createElement('li');
-    var au = document.createElement('audio');
-    var hf = document.createElement('a');
-
-    au.controls = true;
-    au.src = url;
-    hf.href = url;
-    hf.download = new Date().toISOString() + '.wav';
-    hf.innerHTML = hf.download;
-    li.appendChild(au);
-    li.appendChild(hf);
-    document.getElementById('recordingsList').appendChild(li);
-  });
-}
-
-/*
-window.onload = function init() {
-  try {
-    // webkit shim
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-    window.URL = window.URL || window.webkitURL;
-
-
-    __log('Audio context set up.');
-    __log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
-  } catch (e) {
-    alert('No web audio support in this browser!');
-  }
-
-
-};
-
-*/

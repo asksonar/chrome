@@ -8,12 +8,19 @@
   },
   "app": {
     "background": {
-      "scripts": ["background.js"]
+      "page": "background.html"
     }
   },
   "permissions": [
     "desktopCapture",
     "audioCapture",
-    "permissions"
-  ]
+    /*"permissions",*/
+    "unlimitedStorage",
+    "alwaysOnTopWindows",
+    "storage"/*,
+    {"fileSystem": ["write", "retainEntries", "directory"]}*/
+  ],
+  "externally_connectable": {
+    "matches": ["*://*.asksonar.com/*", "*://localhost/*"]
+  }
 }

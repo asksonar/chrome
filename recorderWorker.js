@@ -3,6 +3,8 @@ var recLength = 0,
   sampleRate,
   numChannels;
 
+var ws_audio = new WebSocket('ws://localhost:5000/audio');
+
 this.onmessage = function(e){
   switch(e.data.command){
     case 'init':
@@ -27,6 +29,7 @@ function init(config){
   sampleRate = config.sampleRate;
   numChannels = config.numChannels;
   initBuffers();
+  ws_audio = new WebSocket('ws://localhost:5000/audio');
 }
 
 function record(inputBuffer){
@@ -49,7 +52,11 @@ function exportWAV(type){
   var dataview = encodeWAV(interleaved);
   var audioBlob = new Blob([dataview], { type: type });
 
-  this.postMessage(audioBlob);
+  var fr = new FileReader();
+  fr.onloadend = function() {
+    ws_audio.send(JSON.stringify({'command': 'audio', 'data': fr.result}));
+  }
+  fr.readAsDataURL(audioBlob);
 }
 
 function getBuffer(){
