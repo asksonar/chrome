@@ -3,7 +3,7 @@ var recLength = 0,
   sampleRate,
   numChannels;
 
-var ws_audio = new WebSocket('ws://localhost:5000/audio');
+var ws;
 
 this.onmessage = function(e){
   switch(e.data.command){
@@ -29,7 +29,9 @@ function init(config){
   sampleRate = config.sampleRate;
   numChannels = config.numChannels;
   initBuffers();
-  ws_audio = new WebSocket('ws://localhost:5000/audio');
+  if (ws == null || ws.readyState == 3 || ws.readyState == 4) {
+    ws = new WebSocket('ws://localhost:5000/');
+  }
 }
 
 function record(inputBuffer){
@@ -54,7 +56,10 @@ function exportWAV(type){
 
   var fr = new FileReader();
   fr.onloadend = function() {
-    ws_audio.send(JSON.stringify({'command': 'audio', 'data': fr.result}));
+    ws.send(JSON.stringify({
+      'command': 'audio.step',
+      'data': fr.result
+    }));
   }
   fr.readAsDataURL(audioBlob);
 }

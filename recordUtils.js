@@ -8,13 +8,13 @@ var desktop_sharing = false;
 var local_stream = null;
 var audio_context = new AudioContext();
 var recorder;
-var ws_video = new WebSocket('ws://localhost:5000/video');
-var ws_data = new WebSocket('ws://localhost:5000/data');
+var ws = null;
 var encoder = new Whammy.Video(FPS);
 
 function startVideoRecording(callback) {
-  ws_video = new WebSocket('ws://localhost:5000/video');
-  ws_data = new WebSocket('ws://localhost:5000/data');
+  if (ws == null || ws.readyState == 2 || ws.readyState == 3) {
+    ws = new WebSocket('ws://localhost:5000/');
+  }
 
   if (desktop_sharing) {
     return;
@@ -116,7 +116,6 @@ function onAccessApproved(desktop_id) {
 
       encoder.add(ctx);
       //var base64 = canvas.toDataURL('image/' + FORMAT, QUALITY);
-      //ws_video.send(base64);
       /*
       var buffer = dataURItoArrayBuffer(base64);
       worker.postMessage({
@@ -146,10 +145,8 @@ function onAccessApproved(desktop_id) {
         local_stream = stream;
         video.src = URL.createObjectURL(stream);
 
-        ws_video.send(JSON.stringify({'command': 'start'}));
-
-        ws_data.send(JSON.stringify({
-          'command': 'start',
+        ws.send(JSON.stringify({
+          'command': 'data.start',
           'params': {
             'time': new Date()
           }
@@ -168,9 +165,12 @@ function onAccessApproved(desktop_id) {
             var blob = encoder.compile();
             var fr = new FileReader();
             fr.onloadend = function() {
-              ws_video.send(JSON.stringify({
-                'command': 'video',
-                'params': {},
+              ws.send(JSON.stringify({
+                'command': 'video.step',
+                'params': {
+                  'userScenarioUUID': userScenarioUUID,
+                  'currentStep': currentStep
+                },
                 'data': fr.result
               }));
             }
@@ -258,8 +258,8 @@ function stopAudioRecording(callback) {
   */
   __log('Stopped recording.');
 
-  ws_data.send(JSON.stringify({
-    'command': 'finish',
+  ws.send(JSON.stringify({
+    'command': 'data.finish',
     'params': {
       'time': new Date(),
       'feelings': {
