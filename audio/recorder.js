@@ -1,6 +1,6 @@
 (function(window){
 
-  var WORKER_PATH = 'recorderWorker.js';
+  var WORKER_PATH = 'audio/recorderWorker.js';
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
@@ -59,9 +59,9 @@
     }
 
     this.exportWAV = function(cb, type){
-      // currCallback = cb || config.callback;
+      currCallback = cb || config.callback;
       type = type || config.type || 'audio/wav';
-      // if (!currCallback) throw new Error('Callback not set');
+      if (!currCallback) throw new Error('Callback not set');
       worker.postMessage({
         command: 'exportWAV',
         type: type

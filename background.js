@@ -5,11 +5,11 @@
  * @see http://developer.chrome.com/apps/app.window.html
  */
 
-chrome.app.runtime.onLaunched.addListener(launchApp);
+//chrome.app.runtime.onLaunched.addListener(launchApp);
 
 var MARGIN = 10;
 var WIDTH = 400;
-var HEIGHT = 125;
+var HEIGHT = 136;
 
 var userScenarioUUID;
 var currentStep;
@@ -28,7 +28,7 @@ chrome.runtime.onMessageExternal.addListener(
 );
 
 function launchApp(userScenarioUUID) {
-  currentWindow = chrome.app.window.create('index.html?userScenarioUUID=' + userScenarioUUID, {
+  currentWindow = chrome.app.window.create('popup.html?userScenarioUUID=' + userScenarioUUID, {
     id: "desktopCaptureID",
     frame: 'none',
     focused: true,
@@ -50,9 +50,22 @@ function launchApp(userScenarioUUID) {
   });
 }
 
-chrome.runtime.onConnect.addListener(function(port){
-  console.assert(port.name == 'sonar');
-  port.onMessage.addListener(function(msg){
+debugger;
+
+var eventBus = $({});
+var model = new BackgroundModel(eventBus);
+var controller = new BackgroundController(eventBus, model);
+var websocket = new WebsocketController(eventBus, model, {
+  'websocketUrl': 'ws://localhost:5000/'
+});
+var video = new VideoController(eventBus, model, {
+  'canvas': document.getElementById('canvas'),
+  'video': document.getElementById('video'),
+  'fps': 10
+});
+var audio = new AudioController(eventBus, model);
+
+/*
     if (msg.command == 'start') {
       userScenarioUUID = msg.userScenarioUUID;
       currentStep = msg.currentStep;
@@ -94,3 +107,4 @@ chrome.runtime.onConnect.addListener(function(port){
     }
   });
 });
+*/

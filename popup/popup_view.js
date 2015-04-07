@@ -10,36 +10,46 @@ function PopupView(eventBus, model, config) {
   this.$body = config.body;
   this.$titleBar = config.titleBar;
   this.$btnMinimize = config.btnMinimize;
+  this.$btnAbort = config.btnAbort;
   this.$btnClose = config.btnClose;
+  this.$btnStart = config.btnStart;
+  this.$btnNext = config.btnNext;
+  this.$btnDelighted = config.btnDelighted;
+  this.$btnConfused = config.btnConfused;
 
   this.init();
   this.initHandlers();
 }
 
 PopupView.prototype.init = function() {
+  this.$divStart.hide();
   this.$divNext.hide();
   this.$divFinish.hide();
   this.$divRecording.hide();
 
   this.minimizeHeight = this.$titleBar.height();
+  this.resizeWindowToFit();
 }
 
 PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnMinimize, this.toggleMinimize);
-  this.on('click', this.$btnClose, this.close);
+  this.on('click', this.$btnAbort, this.abort);
 
   this.on('click', this.$btnStart, this.start);
   this.on('click', this.$btnNext, this.next);
-
   this.on('click', this.$btnDelighted, this.delighted);
   this.on('click', this.$btnConfused, this.confused);
+  this.on('click', this.$btnClose, this.close);
 
   this.on('scenarioLoaded', this.eventBus, this.onScenarioLoaded);
+  this.on('scenarioStarted', this.eventBus, this.onScenarioStarted);
   this.on('scenarioNexted', this.eventBus, this.onScenarioNexted);
+  this.on('scenarioFinished', this.eventBus, this.onScenarioFinished);
 
-  this.on('recordingStarted', this.eventBus, this.onRecordingStarted);
-  this.on('recordingStopped', this.eventBus, this.onRecordingStopped);
-
+  this.on('audioRecordingStarted', this.eventBus, this.onRecordingStarted);
+  this.on('videoRecordingStarted', this.eventBus, this.onRecordingStarted);
+  this.on('audioRecordingStopped', this.eventBus, this.onRecordingStopped);
+  this.on('videoRecordingStopped', this.eventBus, this.onRecordingStopped);
 }
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
@@ -47,22 +57,21 @@ PopupView.prototype.on = function(eventType, element, clickHandler) {
 }
 
 PopupView.prototype.resizeWindowToFit = function() {
-  this.currentHeight = $body.outerHeight(true);
-  chrome.app.window.current().outerBounds.height = this.currentHeight;
+  chrome.app.window.current().outerBounds.height = this.$body.outerHeight(true);
   //$('#div-buttons').outerHeight(true) + $('#div-description').outerHeight(true) + $('#top-titlebar').outerHeight(true)
 }
 
 PopupView.prototype.isMinimized = function() {
-  return $titleBar.hasClass('minimized');
+  return this.$titleBar.hasClass('minimized');
 }
 
 PopupView.prototype.restore = function() {
-  $titleBar.removeClass('minimized');
-  chrome.app.window.current().outerBounds.height = this.currentHeight;
+  this.$titleBar.removeClass('minimized');
+  chrome.app.window.current().outerBounds.height = this.$body.outerHeight(true);
 }
 
 PopupView.prototype.minimize = function() {
-  $titleBar.addClass('minimized');
+  this.$titleBar.addClass('minimized');
   chrome.app.window.current().outerBounds.height = this.minimizeHeight;
 }
 
@@ -76,7 +85,11 @@ PopupView.prototype.toggleMinimize = function() {
 }
 
 PopupView.prototype.close = function() {
-  this.eventBus.trigger('close');
+  window.close();
+}
+
+PopupView.prototype.abort = function() {
+  this.eventBus.trigger('abort');
   window.close();
 }
 
@@ -86,9 +99,9 @@ PopupView.prototype.start = function() {
 
 PopupView.prototype.next = function() {
   if (this.model.isLastStep()) {
-    this.eventBus.trigger('finish', [this.model.getCurrentStep()]);
+    this.eventBus.trigger('finish');
   } else {
-    this.eventBus.trigger('next', [this.model.getCurrentStep()]);
+    this.eventBus.trigger('next');
   }
 }
 
@@ -100,33 +113,41 @@ PopupView.prototype.confused = function() {
   this.eventBus.trigger('confused');
 }
 
-PoupView.prototype.onScenarioLoaded = function() {
-   $divDescription.html(this.model.getCurrentDescription);
-   this.resizeWindowToFit();
+PopupView.prototype.onScenarioLoaded = function() {
+  this.$divStart.show();
+  this.$divDescription.html(this.model.getCurrentDescription());
+  this.resizeWindowToFit();
+}
+
+PopupView.prototype.onScenarioStarted = function() {
+  this.$divStart.hide();
+  this.$divNext.show();
+  this.onScenarioNexted();
 }
 
 PopupView.prototype.onScenarioNexted = function() {
+  this.$divDescription.html(this.model.getCurrentDescription())
+    .css('opacity', 0)
+    .fadeTo('slow', 1);
+  this.resizeWindowToFit();
+}
+
+PopupView.prototype.onScenarioFinished = function() {
   this.$divStart.hide();
-
-  if (!this.model.isPastLastStep()) {
-    this.$divNext.show();
-    this.$divDescription.html(this.model.getCurrentDescription())
-  } else {
-    this.$divNext.hide();
-    this.$divFinish.show();
-    this.$divDescription.html('Thanks for helping out!');
-  }
-
-  this.$divDescription.css('opacity', 0).fadeTo('slow', 1);
+  this.$divNext.hide();
+  this.$divFinish.show();
+  this.$divDescription.html('Thanks for helping out!')
+    .css('opacity', 0)
+    .fadeTo('slow', 1);
   this.resizeWindowToFit();
 }
 
 PopupView.prototype.onRecordingStarted = function() {
-  $divRecording.show();
+  this.$divRecording.show();
 }
 
 PopupView.prototype.onRecordingStopped = function() {
-  $divRecording.hide();
+  this.$divRecording.hide();
   alert('Oh god why has recording stopped?');
   this.close();
 }

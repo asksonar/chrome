@@ -3,8 +3,6 @@ var recLength = 0,
   sampleRate,
   numChannels;
 
-var ws;
-
 this.onmessage = function(e){
   switch(e.data.command){
     case 'init':
@@ -29,9 +27,6 @@ function init(config){
   sampleRate = config.sampleRate;
   numChannels = config.numChannels;
   initBuffers();
-  if (ws == null || ws.readyState == 3 || ws.readyState == 4) {
-    ws = new WebSocket('ws://localhost:5000/');
-  }
 }
 
 function record(inputBuffer){
@@ -51,7 +46,10 @@ function exportWAV(type){
   } else {
       var interleaved = buffers[0];
   }
-  var dataview = encodeWAV(interleaved);
+  var buffer = encodeWAV(interleaved);
+  this.postMessage(buffer, [buffer]);
+  /*
+
   var audioBlob = new Blob([dataview], { type: type });
 
   var fr = new FileReader();
@@ -62,6 +60,7 @@ function exportWAV(type){
     }));
   }
   fr.readAsDataURL(audioBlob);
+  */
 }
 
 function getBuffer(){
@@ -155,5 +154,5 @@ function encodeWAV(samples){
 
   floatTo16BitPCM(view, 44, samples);
 
-  return view;
+  return buffer;
 }
