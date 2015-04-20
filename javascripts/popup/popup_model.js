@@ -8,9 +8,7 @@ function PopupModel(eventBus) {
 PopupModel.prototype.init = function() {
   this.currentIndex = -1;
   this.userScenario = null;
-  this.loadUserScenario();
   this.stepResults = [];
-  this.loadUserScenario();
 }
 
 PopupModel.prototype.initHandlers = function() {

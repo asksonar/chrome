@@ -1,175 +1,70 @@
 <html>
-<head>
-<style>
+  <head>
+    <script src="javascripts/vendor/jquery-2.1.3.js"></script>
+    <script src="javascripts/popup/popup_controller.js"></script>
+    <script src="javascripts/popup/popup_model.js"></script>
+    <script src="javascripts/popup/popup_view.js"></script>
+    <script src="javascripts/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/base.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/popup.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/brandon_grotesque.css"></link>
+  </head>
+  <body>
+    <section class="titlebar">
+      <img class="titlebar-icon" src="images/SonarLogoThick_White_100x37.png">
+      <div class='titlebar-buttons pull-right'>
+        <div class="btn titlebar-question-button">?</div>
+        <div class="btn titlebar-minimize-button">&mdash;</div>
+        <div class="btn titlebar-close-button">X</div>
+      </div>
+      <div class='titlebar-recording off'>
+        <div class='titlebar-recording-icon on'></div>
+        <div class='titlebar-recording-text on'>recording</div>
+        <div class='titlebar-recording-text off'>not recording</div>
+      </div>
+    </section>
 
-  body {
-    width: 400px;
-  }
-  .top-titlebar {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 32px;
-    background-color: #7a7c7c;
-    -webkit-app-region: drag;
-    cursor: move;
-  }
-
-
-.top-titlebar-icon {
-  position: absolute;
-  left: 6px;
-  margin-top: 5px;
-  margin-bottom: 6px;
-}
-
-.top-titlebar-icon img {
-  height: 20px;
-}
-
-.top-titlebar-text {
-  position: absolute;
-  left: 32px;
-  width: 80%;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  font-style: Arial;
-  font-size: 11pt;
-  color: #ffffff;
-}
-
-
-
-.top-titlebar-minimize-button {
-  position: absolute;
-  right: 25px;
-  width: 17px;
-  height: 17px;
-  margin-top: 1px;
-  -webkit-app-region: no-drag;
-
-  font-size: 21px;
-  font-width: 700;
-  line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  opacity: .2;
-  cursor: pointer;
-}
-
-.top-titlebar-minimize-button:hover {
-  opacity: .4;
-}
-
-.top-titlebar-close-button {
-  position: absolute;
-  right: 5px;
-  width: 17px;
-  height: 17px;
-  margin-top: 4px;
-  -webkit-app-region: no-drag;
-
-  font-size: 21px;
-  font-width: 700;
-  line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  opacity: .2;
-  cursor: pointer;
-}
-
-.top-titlebar-close-button:hover {
-  opacity: .4;
-}
-
-  .content {
-    margin-top: 42px;
-  }
-
-  .top-titlebar-recording {
-    background-color: rgb(160, 71, 99);
-    border: 1px solid white;
-    position: absolute;
-    left: 120px;
-    padding: 3px 5px 3px 5px;
-    margin-top: 2px;
-  }
-
-  .top-titlebar-recording-icon {
-    height: 18px;
-    float: left;
-  }
-
-  .top-titlebar-recording-text {
-    color: white;
-    font-size: 13px;
-    margin-top: 2px;
-    margin-left: 2px;
-    float: left;
-  }
-
-  #div-description {
-    margin: 10px;
-    min-height: 40px;
-  }
-
-  #div-buttons {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  #div-next .btn-feeling {
-    float: right;
-    font-size: 18px;
-    margin-left: 3px;
-  }
-
-</style>
-  <link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.css">
-  <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.css">
-</head>
-<body>
-  <section id="top-titlebar" class="top-titlebar" style="background-color: rgb(122, 124, 124);">
-    <div class="top-titlebar-icon"><img id="top-titlebaricon" src="cow.png"></div>
-    <div class="top-titlebar-text">Purple Cow</div>
-    <div class='top-titlebar-recording'>
-      <img class='top-titlebar-recording-icon' src='microphone-icon.png'>
-      <div class='top-titlebar-recording-text'>Recording</div>
-    </div>
-    <div class="top-titlebar-minimize-button">_</div>
-    <div class="top-titlebar-close-button">x</div>
-  </section>
-
-  <section id='content' class='content'>
-    <div id='div-description'></div>
-    <div id='div-buttons'>
-
+    <section class='content clearfix'>
       <div id='div-start'>
-        <button id='btn-start' class='btn btn-default'>Start</button>
+        <h1>Thanks for participating! Here's how to use this extension.</h1>
+
+        <p class='sub'>Once the questionnaire starts, it will start recording both your screen and your voice.</p>
+
+        <p class='sub'>When something great happens, click the <a class='btn-delighted'></a> button.</p>
+
+        <p class='sub'>When something bad or confusing happens, click the <a class='btn-confused'></a> button.</p>
+
+        <p class='sub'>The <a class='btn-next'>Next</a> button will take you to the next question.  Please note, once you advance, you can't go back.</p>
+
+        <h1>Tips:</h1>
+        <ul>
+          <li>Remember to speak your mind <span class='sub'>&ndash; Talk your way through what you're thinking in each step.</span></li>
+          <li>Your screen is being recorded <span class='sub'>&ndash; Go ahead and DO the activity rather than just talking about it.</span></li>
+        </ul>
+
+        <div class='ctn-get-started'>
+          <a id='btn-start' class='btn btn-start pull-right'>Select your screen</a>
+          <h1 class='text-get-started'>Great, let's get started!</h1>
+        </div>
+        <div class='ctn-already-started'>
+
+        </div>
       </div>
 
-      <div id='div-next'>
-        <button id='btn-next' class='btn btn-default'>Next <i class='fa fa-arrow-circle-right'></i></button>
-        <button id='btn-confused' class='btn btn-danger btn-feeling'><i class='fa fa-frown-o'></i></button>
-        <button id='btn-delighted' class='btn btn-success btn-feeling'><i class='fa fa-smile-o'></i></button>
+      <div id='div-step'>
+        <div class='div-buttons pull-right'>
+          <a id='btn-delighted' class='btn btn-delighted'></a>
+          <a id='btn-confused' class='btn btn-confused'></a>
+          <a id='btn-next' class='btn btn-next'>Next</a>
+        </div>
+        <p id='div-description'></p>
       </div>
 
       <div id='div-finish'>
-        <button id='btn-close' class='btn btn-default'>Close Window</button>
+        <a id='btn-finish' class='btn btn-finish pull-right'>Finish</a>
+        <p>Thanks for helping out with this study!</p>
       </div>
-    </div>
 
-    <ul id='recordingsList'></ul>
-
-  </section>
-
-  <script src="jquery-2.1.3.js"></script>
-  <script src="popup/popup_controller.js"></script>
-  <script src="popup/popup_model.js"></script>
-  <script src="popup/popup_view.js"></script>
-  <script src="event_bus.js"></script>
-  <script src="popup.js"></script>
-</body>
+    </section>
+  </body>
 </html>

@@ -1,0 +1,147 @@
+.titlebar {
+  width: 100%;
+  height: 32px;
+  background-color: #1CA5C9;
+  -webkit-app-region: drag;
+  cursor: move;
+  position: absolute;
+}
+
+.titlebar-icon {
+  float: left;
+  height: 24px;
+  margin-top: 4px;
+  margin-left: 5px;
+}
+
+.titlebar-recording {
+  width: 125px;
+  height: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.titlebar-recording-icon {
+  display: inline-block;
+  border-radius: 4px;
+  height: 8px;
+  width: 8px;
+  background-color: #FFF;
+}
+
+.titlebar-recording-text {
+  display: inline-block;
+  color: #FFF;
+  line-height: 24px;
+  font-size: 14px;
+}
+
+.titlebar-recording.on {
+  background-color: #F69526;
+}
+
+.titlebar-recording.off {
+  background-color: #999;
+}
+
+.titlebar-recording.on .off {
+  display: none;
+}
+
+.titlebar-recording.off .on {
+  display: none;
+}
+
+.titlebar-buttons {
+  -webkit-app-region: no-drag;
+  margin-right: 5px;
+}
+
+.titlebar-buttons div {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  line-height: 32px;
+  color: #FFF;
+  font-size: 18px;
+}
+
+.content {
+  margin-top: 32px;
+  padding: 10px 10px 10px 10px;
+}
+
+.btn-delighted,
+.btn-confused {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+}
+
+.btn-delighted {
+  content: url('/images/face_delight.svg');
+  background: #1CC67D;
+  display: inline-block;
+}
+
+.btn-confused {
+  content: url('/images/face_bummer.svg');
+  background: #F57340;
+}
+
+.btn-start, .btn-next, .btn-finish {
+  background-color: #05647C;
+  color: #FFF;
+  display: inline-block;
+  padding: 4px 10px;
+}
+
+#div-start p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#div-start .btn-delighted,
+#div-start .btn-confused {
+  width: 18px;
+  height: 18px;
+  margin: 0px 3px -3px 3px;
+  opacity: .75;
+}
+
+#div-start .btn-next {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin: 0px 3px;
+  opacity: .75;
+}
+
+#div-start.started .ctn-get-started {
+  display: none;
+}
+
+#div-start.started .ctn-already-started {
+  display: block;
+}
+
+.ctn-already-started {
+  display: none;
+  border-top: 1px solid #E3E3E3;
+  margin: 20px;
+}
+
+.ctn-get-started h1 {
+  margin-top: 10px;
+  line-height: 30px;
+}
+
+.div-buttons a {
+  margin-left: 10px;
+  float: left;
+}
+
+#div-finish p {
+  line-height: 30px;
+}

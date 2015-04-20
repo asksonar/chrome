@@ -1,0 +1,49 @@
+body {
+  font-family: BrandonGrotesque-Regular;
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+}
+
+h1 {
+  font-family: BrandonGrotesque-Medium;
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0px;
+}
+
+p {
+  margin: 0px;
+}
+
+ul {
+  margin: 0px;
+  padding-left: 20px;
+}
+
+.sub {
+  color: #999;
+}
+
+.btn {
+  cursor: pointer;
+  opacity: .9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+.pull-right {
+  float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}

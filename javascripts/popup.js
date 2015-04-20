@@ -1,23 +1,27 @@
-var eventBus = $({});
+$(function(){
+  window.eventBus = $({});
 
-var model = new PopupModel(eventBus);
+  window.model = new PopupModel(eventBus);
 
-var view = new PopupView(eventBus, model, {
-  'divStart':       $('#div-start'),
-  'divNext':        $('#div-next'),
-  'divFinish':      $('#div-finish'),
-  'divRecording':   $('.top-titlebar-recording'),
-  'divDescription': $('#div-description'),
-  'body':           $('body'),
-  'titleBar':       $('#top-titlebar'),
-  'btnMinimize':    $('.top-titlebar-minimize-button'),
-  'btnAbort':       $('.top-titlebar-close-button'),
-  'btnClose':       $('#btn-close'),
-  'btnStart':       $('#btn-start'),
-  'btnNext':        $('#btn-next'),
-  'btnDelighted':   $('#btn-delighted'),
-  'btnConfused':    $('#btn-confused')
+  window.view = new PopupView(eventBus, model, {
+    'divStart':       $('#div-start'),
+    'divStep':        $('#div-step'),
+    'divFinish':      $('#div-finish'),
+    'divRecording':   $('.titlebar-recording'),
+    'divDescription': $('#div-description'),
+    'titleBar':       $('.titlebar'),
+    'content':        $('.content'),
+    'btnQuestion':    $('.titlebar-question-button'),
+    'btnMinimize':    $('.titlebar-minimize-button'),
+    'btnAbort':       $('.titlebar-close-button'),
+    'btnFinish':      $('#btn-finish'),
+    'btnStart':       $('#btn-start'),
+    'btnNext':        $('#btn-next'),
+    'btnDelighted':   $('#btn-delighted'),
+    'btnConfused':    $('#btn-confused')
+  });
+
+  window.controller = new PopupController(eventBus, model);
+
+  model.loadUserScenario();
 });
-
-var controller = new PopupController(eventBus, model);
-
