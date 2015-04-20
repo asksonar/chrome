@@ -56,8 +56,8 @@ AudioController.prototype.saveAudio = function(event, params) {
     this.eventBus.trigger('sendMessage', [
       'audio.step',
       {
-        'userScenarioUUID': params.userScenarioUUID,
-        'currentStep': params.step.index
+        'scenarioResultHashId': params.scenarioResultHashId,
+        'resultStepHashId': params.step.hashid
       },
       new Blob([arraybuffer], {type: 'audio/wav'})
     ]);

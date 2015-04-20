@@ -12,9 +12,8 @@ $(function(){
   var WIDTH = 400;
   var HEIGHT = 136;
 
-  var userScenarioUUID;
-  var currentStep;
-
+  // var scenarioResultHashId;
+  // var currentStep;
 
   chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
@@ -28,8 +27,8 @@ $(function(){
     }
   );
 
-  function launchApp(userScenarioUUID) {
-    currentWindow = chrome.app.window.create('popup.html?userScenarioUUID=' + userScenarioUUID, {
+  function launchApp(scenarioResultHashId) {
+    currentWindow = chrome.app.window.create('popup.html?scenarioResultHashId=' + scenarioResultHashId, {
       id: "desktopCaptureID",
       frame: 'none',
       focused: true,
@@ -51,18 +50,18 @@ $(function(){
     });
   }
 
-  var eventBus = $({});
-  var model = new BackgroundModel(eventBus);
-  var controller = new BackgroundController(eventBus, model);
-  var websocket = new WebsocketController(eventBus, model, {
+  window.eventBus = $({});
+  window.model = new BackgroundModel(eventBus);
+  window.controller = new BackgroundController(eventBus, model);
+  window.websocket = new WebsocketController(eventBus, model, {
     'websocketUrl': 'ws://localhost:5000/'
   });
-  var video = new VideoController(eventBus, model, {
+  window.video = new VideoController(eventBus, model, {
     'canvas': document.getElementById('canvas'),
     'video': document.getElementById('video'),
     'fps': 10
   });
-  var audio = new AudioController(eventBus, model);
+  window.audio = new AudioController(eventBus, model);
 
 });
 

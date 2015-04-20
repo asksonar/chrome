@@ -72,18 +72,18 @@ BackgroundController.prototype.onVideoRecordingFailed = function(event, stepInde
   });
 }
 
-BackgroundController.prototype.onStarted = function(event) {
-  this.eventBus.trigger('sendMessage', ['data.start']);
+BackgroundController.prototype.onStarted = function(event, message) {
+  this.eventBus.trigger('sendMessage', ['data.start', message]);
 }
 
-BackgroundController.prototype.onNexted = function(event, step) {
-  this.eventBus.trigger('sendMessage', ['data.step', step]);
+BackgroundController.prototype.onNexted = function(event, message) {
+  this.eventBus.trigger('sendMessage', ['data.step', message]);
 }
 
-BackgroundController.prototype.onFinished = function(event, step) {
-  this.eventBus.trigger('sendMessage', ['data.finish', step]);
+BackgroundController.prototype.onFinished = function(event, message) {
+  this.eventBus.trigger('sendMessage', ['data.finish', message]);
 }
 
-BackgroundController.prototype.onAborted = function(event, step) {
-  this.eventBus.trigger('sendMessage', ['data.abort', step]);
+BackgroundController.prototype.onAborted = function(event, message) {
+  this.eventBus.trigger('sendMessage', ['data.abort', message]);
 }

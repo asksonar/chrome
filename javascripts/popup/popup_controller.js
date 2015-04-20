@@ -27,14 +27,14 @@ PopupController.prototype.on = function(eventType, element, clickHandler) {
 PopupController.prototype.onScenarioStarted = function() {
   this.port.postMessage({
     'command': 'start',
-    'userScenarioUUID': this.model.getUserScenarioUUID()
+    'scenarioResultHashId': this.model.getScenarioResultHashId()
   });
 }
 
 PopupController.prototype.onScenarioNexted = function(event, step) {
   this.port.postMessage({
     'command': 'next',
-    'userScenarioUUID': this.model.getUserScenarioUUID(),
+    'scenarioResultHashId': this.model.getScenarioResultHashId(),
     'step': step
   });
 }
@@ -42,7 +42,7 @@ PopupController.prototype.onScenarioNexted = function(event, step) {
 PopupController.prototype.onScenarioFinished = function(event, step) {
   this.port.postMessage({
     'command': 'finish',
-    'userScenarioUUID': this.model.getUserScenarioUUID(),
+    'scenarioResultHashId': this.model.getScenarioResultHashId(),
     'step': step
   });
 }
@@ -50,7 +50,7 @@ PopupController.prototype.onScenarioFinished = function(event, step) {
 PopupController.prototype.onScenarioAborted = function(event, step) {
   this.port.postMessage({
     'command': 'abort',
-    'userScenarioUUID': this.model.getUserScenarioUUID(),
+    'scenarioResultHashId': this.model.getScenarioResultHashId(),
     'step': step
   });
 }

@@ -24,17 +24,17 @@ PopupModel.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
 }
 
-PopupModel.prototype.getUserScenarioUUID = function() {
-  return window.document.location.search.substring('?userScenarioUUID='.length);
+PopupModel.prototype.getScenarioResultHashId = function() {
+  return window.document.location.search.substring('?scenarioResultHashId='.length);
 }
 
 PopupModel.prototype.loadUserScenario = function() {
   var onLoadScenarioFromStorage = function(items) {
-    this.userScenario = items[this.getUserScenarioUUID()];
+    this.userScenario = items[this.getScenarioResultHashId()];
     this.eventBus.trigger('scenarioLoaded');
   }
 
-  chrome.storage.local.get(this.getUserScenarioUUID(), $.proxy(onLoadScenarioFromStorage, this));
+  chrome.storage.local.get(this.getScenarioResultHashId(), $.proxy(onLoadScenarioFromStorage, this));
 }
 
 PopupModel.prototype.getUserScenario = function() {
@@ -74,13 +74,13 @@ PopupModel.prototype.openNextStep = function() {
 
   this.stepResults[this.currentIndex] = {};
   this.getCurrentResult().index = this.currentIndex;
-  this.getCurrentResult().delighted = [];
-  this.getCurrentResult().confused = [];
-  this.getCurrentResult().start = new Date();
+  this.getCurrentResult().feelings = [];
+  this.getCurrentResult().start = Date.now();
 }
 
 PopupModel.prototype.closeCurrentStep = function() {
-  this.getCurrentResult().finish = new Date();
+  this.getCurrentResult().hashid = this.userScenario.steps[this.currentIndex].hashid;
+  this.getCurrentResult().finish = Date.now();
   this.getCurrentResult().length = this.getCurrentResult().finish - this.getCurrentResult().start
 }
 
@@ -101,20 +101,23 @@ PopupModel.prototype.onFinished = function() {
   this.eventBus.trigger('scenarioFinished', [this.getCurrentResult()]);
 }
 
+PopupModel.prototype.onAborted = function() {
+  this.closeCurrentStep();
+  this.eventBus.trigger('scenarioAborted', [this.getCurrentResult()]);
+}
+
 PopupModel.prototype.onDelighted = function() {
-  this.getCurrentResult().delighted.push({
-    time: new Date(),
-    offset: new Date() - this.getCurrentResult().start
+  this.getCurrentResult().feelings.push({
+    type: 'delighted',
+    time: Date.now(),
+    offset: Date.now() - this.getCurrentResult().start
   });
 }
 
 PopupModel.prototype.onConfused = function() {
-  this.getCurrentResult().confused.push({
-    time: new Date(),
-    offset: new Date() - this.getCurrentResult().start
+  this.getCurrentResult().feelings.push({
+    type: 'confused',
+    time: Date.now(),
+    offset: Date.now() - this.getCurrentResult().start
   });
-}
-
-PopupModel.prototype.onAborted = function() {
-  this.eventBus.trigger('scenarioAborted', [this.getCurrentResult()]);
 }
