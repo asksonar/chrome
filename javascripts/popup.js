@@ -20,3 +20,4 @@ var view = new PopupView(eventBus, model, {
 });
 
 var controller = new PopupController(eventBus, model);
+

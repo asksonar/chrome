@@ -54,7 +54,7 @@ AudioController.prototype.saveAudio = function(event, params) {
 
   var callback = function(arraybuffer) {
     this.eventBus.trigger('sendMessage', [
-      'video.step',
+      'audio.step',
       {
         'userScenarioUUID': params.userScenarioUUID,
         'currentStep': params.step.index

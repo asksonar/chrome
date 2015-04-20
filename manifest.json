@@ -14,11 +14,9 @@
   "permissions": [
     "desktopCapture",
     "audioCapture",
-    /*"permissions",*/
     "unlimitedStorage",
     "alwaysOnTopWindows",
-    "storage"/*,
-    {"fileSystem": ["write", "retainEntries", "directory"]}*/
+    "storage"
   ],
   "externally_connectable": {
     "matches": ["*://*.asksonar.com/*", "*://localhost/*"]
