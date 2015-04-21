@@ -104,8 +104,8 @@ VideoController.prototype.saveVideo = function(event, params) {
   this.eventBus.trigger('sendMessage', [
     'video.step',
     {
-      'scenarioResultHashId': params.hashid,
-      'resultStepHashId': params.step.hashid
+      'scenarioResultHashId': params.scenarioResultHashId,
+      'scenarioStepHashId': params.step.hashid
     },
     blob
   ]);

@@ -57,7 +57,7 @@ AudioController.prototype.saveAudio = function(event, params) {
       'audio.step',
       {
         'scenarioResultHashId': params.scenarioResultHashId,
-        'resultStepHashId': params.step.hashid
+        'scenarioStepHashId': params.step.hashid
       },
       new Blob([arraybuffer], {type: 'audio/wav'})
     ]);
