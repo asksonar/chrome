@@ -102,6 +102,9 @@ PopupModel.prototype.onFinished = function() {
 }
 
 PopupModel.prototype.onAborted = function() {
+  if (this.currentIndex == -1) {
+    return;
+  }
   this.closeCurrentStep();
   this.eventBus.trigger('scenarioAborted', [this.getCurrentResult()]);
 }

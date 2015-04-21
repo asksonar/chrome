@@ -7,10 +7,13 @@ $(function(){
 
   chrome.runtime.onMessageExternal.addListener(
     function(request, sender, sendResponse) {
-      if (request.launchApp) {
+      if (request === 'isInstalledApp?') {
+        sendResponse(true);
+      } else if (request.launchApp) {
         var launchAppParams = {};
         chrome.storage.local.set(request.launchApp);
         launchApp(Object.keys(request.launchApp)[0]);
+        sendResponse(true);
       }
     }
   );
