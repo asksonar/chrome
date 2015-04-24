@@ -44,9 +44,15 @@ $(function(){
   window.eventBus = $({});
   window.model = new BackgroundModel(eventBus);
   window.controller = new BackgroundController(eventBus, model);
+  /*
   window.websocket = new WebsocketController(eventBus, model, {
     'websocketUrl': 'ws://video.asksonar.com/'
   });
+  */
+  window.ajaxer = new AjaxerController(eventBus, model, {
+    'url': 'http://video.asksonar.com/'
+  });
+
   window.video = new VideoController(eventBus, model, {
     'canvas': document.getElementById('canvas'),
     'video': document.getElementById('video'),

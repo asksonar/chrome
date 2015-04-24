@@ -38,6 +38,7 @@ WebsocketController.prototype.processQueueMessages = function(next) {
       break;
     }
     var message = this.messageQueue.shift();
+    console.log(message);
     this.ws.send(JSON.stringify(message));
   }
   if (this.messageQueue.length > 0) {
