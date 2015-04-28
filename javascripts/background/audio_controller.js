@@ -22,8 +22,13 @@ AudioController.prototype.on = function(eventType, element, clickHandler) {
 }
 
 AudioController.prototype.startRecording = function() {
+  if (this.recorder) {
+    this.recorder.destroy();
+    this.recorder = null;
+  }
   if (this.stream) {
-    return;
+    this.stream.stop();
+    this.stream = null;
   }
 
   navigator.webkitGetUserMedia({audio: true}, $.proxy(this.gotStream, this), $.proxy(this.gotStreamError, this));
@@ -75,8 +80,7 @@ AudioController.prototype.stopAudio = function(event, params) {
     return;
   }
   this.saveAudio(event, params);
-  this.recorder.stop();
-  this.recorder.clear();
+  this.recorder.destroy();
   this.recorder = null;
   this.stream.stop();
   this.stream = null;
@@ -84,5 +88,9 @@ AudioController.prototype.stopAudio = function(event, params) {
 
 AudioController.prototype.onStreamEnded = function() {
   // could be ended normally or ended by clicking the "stop recording" button
+  if (this.recorder) {
+    this.recorder.destroy();
+    this.recorder = null;
+  }
   this.stream = null;
 }

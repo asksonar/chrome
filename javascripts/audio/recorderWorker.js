@@ -20,6 +20,9 @@ this.onmessage = function(e){
     case 'clear':
       clear();
       break;
+    case 'destroy':
+      self.close();
+      break;
   }
 };
 

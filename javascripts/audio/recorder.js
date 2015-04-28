@@ -53,6 +53,10 @@
       worker.postMessage({ command: 'clear' });
     }
 
+    this.destroy = function(){
+      worker.postMessage({ command: 'destroy' });
+    }
+
     this.getBuffer = function(cb) {
       currCallback = cb || config.callback;
       worker.postMessage({ command: 'getBuffer' })

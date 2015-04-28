@@ -27,8 +27,12 @@ VideoController.prototype.on = function(eventType, element, clickHandler) {
 }
 
 VideoController.prototype.startRecording = function() {
+  if (this.encoder) {
+    this.encoder = null;
+  }
   if (this.stream) {
-    return;
+    this.stream.stop();
+    this.stream = null;
   }
 
   chrome.desktopCapture.chooseDesktopMedia(["screen"], $.proxy(this.gotAccess, this));
