@@ -21,6 +21,17 @@ ul {
   padding-left: 20px;
 }
 
+a {
+  color: #05647C;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #05647C;
+  text-decoration: underline;
+}
+
 .sub {
   color: #999;
 }

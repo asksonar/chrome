@@ -126,6 +126,12 @@
   display: block;
 }
 
+#div-url {
+  width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .ctn-already-started {
   display: none;
   border-top: 1px solid #E3E3E3;

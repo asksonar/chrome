@@ -7,6 +7,7 @@ function PopupView(eventBus, model, config) {
   this.$divFinish = config.divFinish;
   this.$divRecording = config.divRecording;
   this.$divDescription = config.divDescription;
+  this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
   this.$content = config.content;
   this.$btnQuestion = config.btnQuestion;
@@ -130,6 +131,7 @@ PopupView.prototype.onScenarioStarted = function() {
 
 PopupView.prototype.onScenarioNexted = function() {
   this.$divDescription.html(this.model.getCurrentDescription());
+  this.populateUrl(this.model.getCurrentUrl());
   this.$content.hide().fadeIn('slow');
   this.resizeWindowToFit();
 }
@@ -139,6 +141,17 @@ PopupView.prototype.onScenarioFinished = function() {
   this.$divStep.hide();
   this.$divFinish.fadeIn('slow');
   this.resizeWindowToFit();
+}
+
+PopupView.prototype.populateUrl = function(url) {
+  var targetUrl = url.indexOf('http') == 0 ? url : 'http://' + url;
+  var displayUrl = '&mdash;>&nbsp;' +
+    ( url.indexOf('https://') == 0 ? url.substring('https://'.length)
+    : url.indexOf('http://') == 0 ? url.substring('http://'.length)
+    : url )
+
+  this.$ahrefUrl.attr('href', targetUrl);
+  this.$ahrefUrl.html(displayUrl);
 }
 
 PopupView.prototype.onRecordingStarted = function() {

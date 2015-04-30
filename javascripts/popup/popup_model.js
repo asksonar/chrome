@@ -57,6 +57,10 @@ PopupModel.prototype.getCurrentDescription = function() {
   }
 }
 
+PopupModel.prototype.getCurrentUrl = function() {
+  return this.userScenario.steps[this.currentIndex].url;
+}
+
 PopupModel.prototype.getResult = function(resultIndex) {
   return this.stepResults[resultIndex];
 }

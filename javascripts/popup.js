@@ -9,6 +9,7 @@ $(function(){
     'divFinish':      $('#div-finish'),
     'divRecording':   $('.titlebar-recording'),
     'divDescription': $('#div-description'),
+    'ahrefUrl':       $('#ahref-Url'),
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
     'btnQuestion':    $('.titlebar-question-button'),
