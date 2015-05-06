@@ -21,13 +21,13 @@ ul {
   padding-left: 20px;
 }
 
-a {
+a[href] {
   color: #05647C;
   cursor: pointer;
   text-decoration: none;
 }
 
-a:hover {
+a[href]:hover {
   color: #05647C;
   text-decoration: underline;
 }
