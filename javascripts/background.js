@@ -53,11 +53,9 @@ $(function(){
     // 'url': 'http://localhost:5000/'
   });
 
-  window.video = new VideoController(eventBus, model, {
-    'canvas': document.getElementById('canvas'),
-    'video': document.getElementById('video'),
+  window.recorder = new RecorderController(eventBus, model, {
+    'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10
   });
-  window.audio = new AudioController(eventBus, model);
 
 });
