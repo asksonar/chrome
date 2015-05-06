@@ -12,7 +12,7 @@ function RecorderController(eventBus, model, config) {
 RecorderController.prototype.init = function() {
   this.videoStream = null;
   this.audioStream = null;
-  this.fs = new FileSystemController();
+  this.fs = new FileSystem();
 }
 
 RecorderController.prototype.initHandlers = function() {

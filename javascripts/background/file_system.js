@@ -1,32 +1,32 @@
-function FileSystemController() {
+function FileSystem() {
   this.init();
 }
 
-FileSystemController.prototype.init = function() {
+FileSystem.prototype.init = function() {
   window.webkitRequestFileSystem(window.PERSISTENT, 0, $.proxy(function(filesystem) {
     this.fs = filesystem;
   }, this), $.proxy(this.requestFSErrorHandler, this));
 }
 
-FileSystemController.prototype.requestFSErrorHandler = function() {
+FileSystem.prototype.requestFSErrorHandler = function() {
   console.log("Error getting filesystem");
   debugger;
 }
 
-FileSystemController.prototype.checkFileStorage = function() {
+FileSystem.prototype.checkFileStorage = function() {
   navigator.webkitPersistentStorage.queryUsageAndQuota(function(usedBytes, availableBytes) {
     console.log("Used " + (usedBytes/1000000) + " MB out of " + (availableBytes/1000000) + " MB");
   });
 }
 
-FileSystemController.prototype.listDirectory = function(dir) {
+FileSystem.prototype.listDirectory = function(dir) {
   var dirReader = dir.createReader();
   dirReader.readEntries (function(results) {
     debugger;
   });
 }
 
-FileSystemController.prototype.getFile = function(path, callback) {
+FileSystem.prototype.getFile = function(path, callback) {
   var gotFile = function(file) {
     callback(file);
   }
