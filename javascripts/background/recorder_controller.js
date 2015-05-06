@@ -12,11 +12,12 @@ function RecorderController(eventBus, model, config) {
 RecorderController.prototype.init = function() {
   this.videoStream = null;
   this.audioStream = null;
+  this.fs = new FileSystemController();
 }
 
 RecorderController.prototype.initHandlers = function() {
   this.on('start', this.eventBus, this.startRecording);
-  this.on('next', this.eventBus, this.saveVideo);
+  this.on('next', this.eventBus, this.saveVideoTime);
   this.on('finish', this.eventBus, this.stopRecording);
   this.on('abort', this.eventBus, this.stopRecording);
 
@@ -94,6 +95,8 @@ RecorderController.prototype.gotStreams = function(streams) {
   };
   this.encoder.start(recorderCfg)
   .then(function() {
+    this.videoTime = new VideoTime();
+    this.videoTime.start();
     this.eventBus.trigger('videoRecordingStarted');
   }.bind(this)).catch(function(err) {
     // You probably want to handle this somehow in the app.
@@ -106,27 +109,11 @@ RecorderController.prototype.gotStreams = function(streams) {
 
 RecorderController.prototype.gotStreamError = function(mediaStreamError) {
   console.log('oh god stream error: ' + mediaStreamError);
-  debugger;
   this.eventBus.trigger('videoRecordingFailure');
 }
 
-RecorderController.prototype.saveVideo = function(event, params) {
-  return; // TODO: clarify what to do
-  if (!this.stream) {
-    return;
-  }
-  var blob = this.encoder.compile();
-  this.encoder = null;
-  this.eventBus.trigger('sendMessage', [
-    'video.step',
-    {
-      'scenarioResultHashId': params.scenarioResultHashId,
-      'scenarioStepHashId': params.step.hashid
-    },
-    blob
-  ]);
-  console.log('Frame count: ' + this.frameCount);
-  this.frameCount = 0;
+RecorderController.prototype.saveVideoTime = function(event, params) {
+  this.videoTime.save(params.scenarioResultHashId, params.step.hashid);
 }
 
 RecorderController.prototype.stopRecording = function(event, params) {
@@ -138,6 +125,20 @@ RecorderController.prototype.stopRecording = function(event, params) {
     this.encoder = null;
     this.stopStreams();
     console.log('recording stopped');
+
+    this.videoTime.save(params.scenarioResultHashId, params.step.hashid);
+
+    this.fs.getFile('/recording.webm', $.proxy(function(file) {
+      this.eventBus.trigger('sendMessage', [
+        'video.step',
+        {
+          'scenarioResultHashId': params.scenarioResultHashId,
+          'scenarioStepHashId': params.step.hashid
+        },
+        file
+      ]);
+    }, this));
+
   }.bind(this))
   .catch(function() {
     this.stopStreams();

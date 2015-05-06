@@ -56,7 +56,6 @@ $(function(){
     'url': 'http://video.asksonar.com/'
     // 'url': 'http://localhost:5000/'
   });
-
   window.recorder = new RecorderController(eventBus, model, {
     'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10
