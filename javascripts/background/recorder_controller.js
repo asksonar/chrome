@@ -3,8 +3,8 @@ function RecorderController(eventBus, model, config) {
   this.model = model;
 
   this.fps = config.fps || 10;
+  this.encoderUrl = config.encoderUrl;
 
-  this.encoder = new PnaclVideoEncoder(config.encoderUrl, false);
   this.init();
   this.initHandlers();
 }
@@ -19,6 +19,11 @@ RecorderController.prototype.initHandlers = function() {
   this.on('next', this.eventBus, this.saveVideo);
   this.on('finish', this.eventBus, this.stopRecording);
   this.on('abort', this.eventBus, this.stopRecording);
+
+}
+
+RecorderController.prototype.initEncoder = function() {
+  this.encoder = new PnaclVideoEncoder(this.encoderUrl, false);
   // Handler for nacl module crashes, should not happen
   this.encoder.onCrash = $.proxy(this.onCrash, this);
   // Handler for error while recording (out of disk space, ...)
@@ -50,22 +55,24 @@ RecorderController.prototype.gotAccess = function(streamId) {
     this.eventBus.trigger('videoRecordingFailure');
     return;
   }
-  var videoStreamPromise = new Promise(function(resolve, reject) {
-    navigator.webkitGetUserMedia({
-        audio: false,
-        video: {
-            mandatory: {
-              chromeMediaSource: 'desktop',
-              chromeMediaSourceId: streamId,
-              "minWidth": screen.width,
-              "minHeight": screen.height,
-              "maxWidth": screen.width,
-              "maxHeight": screen.height
-              maxFrameRate: config.fps
-            }
-        }
-    }, resolve, reject);
-  });
+  var videoStreamPromise = new Promise($.proxy(
+    function(resolve, reject) {
+      navigator.webkitGetUserMedia({
+          audio: false,
+          video: {
+              mandatory: {
+                chromeMediaSource: 'desktop',
+                chromeMediaSourceId: streamId,
+                "minWidth": screen.width,
+                "minHeight": screen.height,
+                "maxWidth": screen.width,
+                "maxHeight": screen.height,
+                maxFrameRate: this.fps
+              }
+          }
+      }, resolve, reject);
+    }
+  , this));
 
   var audioStreamPromise = new Promise(function(resolve, reject) {
     navigator.webkitGetUserMedia({audio: true}, resolve, reject);
@@ -79,6 +86,7 @@ RecorderController.prototype.gotStreams = function(streams) {
   this.audioStream = streams[1];
   this.videoStream.onended = $.proxy(this.onStreamEnded, this);
 
+  this.initEncoder();
   var recorderCfg = {
     filename: '/html5_persistent/recording.webm',
     videoTrack: this.videoStream.getVideoTracks()[0],
@@ -122,7 +130,12 @@ RecorderController.prototype.saveVideo = function(event, params) {
 }
 
 RecorderController.prototype.stopRecording = function(event, params) {
+  if (this.encoder == null) {
+    return;
+  }
+
   this.encoder.stop().then(function() {
+    this.encoder = null;
     this.stopStreams();
     console.log('recording stopped');
   }.bind(this))
