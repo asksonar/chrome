@@ -15,7 +15,9 @@
     "audioCapture",
     "unlimitedStorage",
     "alwaysOnTopWindows",
-    "storage"
+    "storage",
+    "*://*.asksonar.com/*",
+    "*://localhost/*"
   ],
   "externally_connectable": {
     "matches": ["*://*.asksonar.com/*", "*://localhost/*"]

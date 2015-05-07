@@ -121,19 +121,19 @@ RecorderController.prototype.stopRecording = function(event, params) {
     return;
   }
 
+  this.saveVideoTime(event, params);
+
   this.encoder.stop().then(function() {
     this.encoder = null;
     this.stopStreams();
     console.log('recording stopped');
 
-    this.videoTime.save(params.scenarioResultHashId, params.step.hashid);
-
     this.fs.getFile('/recording.webm', $.proxy(function(file) {
       this.eventBus.trigger('sendMessage', [
-        'video.step',
+        'video.finish',
         {
           'scenarioResultHashId': params.scenarioResultHashId,
-          'scenarioStepHashId': params.step.hashid
+          'steps': this.videoTime.getStepsJSON(params.scenarioResultHashId)
         },
         file
       ]);
