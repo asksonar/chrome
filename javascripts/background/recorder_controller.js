@@ -91,7 +91,7 @@ RecorderController.prototype.gotStreams = function(streams) {
   var recorderCfg = {
     filename: '/html5_persistent/recording.webm',
     videoTrack: this.videoStream.getVideoTracks()[0],
-    audioTrack: this.audioStream.getVideoTracks()[0]
+    audioTrack: this.audioStream.getAudioTracks()[0]
   };
   this.encoder.start(recorderCfg)
   .then(function() {
@@ -153,11 +153,13 @@ RecorderController.prototype.onStreamEnded = function() {
 
 
 RecorderController.prototype.onCrash = function() {
+  console.error('encoder crashed');
   this.stopStreams();
   this.eventBus.trigger('videoRecordingFailure');
 };
 
-RecorderController.prototype.onError = function() {
+RecorderController.prototype.onError = function(err) {
+  console.error('encoder error', err);
   this.stopStreams();
   this.eventBus.trigger('videoRecordingFailure');
 };
