@@ -3,7 +3,7 @@
 current_dir=$(shell pwd)
 nacl_builder_image=schibum/castify-naclbuilder:gif-1.2
 
-all: | setup nacl package e2e
+all: | setup nacl
 
 help:
 	$(info Build scripts for Libcastify)
