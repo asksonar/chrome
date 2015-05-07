@@ -54,7 +54,7 @@ $(function(){
   window.controller = new BackgroundController(eventBus, model);
   window.ajaxer = new AjaxerController(eventBus, model, {
     'url': 'http://video.asksonar.com/'
-    // 'url': 'http://localhost:5000/'
+    //'url': 'http://localhost:5000/'
   });
   window.recorder = new RecorderController(eventBus, model, {
     'encoderUrl': '/manifest_encoder.nmf',
