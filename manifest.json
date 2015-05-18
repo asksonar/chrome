@@ -1,6 +1,6 @@
 {
   "name": "Sonar Desktop Capture App",
-  "version": "1.6",
+  "version": "1.7",
   "manifest_version": 2,
   "icons": {
     "128": "images/sonar_icon.png"
@@ -20,7 +20,7 @@
     "*://localhost/*"
   ],
   "externally_connectable": {
-    "matches": ["*://*.asksonar.com/*", "*://localhost/*"]
+    "matches": ["*://*.asksonar.com/*", "*://localhost/*", "*://*.asksonar.local/*"]
   },
   "platforms": [
     {
