@@ -17,10 +17,11 @@
     "alwaysOnTopWindows",
     "storage",
     "*://*.asksonar.com/*",
-    "*://localhost/*"
+    "*://localhost/*",
+    "*://dockerhost/*"
   ],
   "externally_connectable": {
-    "matches": ["*://*.asksonar.com/*", "*://localhost/*", "*://*.asksonar.local/*"]
+    "matches": ["*://*.asksonar.com/*", "*://localhost/*", "*://dockerhost/*"]
   },
   "platforms": [
     {
