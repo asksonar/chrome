@@ -110,14 +110,17 @@ PopupView.prototype.next = function() {
   } else {
     this.eventBus.trigger('next');
   }
+  this.$btnNext.fadeOut().fadeIn();
 }
 
 PopupView.prototype.delighted = function() {
   this.eventBus.trigger('delighted');
+  this.$btnDelighted.fadeOut().fadeIn();
 }
 
 PopupView.prototype.confused = function() {
   this.eventBus.trigger('confused');
+  this.$btnConfused.fadeOut().fadeIn();
 }
 
 PopupView.prototype.onScenarioLoaded = function() {
@@ -145,10 +148,14 @@ PopupView.prototype.onScenarioFinished = function() {
 
 PopupView.prototype.populateUrl = function(url) {
   var targetUrl = url.indexOf('http') == 0 ? url : 'http://' + url;
-  var displayUrl = '&mdash;>&nbsp;' +
+  var displayUrl = 'Go to ' +
     ( url.indexOf('https://') == 0 ? url.substring('https://'.length)
     : url.indexOf('http://') == 0 ? url.substring('http://'.length)
-    : url )
+    : url );
+
+  if (displayUrl.indexOf('/') > 0) {
+    displayUrl = displayUrl.substring(0, displayUrl.indexOf('/'));
+  }
 
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);

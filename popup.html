@@ -11,17 +11,16 @@
   </head>
   <body>
     <section class="titlebar">
-      <img class="titlebar-icon" src="images/SonarLogoThick_White_100x37.png">
-      <div class='titlebar-buttons pull-right'>
-        <div class="btn titlebar-question-button">?</div>
-        <div class="btn titlebar-minimize-button">&mdash;</div>
-        <div class="btn titlebar-close-button">X</div>
-      </div>
-      <div class='titlebar-recording off'>
+      <div class='titlebar-recording off pull-right'>
         <div class='titlebar-recording-icon on'></div>
         <div class='titlebar-recording-text on'>recording</div>
         <div class='titlebar-recording-text off'>not recording</div>
       </div>
+      <div class='titlebar-buttons pull-left'>
+        <div class="btn titlebar-close-button">X</div>
+        <div class="btn titlebar-question-button">?</div>
+      </div>
+      <div class='titlebar-center'><img class="titlebar-icon" src="images/SonarLogoThick_White_100x37.png"></div>
     </section>
 
     <section class='content clearfix'>
@@ -52,7 +51,7 @@
       </div>
 
       <div id='div-step'>
-        <div class='div-buttons pull-right'>
+        <div class='div-buttons'>
           <a id='btn-delighted' class='btn btn-delighted'></a>
           <a id='btn-confused' class='btn btn-confused'></a>
           <a id='btn-next' class='btn btn-next'>Next</a>
