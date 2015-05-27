@@ -4,7 +4,9 @@
     <script src="javascripts/popup/popup_controller.js"></script>
     <script src="javascripts/popup/popup_model.js"></script>
     <script src="javascripts/popup/popup_view.js"></script>
+    <script src="javascripts/audio/audio_visualization.js"></script>
     <script src="javascripts/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
     <link rel="stylesheet" type="text/css" href="css/base.css"></link>
     <link rel="stylesheet" type="text/css" href="css/popup.css"></link>
     <link rel="stylesheet" type="text/css" href="css/brandon_grotesque.css"></link>
@@ -25,25 +27,30 @@
 
     <section class='content clearfix'>
       <div id='div-start'>
-        <h1>Thanks for participating! Here's how to use this extension.</h1>
+        <h1>Thanks for giving your feedback!</h1>
 
-        <p class='sub'>Once the questionnaire starts, it will start recording both your screen and your voice.</p>
-
-        <p class='sub'>When something great happens, click the <a class='btn-delighted'></a> button.</p>
-
-        <p class='sub'>When something bad or confusing happens, click the <a class='btn-confused'></a> button.</p>
-
-        <p class='sub'>The <a class='btn-next'>Next</a> button will take you to the next question.  Please note, once you advance, you can't go back.</p>
-
-        <h1>Tips:</h1>
+        <p>Remember:</p>
         <ul>
-          <li>Remember to speak your mind <span class='sub'>&ndash; Talk your way through what you're thinking in each step.</span></li>
-          <li>Your screen is being recorded <span class='sub'>&ndash; Go ahead and DO the activity rather than just talking about it.</span></li>
+          <li><i class='fa fa-video-camera sub'></i>Your screen and voice will be recorded.</li>
+          <li><i class='fa fa-bullhorn sub'></i>Speak your thoughts out loud.</li>
+          <li><i class='fa fa-trophy sub'></i>Bonus points for honesty!</li>
         </ul>
 
+        <div class='ctn-mic-check'>
+          <div class='mic-check pull-left'>
+            <i class='fa fa-microphone'></i>
+            <div class='mic-level'></div>
+            <div class='mic-level'></div>
+            <div class='mic-level'></div>
+            <div class='mic-level'></div>
+            <div class='mic-level'></div>
+          </div>
+          <p>Let's check your microphone.  Talk out loud, and avoid background noise.</p>
+        </div>
+
         <div class='ctn-get-started'>
-          <a id='btn-start' class='btn btn-start pull-right'>Select your screen</a>
-          <h1 class='text-get-started'>Great, let's get started!</h1>
+          <a id='btn-start' class='btn btn-start pull-right'>Start!</a>
+          <p class='sub'>Click Start, choose your screen, and the feedback jam will begin.</p>
         </div>
         <div class='ctn-already-started'>
 
