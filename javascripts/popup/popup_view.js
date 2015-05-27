@@ -18,12 +18,17 @@ function PopupView(eventBus, model, config) {
   this.$btnNext = config.btnNext;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
+  this.$micCheckBars = config.micCheckBars;
+  this.$micLevelBars = config.micLevelBars;
 
   this.init();
   this.initHandlers();
 }
 
 PopupView.prototype.init = function() {
+  this.audioVisualization = new AudioVisualization(-60, -20);
+  this.audioVisualization.start();
+  this.startMicrophoneResponse(this.$micCheckBars);
   this.$divStart.show();
   this.$divStep.hide();
   this.$divFinish.hide();
@@ -165,10 +170,27 @@ PopupView.prototype.onRecordingStarted = function() {
   this.$divStep.show();
   this.onScenarioNexted();
   this.$divRecording.removeClass('off').addClass('on');
+  this.startMicrophoneResponse(this.$micLevelBars);
 }
 
 PopupView.prototype.onRecordingStopped = function() {
   this.$divRecording.removeClass('on').addClass('off');
-  alert('Oh god why has recording stopped?');
+  console.log('Recording has stopped.');
   this.abort();
+}
+
+PopupView.prototype.startMicrophoneResponse = function($targets) {
+  this.stopMicrophoneResponse();
+
+  var responseFunction = function() {
+    var amplitudeFiveScale = Math.round(this.audioVisualization.getAmplitude() / 255.0 * 5.0);
+    //console.log(new Date().getSeconds() + '.' + new Date().getMilliseconds() + ':' + amplitudeFiveScale);
+    $targets.removeClass('on').slice(0, amplitudeFiveScale).addClass('on');
+  }
+
+  this.responseLoop = setInterval($.proxy(responseFunction, this), 100);
+}
+
+PopupView.prototype.stopMicrophoneResponse = function() {
+  clearInterval(this.responseLoop);
 }

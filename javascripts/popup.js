@@ -19,7 +19,9 @@ $(function(){
     'btnStart':       $('#btn-start'),
     'btnNext':        $('#btn-next'),
     'btnDelighted':   $('#btn-delighted'),
-    'btnConfused':    $('#btn-confused')
+    'btnConfused':    $('#btn-confused'),
+    'micCheckBars':   $('.mic-check div'),
+    'micLevelBars':   $('.titlebar-recording-level div'),
   });
 
   window.controller = new PopupController(eventBus, model);

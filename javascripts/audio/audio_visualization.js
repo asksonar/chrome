@@ -1,4 +1,6 @@
-function AudioVisualization() {
+function AudioVisualization(minDecibels, maxDecibels) {
+  this.minDecibels = minDecibels;
+  this.maxDecibels = maxDecibels;
   this.init();
 }
 
@@ -6,7 +8,8 @@ AudioVisualization.prototype.init = function() {
   this.context = new AudioContext();
   this.analyser = this.context.createAnalyser();
   this.analyser.fftSize = 32;
-  this.analyser.minDecibels = -40; // raise from default of -90
+  this.analyser.minDecibels = this.minDecibels
+  this.analyser.maxDecibels = this.maxDecibels; // raise from default of -90
 }
 
 AudioVisualization.prototype.start = function() {
@@ -17,7 +20,8 @@ AudioVisualization.prototype.gotStream = function(stream) {
   this.stream = stream;
   this.stream.onended = $.proxy(this.onStreamEnded, this);
 
-  var context = new AudioContext().createMediaStreamSource(stream);
+  var source = this.context.createMediaStreamSource(stream);
+  source.connect(this.analyser);
 }
 
 AudioVisualization.prototype.gotStreamError = function(error) {
@@ -31,7 +35,7 @@ AudioVisualization.prototype.onStreamEnded = function() {
 AudioVisualization.prototype.getAmplitude = function() {
   var bufferLength = this.analyser.frequencyBinCount;
   var dataArray = new Uint8Array(bufferLength);
-  analyser.getByteFrequencyData(dataArray);
+  this.analyser.getByteFrequencyData(dataArray);
 
   var maxHeight = 0;
   for(var i = 0; i < bufferLength; i++) {

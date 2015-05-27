@@ -26,19 +26,41 @@
   text-align: center;
 }
 
-.titlebar-recording-icon {
-  display: inline-block;
-  border-radius: 4px;
-  height: 8px;
-  width: 8px;
-  background-color: #FFF;
-}
-
 .titlebar-recording-text {
-  display: inline-block;
+  float: left;
   color: #FFF;
   line-height: 24px;
   font-size: 14px;
+}
+
+.titlebar-recording-icon {
+  float: left;
+  margin-left: 5px;
+}
+
+.titlebar-recording-icon i {
+  color: #FFF;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.titlebar-recording-level {
+  float: left;
+  margin-left: 5px;
+  margin-top: 2px;
+  transform: rotate(180deg); /* so we can jQuery select in natural order */
+}
+
+.titlebar-recording-level div {
+  background-color: #999;
+  width: 10px;
+  height: 3px;
+  border-radius: 3px;
+  margin: 1px;
+}
+
+.titlebar-recording-level .on {
+  background-color: #FFF;
 }
 
 .titlebar-recording.on {
@@ -152,12 +174,12 @@
   margin-right: 10px;
 }
 
-.ctn-mic-check i {
+.mic-check i {
   color: #05647C;
   font-size: 18px;
 }
 
-.mic-level {
+.mic-check div {
   background-color: #999;
   height: 15px;
   width: 6px;
@@ -165,7 +187,7 @@
   display: inline-block;
 }
 
-.mic-level.on {
+.mic-check .on {
   background-color: #05647C;
 }
 
