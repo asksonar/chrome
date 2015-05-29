@@ -241,6 +241,14 @@
   justify-content: center;
 }
 
+#div-step-of-text {
+  display: inline;
+}
+
+#div-description {
+  display: inline;
+}
+
 #div-finish p {
   line-height: 30px;
 }

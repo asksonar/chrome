@@ -45,6 +45,10 @@ PopupModel.prototype.getCurrentIndex = function() {
   return this.currentIndex;
 }
 
+PopupModel.prototype.getTotalIndex = function() {
+  return this.userScenario.steps.length;
+}
+
 PopupModel.prototype.isLastStep = function() {
   return this.currentIndex == this.userScenario.steps.length - 1;
 }

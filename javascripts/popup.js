@@ -4,11 +4,14 @@ $(function(){
   window.model = new PopupModel(eventBus);
 
   window.view = new PopupView(eventBus, model, {
+    'baseUrl':        'http://my.asksonar.com/',
+    //'baseUrl':        'http://dockerhost:3000/',
     'divStart':       $('#div-start'),
     'divStep':        $('#div-step'),
     'divFinish':      $('#div-finish'),
     'divRecording':   $('.titlebar-recording'),
     'divDescription': $('#div-description'),
+    'divStepOfText':  $('#div-step-of-text'),
     'ahrefUrl':       $('#ahref-Url'),
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
