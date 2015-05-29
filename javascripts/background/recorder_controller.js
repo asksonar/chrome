@@ -126,6 +126,7 @@ RecorderController.prototype.stopRecording = function(event, params) {
   this.encoder.stop().then(function() {
     this.encoder = null;
     this.stopStreams();
+    this.eventBus.trigger('videoRecordingStopped');
     console.log('recording stopped');
 
     this.fs.getFile('/recording.webm', $.proxy(function(file) {

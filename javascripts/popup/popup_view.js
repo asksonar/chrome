@@ -56,7 +56,8 @@ PopupView.prototype.initHandlers = function() {
 
   this.on('videoRecordingStarted', this.eventBus, this.onRecordingStarted);
   this.on('videoRecordingStopped', this.eventBus, this.onRecordingStopped);
-  this.on('audioRecordingStopped', this.eventBus, this.onRecordingStopped);
+  //this.on('audioRecordingStopped', this.eventBus, this.onRecordingStopped);
+  this.on('videoRecordingFailure', this.eventBus, this.onRecordingStopped);
 }
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
@@ -145,6 +146,7 @@ PopupView.prototype.onScenarioFinished = function() {
   this.$divStep.hide();
   this.$divFinish.fadeIn('slow');
   this.resizeWindowToFit();
+  chrome.app.window.current().setAlwaysOnTop(false);
 }
 
 PopupView.prototype.populateUrl = function(url) {
@@ -176,8 +178,8 @@ PopupView.prototype.onRecordingStarted = function() {
 
 PopupView.prototype.onRecordingStopped = function() {
   this.$divRecording.removeClass('on').addClass('off');
-  console.log('Recording has stopped.');
-  this.abort();
+  this.stopMicrophoneResponse();
+  //this.abort();
 }
 
 PopupView.prototype.startMicrophoneResponse = function($targets) {
