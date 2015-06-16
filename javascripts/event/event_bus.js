@@ -7,8 +7,8 @@ EventBus.prototype.init = function() {
 
 }
 
-EventBus.prototype.on = function(eventName, eventHandler) {
-  this.localBus.on(eventName, eventHandler);
+EventBus.prototype.on = function(eventName, eventHandler, eventTarget) {
+  this.localBus.on(eventName, $.proxy(eventHandler, eventTarget || this));
 }
 
 EventBus.prototype.trigger = function(eventName, eventData) {

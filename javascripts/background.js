@@ -15,19 +15,19 @@ $(function(){
         } else {
           var launchAppParams = {};
           chrome.storage.local.set(request.launchApp);
-          launchApp(Object.keys(request.launchApp)[0]);
+          launchApp(request.launchApp);
           sendResponse(true);
         }
       }
     }
   );
 
-  function launchApp(scenarioResultHashId) {
-    if (typeof scenarioResultHashId != "string") {
+  function launchApp(scenario) {
+    if (!scenario) {
       return;
     }
 
-    currentWindow = chrome.app.window.create('popup.html?scenarioResultHashId=' + scenarioResultHashId, {
+    currentWindow = chrome.app.window.create('popup.html', {
       id: "sonarDesktopCapture",
       frame: 'none',
       focused: true,
@@ -46,16 +46,22 @@ $(function(){
       createdWindow.outerBounds.top = 0;
       createdWindow.outerBounds.left = screen.width - WIDTH - MARGIN;
       createdWindow.show();
+
+      // Object.keys(request.launchApp)[0]
+      window.eventBus.trigger('scenarioLoad', {
+        'scenario': scenario
+      });
     });
   }
 
-  window.eventBus = $({});
-  window.model = new BackgroundModel(eventBus);
-  window.controller = new BackgroundController(eventBus, model);
-  window.ajaxer = new AjaxerController(eventBus, model, {
+  window.eventBus = new BackgroundEventBus();
+  window.ajaxer = new Ajaxer(eventBus, {
     'url': 'http://video.asksonar.com/'
-    //'url': 'http://localhost:5000/'
+    //'url': 'http://dockerhost:5000/'
   });
+
+  window.model = new BackgroundModel(eventBus, ajaxer);
+  window.controller = new BackgroundController(eventBus, model);
   window.recorder = new RecorderController(eventBus, model, {
     'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10

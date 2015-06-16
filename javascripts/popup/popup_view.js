@@ -30,7 +30,7 @@ function PopupView(eventBus, model, config) {
 PopupView.prototype.init = function() {
   this.audioVisualization = new AudioVisualization(-60, -20);
   this.audioVisualization.start();
-  this.startMicrophoneResponse(this.$micCheckBars);
+
   this.$divStart.show();
   this.$divStep.hide();
   this.$divFinish.hide();
@@ -50,18 +50,9 @@ PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnConfused, this.confused);
   this.on('click', this.$btnFinish, this.finish);
 
-  this.on('scenarioStarted', this.eventBus, this.onScenarioStarted);
-  this.on('scenarioNexted', this.eventBus, this.onScenarioNexted);
-  this.on('scenarioFinished', this.eventBus, this.onScenarioFinished);
-
-  this.on('videoRecordingStarted', this.eventBus, this.onRecordingStarted);
-  this.on('videoRecordingStopped', this.eventBus, this.onRecordingStopped);
-  //this.on('audioRecordingStopped', this.eventBus, this.onRecordingStopped);
-  this.on('videoRecordingFailure', this.eventBus, this.onRecordingStopped);
-}
-
-PopupView.prototype.on = function(eventType, element, clickHandler) {
-  element.on(eventType, $.proxy(clickHandler, this));
+  this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
+  this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
+  this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
 }
 
 PopupView.prototype.resizeWindowToFit = function() {
@@ -101,21 +92,55 @@ PopupView.prototype.finish = function() {
 }
 
 PopupView.prototype.abort = function() {
-  this.eventBus.trigger('abort');
+  this.eventBus.trigger('abort', {
+    'scenarioResultHashId': this.model.getScenarioResultHashId()
+  });
   window.close();
 }
 
 PopupView.prototype.start = function() {
+  this.model.start();
+
+  this.eventBus.trigger('start', {
+    'scenarioResultHashId': this.model.getScenarioResultHashId()
+  });
+
   this.eventBus.trigger('start');
 }
 
 PopupView.prototype.next = function() {
-  if (this.model.isLastStep()) {
-    this.eventBus.trigger('finish');
-  } else {
-    this.eventBus.trigger('next');
-  }
   this.$btnNext.fadeOut().fadeIn();
+
+  if (this.model.isLastStep()) {
+    this.$divStart.hide();
+    this.$divStart.addClass('started');
+
+    this.$divStep.hide();
+    this.$divFinish.fadeIn('slow');
+    this.resizeWindowToFit();
+    chrome.app.window.current().setAlwaysOnTop(false);
+
+    this.eventBus.trigger('finish', {
+      'scenarioResultHashId': this.model.getScenarioResultHashId()
+    });
+  } else {
+    this.$divStart.hide();
+    this.$divStart.addClass('started');
+
+    this.model.nextStep();
+
+    this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
+    this.$divDescription.html(this.model.getCurrentDescription());
+    this.populateUrl(this.model.getCurrentUrl());
+    this.$content.hide().fadeIn('slow');
+    this.resizeWindowToFit();
+
+    this.eventBus.trigger('next', {
+      'scenarioResultHashId': this.model.getScenarioResultHashId(),
+      'resultStepHashId': this.model.getResultStepHashId()
+    });
+  }
+
 }
 
 PopupView.prototype.delighted = function() {
@@ -126,27 +151,6 @@ PopupView.prototype.delighted = function() {
 PopupView.prototype.confused = function() {
   this.eventBus.trigger('confused');
   this.$btnConfused.fadeOut().fadeIn();
-}
-
-PopupView.prototype.onScenarioStarted = function() {
-  this.$divStart.hide();
-  this.$divStart.addClass('started');
-}
-
-PopupView.prototype.onScenarioNexted = function() {
-  this.$divStepOfText.html('Step ' + (this.model.getCurrentIndex() + 1) + ' of ' + this.model.getTotalIndex() + ':');
-  this.$divDescription.html(this.model.getCurrentDescription());
-  this.populateUrl(this.model.getCurrentUrl());
-  this.$content.hide().fadeIn('slow');
-  this.resizeWindowToFit();
-}
-
-PopupView.prototype.onScenarioFinished = function() {
-  this.$divStart.hide();
-  this.$divStep.hide();
-  this.$divFinish.fadeIn('slow');
-  this.resizeWindowToFit();
-  chrome.app.window.current().setAlwaysOnTop(false);
 }
 
 PopupView.prototype.populateUrl = function(url) {
@@ -173,13 +177,18 @@ PopupView.prototype.onRecordingStarted = function() {
   this.$divStep.show();
   this.onScenarioNexted();
   this.$divRecording.removeClass('off').addClass('on');
+
   this.startMicrophoneResponse(this.$micLevelBars);
 }
 
 PopupView.prototype.onRecordingStopped = function() {
   this.$divRecording.removeClass('on').addClass('off');
   this.stopMicrophoneResponse();
-  //this.abort();
+}
+
+PopupView.prototype.onRecordingFailure = function() {
+  this.$divRecording.removeClass('on').addClass('off');
+  this.stopMicrophoneResponse();
 }
 
 PopupView.prototype.startMicrophoneResponse = function($targets) {

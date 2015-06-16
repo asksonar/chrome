@@ -16,11 +16,9 @@ RecorderController.prototype.init = function() {
 }
 
 RecorderController.prototype.initHandlers = function() {
-  this.on('start', this.eventBus, this.startRecording);
-  this.on('next', this.eventBus, this.saveVideoTime);
-  this.on('finish', this.eventBus, this.stopRecording);
-  this.on('abort', this.eventBus, this.stopRecording);
-
+  this.eventBus.on('start', this.startRecording, this);
+  this.eventBus.on('finish', this.stopRecording, this);
+  this.eventBus.on('abort', this.stopRecording, this);
 }
 
 RecorderController.prototype.initEncoder = function() {
@@ -29,10 +27,6 @@ RecorderController.prototype.initEncoder = function() {
   this.encoder.onCrash = $.proxy(this.onCrash, this);
   // Handler for error while recording (out of disk space, ...)
   this.encoder.onError = $.proxy(this.onError, this);
-}
-
-RecorderController.prototype.on = function(eventType, element, clickHandler) {
-  element.on(eventType, $.proxy(clickHandler, this));
 }
 
 RecorderController.prototype.stopStreams = function() {
@@ -95,8 +89,6 @@ RecorderController.prototype.gotStreams = function(streams) {
   };
   this.encoder.start(recorderCfg)
   .then(function() {
-    this.videoTime = new VideoTime();
-    this.videoTime.start();
     this.eventBus.trigger('videoRecordingStarted');
   }.bind(this)).catch(function(err) {
     // You probably want to handle this somehow in the app.
@@ -112,16 +104,10 @@ RecorderController.prototype.gotStreamError = function(mediaStreamError) {
   this.eventBus.trigger('videoRecordingFailure');
 }
 
-RecorderController.prototype.saveVideoTime = function(event, params) {
-  this.videoTime.save(params.scenarioResultHashId, params.step.hashid);
-}
-
 RecorderController.prototype.stopRecording = function(event, params) {
   if (this.encoder == null) {
     return;
   }
-
-  this.saveVideoTime(event, params);
 
   this.encoder.stop().then(function() {
     this.encoder = null;
@@ -130,14 +116,11 @@ RecorderController.prototype.stopRecording = function(event, params) {
     console.log('recording stopped');
 
     this.fs.getFile('/recording.webm', $.proxy(function(file) {
-      this.eventBus.trigger('sendMessage', [
-        'video.finish',
-        {
-          'scenarioResultHashId': params.scenarioResultHashId,
-          'steps': this.videoTime.getStepsJSON(params.scenarioResultHashId)
-        },
+      this.ajaxer.uploadVideo(
+        params.scenarioResultHashId,
+        this.model.getResultSteps(),
         file
-      ]);
+      );
     }, this));
 
   }.bind(this))
@@ -151,7 +134,6 @@ RecorderController.prototype.onStreamEnded = function() {
   // could be ended normally or ended by clicking the "stop recording" button
   this.stopRecording();
 }
-
 
 RecorderController.prototype.onCrash = function() {
   console.error('encoder crashed');

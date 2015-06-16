@@ -1,5 +1,5 @@
 $(function(){
-  window.eventBus = $({});
+  window.eventBus = new PopupEventBus();
 
   window.model = new PopupModel(eventBus);
 
@@ -27,7 +27,4 @@ $(function(){
     'micLevelBars':   $('.titlebar-recording-level div'),
   });
 
-  window.controller = new PopupController(eventBus, model);
-
-  model.loadUserScenario();
 });
