@@ -23,7 +23,7 @@ $(function(){
   );
 
   function launchApp(scenario) {
-    if (!scenario) {
+    if (scenario && scenario.source === 'reload') {
       return;
     }
 
@@ -55,14 +55,13 @@ $(function(){
   }
 
   window.eventBus = new BackgroundEventBus();
-  window.ajaxer = new Ajaxer(eventBus, {
+  window.ajaxer = new Ajaxer({
     'url': 'http://video.asksonar.com/'
-    //'url': 'http://dockerhost:5000/'
+    // 'url': 'http://dockerhost:5000/'
   });
 
   window.model = new BackgroundModel(eventBus, ajaxer);
-  window.controller = new BackgroundController(eventBus, model);
-  window.recorder = new RecorderController(eventBus, model, {
+  window.recorder = new RecorderController(eventBus, ajaxer, model, {
     'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10
   });
@@ -97,8 +96,7 @@ $(function(){
       }
     }
 
-    chrome.storage.local.set(testData);
-    launchApp(Object.keys(testData)[0]);
+    launchApp(testData);
   }
 
 });

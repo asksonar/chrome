@@ -2,6 +2,9 @@ function PopupEventBus() {
   this.init();
 }
 
+PopupEventBus.prototype = new EventBus();
+PopupEventBus.prototype.constructor = EventBus;
+
 PopupEventBus.prototype.init = function() {
 
   var messageListener = function(msg) {

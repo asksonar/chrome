@@ -1,10 +1,10 @@
 function EventBus() {
-  this.localBus = $({});
   this.init();
 }
 
 EventBus.prototype.init = function() {
-
+  this.localBus = $({});
+  this.portQueue = [];
 }
 
 EventBus.prototype.on = function(eventName, eventHandler, eventTarget) {
@@ -13,8 +13,19 @@ EventBus.prototype.on = function(eventName, eventHandler, eventTarget) {
 
 EventBus.prototype.trigger = function(eventName, eventData) {
   this.localBus.trigger(eventName, eventData);
-  this.port.postMessage({
-    'eventName': eventName,
-    'eventData': eventData
-  })
+
+  if (this.port) {
+    this.port.postMessage({
+      'eventName': eventName,
+      'eventData': eventData
+    });
+  } else {
+    this.portQueue.push({
+      'eventName': eventName,
+      'eventData': eventData
+    });
+  }
+
+  console.log('EventBus: ' + eventName);
+  console.log(eventData);
 }

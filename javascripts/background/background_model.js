@@ -20,11 +20,11 @@ BackgroundModel.prototype.initHandlers = function() {
 }
 
 BackgroundModel.prototype.getCurrentResultStep = function() {
-  return resultSteps[resultSteps.length - 1];
+  return this.resultSteps[this.resultSteps.length - 1];
 }
 
 BackgroundModel.prototype.getResultSteps = function() {
-  return resultSteps;
+  return this.resultSteps;
 }
 
 BackgroundModel.prototype.onStarted = function(event, eventData) {
@@ -59,6 +59,6 @@ BackgroundModel.prototype.onDelighted = function() {
   this.getCurrentResultStep().addDelighted();
 }
 
-PopupModel.prototype.onConfused = function() {
+BackgroundModel.prototype.onConfused = function() {
   this.getCurrentResultStep().addConfused();
 }

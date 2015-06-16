@@ -2,6 +2,9 @@ function BackgroundEventBus() {
   this.init();
 }
 
+BackgroundEventBus.prototype = new EventBus();
+BackgroundEventBus.prototype.constructor = EventBus;
+
 BackgroundEventBus.prototype.init = function() {
 
   var messageListener = function(msg) {
@@ -12,6 +15,14 @@ BackgroundEventBus.prototype.init = function() {
     console.assert(port.name == 'sonar');
     this.port = port;
     this.port.onMessage.addListener($.proxy(messageListener, this));
+    this.port.onDisconnect.addListener($.proxy(function(){
+      this.port = null;
+    }, this));
+
+    var message;
+    while(message = this.portQueue.shift()) {
+      this.port.postMessage(message);
+    }
   }
 
   chrome.runtime.onConnect.addListener($.proxy(listenerResponse, this));

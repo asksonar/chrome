@@ -1,5 +1,6 @@
-function RecorderController(eventBus, model, config) {
+function RecorderController(eventBus, ajaxer, model, config) {
   this.eventBus = eventBus;
+  this.ajaxer = ajaxer;
   this.model = model;
 
   this.fps = config.fps || 10;
@@ -16,7 +17,7 @@ RecorderController.prototype.init = function() {
 }
 
 RecorderController.prototype.initHandlers = function() {
-  this.eventBus.on('start', this.startRecording, this);
+  this.eventBus.on('requestRecording', this.startRecording, this);
   this.eventBus.on('finish', this.stopRecording, this);
   this.eventBus.on('abort', this.stopRecording, this);
 }
@@ -47,7 +48,7 @@ RecorderController.prototype.startRecording = function() {
 
 RecorderController.prototype.gotAccess = function(streamId) {
   if (!streamId) {
-    this.eventBus.trigger('videoRecordingFailure');
+    this.eventBus.trigger('recordingFailure');
     return;
   }
   var videoStreamPromise = new Promise($.proxy(
@@ -89,19 +90,19 @@ RecorderController.prototype.gotStreams = function(streams) {
   };
   this.encoder.start(recorderCfg)
   .then(function() {
-    this.eventBus.trigger('videoRecordingStarted');
+    this.eventBus.trigger('recordingStarted');
   }.bind(this)).catch(function(err) {
     // You probably want to handle this somehow in the app.
     // Can happen if user has NaCl disabled or starting a stream is not
     // possible for some obscure reason.
     console.error('starting encoder failed', err);
-    this.eventBus.trigger('videoRecordingFailure');
+    this.eventBus.trigger('recordingFailure');
   }.bind(this));
 }
 
 RecorderController.prototype.gotStreamError = function(mediaStreamError) {
   console.log('oh god stream error: ' + mediaStreamError);
-  this.eventBus.trigger('videoRecordingFailure');
+  this.eventBus.trigger('recordingFailure');
 }
 
 RecorderController.prototype.stopRecording = function(event, params) {
