@@ -15,15 +15,19 @@ $(function(){
         } else {
           var launchAppParams = {};
           chrome.storage.local.set(request.launchApp);
-          launchApp(Object.keys(request.launchApp)[0]);
+          launchApp(request.launchApp);
           sendResponse(true);
         }
       }
     }
   );
 
-  function launchApp(scenarioResultHashId) {
-    currentWindow = chrome.app.window.create('popup.html?scenarioResultHashId=' + scenarioResultHashId, {
+  function launchApp(scenario) {
+    if (scenario && scenario.source === 'reload') {
+      return;
+    }
+
+    currentWindow = chrome.app.window.create('popup.html', {
       id: "sonarDesktopCapture",
       frame: 'none',
       focused: true,
@@ -42,22 +46,57 @@ $(function(){
       createdWindow.outerBounds.top = 0;
       createdWindow.outerBounds.left = screen.width - WIDTH - MARGIN;
       createdWindow.show();
+
+      // Object.keys(request.launchApp)[0]
+      window.eventBus.trigger('scenarioLoad', {
+        'scenario': scenario
+      });
     });
   }
 
-  window.eventBus = $({});
-  window.model = new BackgroundModel(eventBus);
-  window.controller = new BackgroundController(eventBus, model);
-  window.ajaxer = new AjaxerController(eventBus, model, {
+  window.eventBus = new BackgroundEventBus();
+  window.ajaxer = new Ajaxer({
     'url': 'http://video.asksonar.com/'
-    // 'url': 'http://localhost:5000/'
+    // 'url': 'http://dockerhost:5000/'
   });
 
-  window.video = new VideoController(eventBus, model, {
-    'canvas': document.getElementById('canvas'),
-    'video': document.getElementById('video'),
+  window.model = new BackgroundModel(eventBus, ajaxer);
+  window.recorder = new RecorderController(eventBus, ajaxer, model, {
+    'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10
   });
-  window.audio = new AudioController(eventBus, model);
+
+  window.testLaunch = function() {
+    var testData = {
+      "YXjbMRzg":{
+        "hashid":"2mP50myq",
+        "description":"This a test of urls",
+        "steps":[
+          {
+            "hashid":"8jjenddw",
+            "description":"Bacon ipsum dolor amet pig consectetur irure ham, prosciutto tenderloin deserunt dolor. Elit strip steak pancetta, rump commodo andouille excepteur ut fugiat pork flank tongue tri-tip. Pork ipsum ut, cupim brisket turkey pork loin t-bone et cow ground round ribeye. Aliqua eiusmod enim doner brisket frankfurter eu kielbasa pork loin sunt officia bacon. Leberkas ball tip flank cupidatat pork chop meatloaf. Shankle enim laborum pariatur brisket irure.",
+            "url":"www.yourwebsite.com"
+          },
+          {
+            "hashid":"V3gW0ood",
+            "description":"Has http",
+            "url":"http://www.test.com/"
+          },
+          {
+            "hashid":"8D0ewPP2",
+            "description":"has https",
+            "url":"https://reddit.com"
+          },
+          {
+            "hashid":"V57O4oo5",
+            "description":"Has no site",
+            "url":""
+          }
+        ]
+      }
+    }
+
+    launchApp(testData);
+  }
 
 });

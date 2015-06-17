@@ -1,6 +1,6 @@
 {
   "name": "Sonar Desktop Capture App",
-  "version": "1.6",
+  "version": "1.7",
   "manifest_version": 2,
   "icons": {
     "128": "images/sonar_icon.png"
@@ -15,9 +15,29 @@
     "audioCapture",
     "unlimitedStorage",
     "alwaysOnTopWindows",
-    "storage"
+    "storage",
+    "*://*.asksonar.com/*",
+    "*://localhost/*",
+    "*://dockerhost/*"
   ],
   "externally_connectable": {
-    "matches": ["*://*.asksonar.com/*", "*://localhost/*"]
-  }
+    "matches": ["*://*.asksonar.com/*", "*://localhost/*", "*://dockerhost/*"]
+  },
+  "platforms": [
+    {
+      "nacl_arch": "arm",
+      "sub_package_path": "_platform_specific/arm/"
+    },
+    {
+      "nacl_arch": "x86-32",
+      "sub_package_path": "_platform_specific/x86-32/"
+    },
+    {
+      "nacl_arch": "x86-64",
+      "sub_package_path": "_platform_specific/x86-64/"
+    },
+    {
+      "sub_package_path": "_platform_specific/all/"
+    }
+  ]
 }

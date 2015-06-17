@@ -7,35 +7,60 @@
   position: absolute;
 }
 
+.titlebar-center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px; /* large enough to fit most items */
+  text-align: center; /* then center children within that 100px space */
+}
+
 .titlebar-icon {
-  float: left;
   height: 24px;
   margin-top: 4px;
-  margin-left: 5px;
 }
 
 .titlebar-recording {
-  width: 125px;
   height: 24px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 4px;
+  margin: 4px;
+  padding: 0px 10px;
   text-align: center;
 }
 
-.titlebar-recording-icon {
-  display: inline-block;
-  border-radius: 4px;
-  height: 8px;
-  width: 8px;
-  background-color: #FFF;
-}
-
 .titlebar-recording-text {
-  display: inline-block;
+  float: left;
   color: #FFF;
   line-height: 24px;
   font-size: 14px;
+}
+
+.titlebar-recording-icon {
+  float: left;
+  margin-left: 5px;
+}
+
+.titlebar-recording-icon i {
+  color: #FFF;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.titlebar-recording-level {
+  float: left;
+  margin-left: 5px;
+  margin-top: 2px;
+  transform: rotate(180deg); /* so we can jQuery select in natural order */
+}
+
+.titlebar-recording-level div {
+  background-color: #999;
+  width: 10px;
+  height: 3px;
+  border-radius: 3px;
+  margin: 1px;
+}
+
+.titlebar-recording-level .on {
+  background-color: #FFF;
 }
 
 .titlebar-recording.on {
@@ -56,7 +81,8 @@
 
 .titlebar-buttons {
   -webkit-app-region: no-drag;
-  margin-right: 5px;
+  margin: 0px 4px;
+  width: 44px;
 }
 
 .titlebar-buttons div {
@@ -70,6 +96,9 @@
 
 .content {
   margin-top: 32px;
+}
+
+.content > div {
   padding: 10px 10px 10px 10px;
 }
 
@@ -103,6 +132,17 @@
   margin-bottom: 10px;
 }
 
+#div-start ul {
+  margin-top: -10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+#div-start li i {
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
 #div-start .btn-delighted,
 #div-start .btn-confused {
   width: 18px;
@@ -126,10 +166,29 @@
   display: block;
 }
 
-#div-url {
-  width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.ctn-mic-check {
+  margin-top: 20px;
+}
+
+.mic-check {
+  margin-right: 10px;
+}
+
+.mic-check i {
+  color: #05647C;
+  font-size: 18px;
+}
+
+.mic-check div {
+  background-color: #999;
+  height: 15px;
+  width: 6px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.mic-check .on {
+  background-color: #05647C;
 }
 
 .ctn-already-started {
@@ -143,9 +202,51 @@
   line-height: 30px;
 }
 
-.div-buttons a {
-  margin-left: 10px;
-  float: left;
+#div-step {
+  position: relative;
+  min-height: 60px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 80px;
+}
+
+#div-step .btn-delighted {
+  position: absolute;
+  top: 0px;
+  right: 40px;
+  height: 30px;
+  width: 30px;
+  margin: 3px;
+}
+
+#div-step .btn-confused {
+  position: absolute;
+  top: 33px;
+  right: 40px;
+  height: 30px;
+  width: 30px;
+  margin: 3px;
+}
+
+#div-step .btn-next {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  padding: 0px 0px 0px 0px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#div-step-of-text {
+  display: inline;
+}
+
+#div-description {
+  display: inline;
 }
 
 #div-finish p {
