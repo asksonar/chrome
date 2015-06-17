@@ -61,6 +61,7 @@ $(function(){
   });
 
   window.model = new BackgroundModel(eventBus, ajaxer);
+  window.controller = new BackgroundController(eventBus, ajaxer, model);
   window.recorder = new RecorderController(eventBus, ajaxer, model, {
     'encoderUrl': '/manifest_encoder.nmf',
     'fps': 10
