@@ -48,7 +48,8 @@ Ajaxer.prototype.notifyAbort = function(scenarioResultHashId) {
 }
 
 Ajaxer.prototype.notifyStep = function(resultStep) {
-  this.send('data.step', resultStep)
+  console.log(resultStep);
+  this.send('data.step', resultStep);
 }
 
 Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, steps, file) {

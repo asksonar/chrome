@@ -1,7 +1,11 @@
-function BackgroundController(eventBus, ajaxer, model) {
+function BackgroundController(eventBus, ajaxer, model, config) {
   this.eventBus = eventBus;
   this.ajaxer = ajaxer;
   this.model = model;
+
+  this.margin = config.margin;
+  this.width = config.width;
+  this.height = config.height;
 
   this.init();
   this.initHandlers();
@@ -18,6 +22,90 @@ BackgroundController.prototype.initHandlers = function() {
   this.eventBus.on('abort', this.onAborted, this);
   this.eventBus.on('delighted', this.onDelighted, this);
   this.eventBus.on('confused', this.onConfused, this);
+
+  chrome.runtime.onMessageExternal.addListener($.proxy(this.onMessaged, this));
+  chrome.app.runtime.onLaunched.addListener($.proxy(this.onLaunched, this));
+}
+
+BackgroundController.prototype.onMessaged = function(request, sender, sendResponse) {
+  if (request === 'isInstalledApp?') {
+    sendResponse(true);
+  } else if (request.launchApp) {
+    if (chrome.app.window.get("sonarDesktopCapture")) {
+      sendResponse('A study is already in progress.');
+    } else {
+      launchApp(request.launchApp);
+      sendResponse(true);
+    }
+  }
+}
+
+BackgroundController.prototype.onLaunched = function(scenario) {
+  if (scenario && scenario.source) {
+    // checking for Object {isKioskSession: false, source: "reload"}
+    // or Object {isKioskSession: false, source: "extensions_page"}
+    return;
+  }
+
+  currentWindow = chrome.app.window.create('popup.html', {
+    id: "sonarDesktopCapture",
+    frame: 'none',
+    focused: true,
+    alwaysOnTop: true,
+    state: 'normal',
+    hidden: true,
+    outerBounds: {
+      width: this.width,
+      height: this.height,
+      top: 0,
+      left: (screen.width - this.width - this.margin)
+    }
+  }, $.proxy(this.onCreatedWindow, this, scenario));
+}
+
+BackgroundController.prototype.onCreatedWindow = function(scenario, createdWindow) {
+  createdWindow.outerBounds.width = this.width;
+  createdWindow.outerBounds.height = this.height;
+  createdWindow.outerBounds.top = 0;
+  createdWindow.outerBounds.left = screen.width - this.width - this.margin;
+  createdWindow.show();
+
+  this.eventBus.trigger('scenarioLoad', {
+    'scenario': scenario
+  });
+}
+
+BackgroundController.prototype.testLaunch = function() {
+  var testData = {
+    "YXjbMRzg":{
+      "hashid":"2mP50myq",
+      "description":"This a test of urls",
+      "steps":[
+        {
+          "hashid":"8jjenddw",
+          "description":"Bacon ipsum dolor amet pig consectetur irure ham, prosciutto tenderloin deserunt dolor. Elit strip steak pancetta, rump commodo andouille excepteur ut fugiat pork flank tongue tri-tip. Pork ipsum ut, cupim brisket turkey pork loin t-bone et cow ground round ribeye. Aliqua eiusmod enim doner brisket frankfurter eu kielbasa pork loin sunt officia bacon. Leberkas ball tip flank cupidatat pork chop meatloaf. Shankle enim laborum pariatur brisket irure.",
+          "url":"www.yourwebsite.com"
+        },
+        {
+          "hashid":"V3gW0ood",
+          "description":"Has http",
+          "url":"http://www.test.com/"
+        },
+        {
+          "hashid":"8D0ewPP2",
+          "description":"has https",
+          "url":"https://reddit.com"
+        },
+        {
+          "hashid":"V57O4oo5",
+          "description":"Has no site",
+          "url":""
+        }
+      ]
+    }
+  }
+
+  this.onLaunched(testData);
 }
 
 BackgroundController.prototype.onStarted = function(event, eventData) {
