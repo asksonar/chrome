@@ -10,15 +10,17 @@ ResultStep.prototype.init = function() {
   this.feelings = [];
 }
 
-ResultStep.prototype.start = function() {
+ResultStep.prototype.start = function(studyStart) {
   this.start = Date.now();
+  this.offset = this.start - studyStart;
+
   this.speechRecognition = new SpeechRecognition(this.start);
   this.speechRecognition.start();
 }
 
 ResultStep.prototype.finish = function() {
   this.finish = Date.now();
-  this.length = Date.now() - this.start;
+  this.length = this.finish - this.start;
 
   this.speechRecognition.stop($.proxy(function() {
     this.ajaxer.notifyStep(this);

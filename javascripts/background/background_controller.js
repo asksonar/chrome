@@ -110,6 +110,7 @@ BackgroundController.prototype.testLaunch = function() {
 }
 
 BackgroundController.prototype.onStarted = function(event, eventData) {
+  this.model.startStudy();
   this.model.newResultStep(eventData.scenarioResultHashId, eventData.scenarioStepHashId);
 
   this.ajaxer.notifyStart(eventData.scenarioResultHashId);
