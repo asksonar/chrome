@@ -12,7 +12,6 @@ function BackgroundController(eventBus, ajaxer, model, config) {
 }
 
 BackgroundController.prototype.init = function() {
-  this.resultSteps = [];
 }
 
 BackgroundController.prototype.initHandlers = function() {
@@ -46,6 +45,8 @@ BackgroundController.prototype.onLaunched = function(scenario) {
     // or Object {isKioskSession: false, source: "extensions_page"}
     return;
   }
+
+  this.model.init();
 
   currentWindow = chrome.app.window.create('popup.html', {
     id: "sonarDesktopCapture",
