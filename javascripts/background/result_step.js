@@ -1,18 +1,18 @@
-function ResultStep(ajaxer, scenarioResultHashId, resultStepHashId) {
+function ResultStep(ajaxer, scenarioResultHashId, scenarioStepHashId) {
   this.ajaxer = ajaxer;
   this.scenarioResultHashId = scenarioResultHashId;
-  this.resultStepHashId = resultStepHashId;
+  this.scenarioStepHashId = scenarioStepHashId;
 
   this.init();
 }
 
 ResultStep.prototype.init = function() {
   this.feelings = [];
-  this.speechRecognition = new SpeechRecognition();
 }
 
 ResultStep.prototype.start = function() {
   this.start = Date.now();
+  this.speechRecognition = new SpeechRecognition(this.start);
   this.speechRecognition.start();
 }
 

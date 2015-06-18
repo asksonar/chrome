@@ -111,8 +111,11 @@ PopupView.prototype.start = function() {
   this.$divStart.hide();
   this.$divStart.addClass('started');
 
+  this.model.firstStep();
+
   this.eventBus.trigger('start', {
-    'scenarioResultHashId': this.model.getScenarioResultHashId()
+    'scenarioResultHashId': this.model.getScenarioResultHashId(),
+    'scenarioStepHashId': this.model.getScenarioStepHashId()
   });
 
   this.$divStep.show();
@@ -137,12 +140,12 @@ PopupView.prototype.next = function() {
     this.resizeWindowToFit();
     chrome.app.window.current().setAlwaysOnTop(false);
   } else {
+    this.model.nextStep();
+
     this.eventBus.trigger('next', {
       'scenarioResultHashId': this.model.getScenarioResultHashId(),
-      'resultStepHashId': this.model.getResultStepHashId()
+      'scenarioStepHashId': this.model.getScenarioStepHashId()
     });
-
-    this.model.nextStep();
 
     this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
     this.$divDescription.html(this.model.getCurrentDescription());
@@ -198,6 +201,10 @@ PopupView.prototype.onRecordingStopped = function() {
 PopupView.prototype.onRecordingFailure = function() {
   this.$divRecording.removeClass('on').addClass('off');
   this.stopMicrophoneResponse();
+
+  if (this.model.currentIndex >= 0) {
+    this.abort();
+  }
 }
 
 PopupView.prototype.startMicrophoneResponse = function($targets) {

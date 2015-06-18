@@ -17,8 +17,8 @@ BackgroundModel.prototype.getResultSteps = function() {
   return this.resultSteps;
 }
 
-BackgroundModel.prototype.newResultStep = function(scenarioResultHashId, resultStepHashId) {
-  var resultStep = new ResultStep(this.ajaxer, scenarioResultHashId, resultStepHashId);
+BackgroundModel.prototype.newResultStep = function(scenarioResultHashId, scenarioStepHashId) {
+  var resultStep = new ResultStep(this.ajaxer, scenarioResultHashId, scenarioStepHashId);
   resultStep.start();
   this.resultSteps.push(resultStep);
 }

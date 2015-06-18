@@ -34,7 +34,7 @@ BackgroundController.prototype.onMessaged = function(request, sender, sendRespon
     if (chrome.app.window.get("sonarDesktopCapture")) {
       sendResponse('A study is already in progress.');
     } else {
-      launchApp(request.launchApp);
+      this.onLaunched(request.launchApp);
       sendResponse(true);
     }
   }
@@ -109,14 +109,14 @@ BackgroundController.prototype.testLaunch = function() {
 }
 
 BackgroundController.prototype.onStarted = function(event, eventData) {
-  this.model.newResultStep(eventData.scenarioResultHashId, eventData.resultStepHashId);
+  this.model.newResultStep(eventData.scenarioResultHashId, eventData.scenarioStepHashId);
 
   this.ajaxer.notifyStart(eventData.scenarioResultHashId);
 }
 
 BackgroundController.prototype.onNexted = function(event, eventData) {
   this.model.finishResultStep();
-  this.model.newResultStep();
+  this.model.newResultStep(eventData.scenarioResultHashId, eventData.scenarioStepHashId);
 }
 
 BackgroundController.prototype.onFinished = function(event, eventData) {
@@ -125,8 +125,11 @@ BackgroundController.prototype.onFinished = function(event, eventData) {
   this.ajaxer.notifyFinish(eventData.scenarioResultHashId);
 }
 
-BackgroundController.prototype.onAborted = function() {
-  this.model.finishResultStep();
+BackgroundController.prototype.onAborted = function(event, eventData) {
+  if (!this.model.getCurrentResultStep()) {
+    // study was never even started
+    return;
+  }
 
   this.ajaxer.notifyAbort(eventData.scenarioResultHashId);
 }

@@ -1,4 +1,5 @@
-function SpeechRecognition() {
+function SpeechRecognition(startTime) {
+  this.startTime = startTime;
   this.init();
 }
 
@@ -8,11 +9,10 @@ SpeechRecognition.prototype.init = function() {
 
 SpeechRecognition.prototype.start = function() {
   //console.log(Date.now() + ": Starting new speech" );
-  this.startTime = Date.now();
-
   this.recognition = new webkitSpeechRecognition();
   this.recognition.continuous = false;
   this.recognition.interimResults = false;
+  this.recognition.onspeechstart = $.proxy(this.onspeechstart, this);
   this.recognition.onresult = $.proxy(this.onresult, this);
   this.recognition.onend = $.proxy(this.onend, this);
   this.recognition.start();
@@ -34,17 +34,23 @@ SpeechRecognition.prototype.debug = function() {
   return speech;
 }
 
+SpeechRecognition.prototype.onspeechstart = function() {
+  this.offset = Date.now() - this.startTime;
+}
+
 SpeechRecognition.prototype.onresult = function() {
-  var results = "";
+  var results = [];
+  var result;
   for (var i = event.resultIndex; i < event.results.length; ++i) {
-    results += event.results[i][0].transcript + '\n';
+    result = event.results[i][0].transcript;
+    results.push(result);
     console.log(Date.now() + ': ' + event.results[i][0].transcript + ' (' + event.results[i][0].confidence + ')');
   }
 
   //console.log(Date.now() + ': ' + results);
   this.results.push({
-    'offset': Date.now() - this.startTime,
-    'text': results
+    'offset': this.offset,
+    'text': results.join(', ')
   });
 }
 

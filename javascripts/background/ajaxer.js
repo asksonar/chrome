@@ -24,8 +24,10 @@ Ajaxer.prototype.send = function(command, params, blob) {
     type: 'POST'
   }).done(function(){
     console.log('Delivered message: ' + command);
+    console.log(params);
   }).fail(function(){
     console.log('Failed message: ' + command);
+    console.log(params);
   })
 }
 
@@ -48,8 +50,9 @@ Ajaxer.prototype.notifyAbort = function(scenarioResultHashId) {
 }
 
 Ajaxer.prototype.notifyStep = function(resultStep) {
-  console.log(resultStep);
-  this.send('data.step', resultStep);
+  this.send('data.step', {
+    'step': resultStep
+  });
 }
 
 Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, steps, file) {
