@@ -13,6 +13,7 @@ function MicrophoneView(eventBus, config) {
 MicrophoneView.prototype.init = function() {
   this.mostRecentLoudNoise = null;
   this.mostRecentQuietNoise = null;
+  this.mostRecentNoise = null;
 
   this.audioVisualization = new AudioVisualization(-60, -25);
   this.audioVisualization.start();
@@ -32,18 +33,23 @@ MicrophoneView.prototype.startMicCheck = function() {
   this.micCheckLoop = setInterval($.proxy(function() {
     var micCheckAge = Date.now() - this.micCheckStartTime;
 
-    if (!this.mostRecentLoudNoise && micCheckAge > 5000) {
+    if (!this.mostRecentNoise && micCheckAge > 5000) {
       this.$micCheckText.html("Sorry, we can't quite hear you.  Is your mic on?");
       this.$micCheck.addClass('color-confused').removeClass('color-delighted');
       this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
 
-    } else if (!this.mostRecentLoudNoise) {
-      this.$micCheckText.html("Testing, testing, 1 2 3.  Try talking into the mic.");
+    } else if (!this.mostRecentLoudNoise && micCheckAge > 5000) {
+      this.$micCheckText.html("Sorry, we can't quite hear you.  Could you speak up a bit?");
+      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
+      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
 
     } else if ((Date.now() - this.mostRecentQuietNoise) > 2000 && micCheckAge > 2000) {
       this.$micCheckText.html("We suggest moving somewhere with less background noise.");
       this.$micCheck.addClass('color-confused').removeClass('color-delighted');
       this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
+
+    } else if (!this.mostRecentLoudNoise) {
+      this.$micCheckText.html("Testing, testing, 1 2 3.  Try talking into the mic.");
 
     } else {
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
@@ -81,6 +87,10 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
       this.mostRecentQuietNoise = Date.now();
     } else if (amplitudePercent > .70) {
       this.mostRecentLoudNoise = Date.now();
+    }
+
+    if (amplitudePercent > 0) {
+      this.mostRecentNoise = Date.now();
     }
 
     var amplitudeScaled = Math.round(amplitudePercent * $targets.length);
