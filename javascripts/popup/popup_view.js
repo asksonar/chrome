@@ -24,6 +24,9 @@ function PopupView(eventBus, model, config) {
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
 
+  this.$ctnBtnDelighted = config.ctnBtnDelighted;
+  this.$ctnBtnConfused = config.ctnBtnConfused;
+
   this.centerWidth = config.centerWidth;
   this.centerHeight = config.centerHeight;
   this.centerMinWidth = config.centerMinWidth;

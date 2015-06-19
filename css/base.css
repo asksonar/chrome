@@ -57,10 +57,37 @@ a[href]:hover {
 .btn {
   cursor: pointer;
   opacity: .9;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0px 3px 0px 0px;
+  /* box-shadow inherits color attribute from element */
 }
 
 .btn:hover {
   opacity: 1;
+  box-shadow: 0px 3px 2px 0px;
+}
+
+.btn:active {
+  top: 2px;
+  box-shadow: 0px 1px 0px 0px;
+}
+
+.btn-text {
+  cursor: pointer;
+  opacity: .9;
+  position: relative;
+  text-shadow: 0px 2px 0px #767676;
+}
+
+.btn-text:hover {
+  opacity: 1;
+  text-shadow: 0px 2px 2px #767676;
+}
+
+.btn-text:active {
+  top: 1px;
+  text-shadow: 0px 1px 0px #767676;
 }
 
 .pull-right {

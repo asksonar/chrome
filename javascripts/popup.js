@@ -30,6 +30,9 @@ $(function(){
     'btnDelighted':   $('#btn-delighted'),
     'btnConfused':    $('#btn-confused'),
 
+    'ctnBtnDelighted': $('.ctn-btn-delighted'),
+    'ctnBtnConfused':  $('.ctn-btn-confused'),
+
     'centerWidth':    500,
     'centerHeight':   325,
     'centerMinWidth': 410,
