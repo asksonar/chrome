@@ -79,7 +79,7 @@ PopupView.prototype.on = function(eventType, element, clickHandler) {
 }
 
 PopupView.prototype.showTooltips = function(event) {
-  var thisEl = $(event.currentTarget);
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
 
   // don't interrupt previous clickTooltips
   if (thisEl.find('.tooltip-click').queue().length) {
@@ -93,7 +93,7 @@ PopupView.prototype.showTooltips = function(event) {
 }
 
 PopupView.prototype.hideTooltips = function(event) {
-  var thisEl = $(event.currentTarget);
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
 
   // don't interrupt previous clickTooltips
   if (thisEl.find('.tooltip-click').queue().length) {
@@ -107,7 +107,7 @@ PopupView.prototype.hideTooltips = function(event) {
 }
 
 PopupView.prototype.clickTooltips = function(event) {
-  var thisEl = $(event.currentTarget);
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
 
   // don't interrupt previous clickTooltips
   if (thisEl.find('.tooltip-click').queue().length) {
