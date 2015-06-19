@@ -44,7 +44,7 @@
     </section>
 
     <section class='content clearfix'>
-      <div id='div-instructions'>
+      <section id='div-instructions'>
         <h1>Some tips for giving good feedback:</h1>
 
         <ul class='ctn-tips'>
@@ -77,32 +77,46 @@
           <a id='btn-start' class='btn btn-blue pull-right'><span>Next</span></a>
           <p id='div-mic-check-text'></p>
         </div>
-      </div>
+      </section>
 
-      <div id='div-select-screen'>
+      <section id='div-select-screen'>
         <h1>Click Share to begin giving feedback by recording your screen and voice.</h1>
         <canvas id='arrow'></canvas>
-      </div>
+      </section>
 
-      <div id='div-start'>
+      <section id='div-start'>
         <h1 class='pull-right ctn-now-recording'>Now recording your screen and voice</h1>
-        <div class='ctn-btn-delighted'>
+        <div class='ctn-btn-delighted ctn-tooltip'>
           <a id='btn-demo-delighted' class='btn btn-delighted'></a>
-          <div class='tooltip'>
-            <div class='tooltip-arrow'></div>Click me any time you like anything.
+          <div class='tooltip tooltip-base'>
+            <div class='tooltip-arrow'></div>Click me any time you like anything.</span>
+          </div>
+          <div class='tooltip tooltip-hover'>
+            <div class='tooltip-arrow'></div>Hello there!</span>
+          </div>
+          <div class='tooltip tooltip-click'>
+            <div class='tooltip-arrow'></div>That hit the spot.</span>
           </div>
         </div>
-        <div class='ctn-btn-confused'>
+        <div class='ctn-btn-confused ctn-tooltip'>
           <a id='btn-demo-confused' class='btn btn-confused'></a>
-          <div class='tooltip'>
+          <div class='tooltip tooltip-base'>
             <div class='tooltip-arrow'></div>Click me if you're grumpy.
+          </div>
+          <div class='tooltip tooltip-hover'>
+            <div class='tooltip-arrow'></div>What do you want?</span>
+          </div>
+          <div class='tooltip tooltip-click'>
+            <div class='tooltip-arrow'></div>Fine, see if I care.</span>
           </div>
         </div>
 
         <a id='btn-first-step' class='btn btn-blue pull-right'><span>Start!</span></a>
-      </div>
 
-      <div id='div-step'>
+        <div class='shadow'></div>
+      </section>
+
+      <section id='div-step'>
         <div class='div-buttons'>
           <a id='btn-delighted' class='btn btn-delighted'></a>
           <a id='btn-confused' class='btn btn-confused'></a>
@@ -113,12 +127,12 @@
         <p id='div-url'>
           <a id='ahref-Url' href='#' target='sonarStepWindow'></a>
         </p>
-      </div>
+      </section>
 
-      <div id='div-finish'>
+      <section id='div-finish'>
         <a id='btn-finish' class='btn btn-blue pull-right'><span>Finish</span></a>
         <p>Thanks for helping out with this study!</p>
-      </div>
+      </section>
 
     </section>
   </body>

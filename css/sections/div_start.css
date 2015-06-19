@@ -2,6 +2,7 @@
   padding: 5px;
   background-color: #767676;
   height: 100%;
+  z-index: 0; /* sets a new context for its children */
 }
 
 .tooltip {
@@ -32,7 +33,12 @@
   margin-top: -5px;
 }
 
+.ctn-btn-delighted {
+  position: relative;
+}
+
 .ctn-btn-confused {
+  position: relative;
   margin-top: 10px;
 }
 
@@ -44,4 +50,32 @@
 
 #btn-first-step {
   margin-top: -30px;
+}
+
+.shadow-hover {
+  z-index: 200;
+}
+
+.shadow {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000;
+  opacity: .25;
+  left: 0;
+  top: 32px;
+  z-index: 100;
+  display: none;
+}
+
+.shadow-dark {
+  opacity: .5;
+}
+
+.tooltip-hover {
+  opacity: 0;
+}
+
+.tooltip-click {
+  opacity: 0;
 }

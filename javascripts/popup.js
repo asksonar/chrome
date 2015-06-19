@@ -30,8 +30,7 @@ $(function(){
     'btnDelighted':   $('#btn-delighted'),
     'btnConfused':    $('#btn-confused'),
 
-    'ctnBtnDelighted': $('.ctn-btn-delighted'),
-    'ctnBtnConfused':  $('.ctn-btn-confused'),
+    'ctnTooltips':    $('.ctn-tooltip'),
 
     'centerWidth':    500,
     'centerHeight':   325,

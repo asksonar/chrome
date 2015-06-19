@@ -24,8 +24,7 @@ function PopupView(eventBus, model, config) {
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
 
-  this.$ctnBtnDelighted = config.ctnBtnDelighted;
-  this.$ctnBtnConfused = config.ctnBtnConfused;
+  this.$ctnTooltips = config.ctnTooltips;
 
   this.centerWidth = config.centerWidth;
   this.centerHeight = config.centerHeight;
@@ -66,6 +65,10 @@ PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnConfused, this.confused);
   this.on('click', this.$btnFinish, this.finish);
 
+  this.on('mouseenter', this.$ctnTooltips, this.showTooltips);
+  this.on('mouseleave', this.$ctnTooltips, this.hideTooltips);
+  this.on('click', this.$ctnTooltips, this.clickTooltips);
+
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
@@ -73,6 +76,60 @@ PopupView.prototype.initHandlers = function() {
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
+}
+
+PopupView.prototype.showTooltips = function(event) {
+  var thisEl = $(event.currentTarget);
+
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
+  }
+
+  thisEl.addClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-hover').css({opacity:1});
+  thisEl.closest('section').find('.shadow').show();
+}
+
+PopupView.prototype.hideTooltips = function(event) {
+  var thisEl = $(event.currentTarget);
+
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
+  }
+
+  thisEl.removeClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-base').css({opacity:1});
+  thisEl.closest('section').find('.shadow').hide();
+}
+
+PopupView.prototype.clickTooltips = function(event) {
+  var thisEl = $(event.currentTarget);
+
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
+  }
+
+  thisEl.addClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-click')
+    .css({opacity:1})
+    .delay(500)
+    .animate({opacity:0}, function(){
+      thisEl.find('.tooltip-base').css('opacity', 1);
+    });
+  thisEl.closest('section').find('.shadow')
+    .addClass('shadow-dark')
+    .show()
+    .delay(500)
+    .fadeOut(function() {
+      $(this).removeClass('shadow-dark');
+      thisEl.removeClass('shadow-hover');
+    });
 }
 
 PopupView.prototype.showCenterWindow = function() {
