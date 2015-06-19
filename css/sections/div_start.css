@@ -1,0 +1,47 @@
+#div-start {
+  padding: 5px;
+  background-color: #767676;
+  height: 100%;
+}
+
+.tooltip {
+  background-color: #fff;
+
+  position: relative;
+  display: inline-block;
+  position: absolute;
+  margin-left: 6px;
+  width: 159px;
+  padding: 5px;
+  line-height: 16px;
+  font-size: 16px;
+  box-shadow: 2px 2px 2px 0px rgba(0,0,0,.8)
+}
+
+.tooltip-arrow {
+  height: 0px;
+  width: 0px;
+  border-color: transparent;
+  border-style: solid;
+  border-right-color: #fff;
+  border-width: 5px 5px 5px 0px;
+
+  position: absolute;
+  margin-left: -10px;
+  top: 50%;
+  margin-top: -5px;
+}
+
+.ctn-btn-confused {
+  margin-top: 10px;
+}
+
+.ctn-now-recording {
+  color: #fff;
+  margin: 5px;
+  width: 150px;
+}
+
+#btn-first-step {
+  margin-top: -30px;
+}

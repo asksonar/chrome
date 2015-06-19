@@ -1,0 +1,46 @@
+#div-step {
+  position: relative;
+  min-height: 60px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 80px;
+}
+
+#btn-delighted {
+  position: absolute;
+  top: 0px;
+  right: 40px;
+  height: 30px;
+  width: 30px;
+  margin: 3px;
+}
+
+#btn-confused {
+  position: absolute;
+  top: 33px;
+  right: 40px;
+  height: 30px;
+  width: 30px;
+  margin: 3px;
+}
+
+#btn-next {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  padding: 0px 0px 0px 0px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#div-step-of-text {
+  display: inline;
+}
+
+#div-description {
+  display: inline;
+}

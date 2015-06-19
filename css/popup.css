@@ -98,37 +98,28 @@
   margin-top: 32px;
 }
 
-#div-start {
-  padding: 20px;
-}
-
-#div-step {
-  padding: 10px;
-}
-
-#div-finish {
-  padding: 20px;
-}
-
 .btn-delighted,
 .btn-confused {
   display: inline-block;
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
 }
 
 .btn-delighted {
   content: url('/images/face_delight.svg');
   background: #1CC67D;
   display: inline-block;
+  box-shadow: 0px 3px 0px 0px #16AE48;
 }
 
 .btn-confused {
   content: url('/images/face_bummer.svg');
   background: #F57340;
+  box-shadow: 0px 3px 0px 0px #AE3F1B;
 }
 
-.btn-start, .btn-next, .btn-finish {
+.btn-blue {
   background-color: #05647C;
   color: #FFF;
   display: inline-block;
@@ -140,143 +131,11 @@
   font-size: 16px;
 }
 
-.btn-start:hover, .btn-next:hover, .btn-finish:hover {
+.btn-blue:hover {
   box-shadow: 0px 3px 2px 0px #013E4C;
 }
 
-.btn-start:active, .btn-next:active, .btn-finish:active {
+.btn-blue:active {
   top: 2px;
   box-shadow: 0px 1px 0px 0px #013E4C;
-}
-
-.ctn-tips {
-  padding: 10px;
-  border: 2px solid #999;;
-  margin: 15px;
-  list-style: none;
-}
-
-.ctn-tips li i {
-  margin-left: 5px;
-  margin-right: 10px;
-}
-
-.ctn-mic-check {
-  margin-top: 30px;
-}
-
-.ctn-mic-check i {
-  color: #05647C;
-  font-size: 18px;
-  margin-top: -10px;
-}
-
-.mic-check {
-  margin-left: 5px;
-  width: 90%;
-}
-
-.mic-check div {
-  background-color: #D8D8D8;
-  height: 5px;
-  width: 1%;
-  float: left;
-}
-
-.mic-check .on {
-  /*background-color: #1CA5C9;*/
-  background-color: #1CC67D;
-}
-
-.mic-check.color-confused .on {
-  background-color: #F57340;
-}
-
-.mic-check-low, .mic-check-high {
-  font-size: 12px;
-  margin-top: -27px;
-  float: left;
-}
-
-.mic-check-low {
-  margin-left: 10%;
-}
-
-.mic-check-high {
-  margin-left: 50%;
-}
-
-.mic-check-marker {
-  margin-left: 50%;
-  height: 10px;
-  width: 3px;
-  background-color: #05647C; /* default green */
-}
-
-.ctn-get-started {
-  margin-top: 20px;
-}
-
-#div-mic-check-text {
-  line-height: 30px; /* to center vertically with button */
-  color: #05647C;
-}
-
-#div-mic-check-text.color-delighted {
-  color: #1CC67D;
-}
-
-#div-mic-check-text.color-confused {
-  color: #F57340;
-}
-
-#div-step {
-  position: relative;
-  min-height: 60px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 80px;
-}
-
-#div-step .btn-delighted {
-  position: absolute;
-  top: 0px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
-}
-
-#div-step .btn-confused {
-  position: absolute;
-  top: 33px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
-}
-
-#div-step .btn-next {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  height: 100%;
-  padding: 0px 0px 0px 0px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#div-step-of-text {
-  display: inline;
-}
-
-#div-description {
-  display: inline;
-}
-
-#div-finish p {
-  line-height: 30px;
 }

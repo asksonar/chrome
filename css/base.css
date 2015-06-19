@@ -1,6 +1,7 @@
 body, .body {
   font-family: BrandonGrotesque-Regular;
   font-size: 16px;
+  line-height: 17px;
   margin: 0px;
   padding: 0px;
 }
@@ -8,6 +9,7 @@ body, .body {
 h1, .h1 {
   font-family: BrandonGrotesque-Medium;
   font-size: 18px;
+  line-height: 19px;
   margin: 0px;
   font-weight: normal;
 }
@@ -15,6 +17,7 @@ h1, .h1 {
 h2, .h2 {
   font-family: BrandonGrotesque-Regular;
   font-size: 18px;
+  line-height: 19px;
   margin: 0px;
   font-weight: normal;
 }
@@ -22,6 +25,7 @@ h2, .h2 {
 h3, .h3 {
   font-family: BrandonGrotesque-Medium;
   font-size: 16px;
+  line-height: 17px;
   margin: 0px;
   font-weight: normal;
 }

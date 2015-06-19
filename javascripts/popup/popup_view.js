@@ -3,6 +3,8 @@ function PopupView(eventBus, model, config) {
   this.model = model;
 
   this.baseUrl = config.baseUrl;
+  this.$divInstructions = config.divInstructions;
+  this.$divSelectScreen = config.divSelectScreen;
   this.$divStart = config.divStart;
   this.$divStep = config.divStep;
   this.$divFinish = config.divFinish;
@@ -12,12 +14,13 @@ function PopupView(eventBus, model, config) {
   this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
   this.$content = config.content;
+  this.$btnAbort = config.btnAbort;
   this.$btnQuestion = config.btnQuestion;
   this.$btnMinimize = config.btnMinimize;
-  this.$btnAbort = config.btnAbort;
-  this.$btnFinish = config.btnFinish;
   this.$btnStart = config.btnStart;
+  this.$btnFirstStep = config.btnFirstStep;
   this.$btnNext = config.btnNext;
+  this.$btnFinish = config.btnFinish;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
 
@@ -37,7 +40,9 @@ function PopupView(eventBus, model, config) {
 }
 
 PopupView.prototype.init = function() {
-  this.$divStart.show();
+  this.$divInstructions.show();
+  this.$divSelectScreen.hide();
+  this.$divStart.hide();
   this.$divStep.hide();
   this.$divFinish.hide();
 
@@ -51,6 +56,8 @@ PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnAbort, this.abort);
 
   this.on('click', this.$btnStart, this.requestRecording);
+  this.on('click', this.$btnFirstStep, this.showFirstStep);
+
   this.on('click', this.$btnNext, this.next);
   this.on('click', this.$btnDelighted, this.delighted);
   this.on('click', this.$btnConfused, this.confused);
@@ -134,20 +141,31 @@ PopupView.prototype.abort = function() {
 PopupView.prototype.requestRecording = function() {
   // asks for recording and awaits recording success to actually start
   this.eventBus.trigger('requestRecording');
+
+  this.$divInstructions.hide();
   this.showCornerWindow();
+  this.$divSelectScreen.show();
+  this.resizeWindowToFit();
 }
 
 PopupView.prototype.start = function() {
-  this.$divStart.hide();
-  this.$divStart.addClass('started');
+  this.$divSelectScreen.hide();
+  this.$divStart.show();
+  this.resizeWindowToFit();
 
+  // we start recording and act as if the first step has already started
+  // even though the first step is not yet visualy on the screen
+  // until they click this.$btnFirstStep
   this.model.firstStep();
 
   this.eventBus.trigger('start', {
     'scenarioResultHashId': this.model.getScenarioResultHashId(),
     'scenarioStepHashId': this.model.getScenarioStepHashId()
   });
+}
 
+PopupView.prototype.showFirstStep = function() {
+  this.$divStart.hide();
   this.$divStep.show();
 
   this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');

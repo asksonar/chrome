@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" href="css/base.css"></link>
     <link rel="stylesheet" type="text/css" href="css/popup.css"></link>
     <link rel="stylesheet" type="text/css" href="css/brandon_grotesque.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_instructions.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_select_screen.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_start.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_step.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_finish.css"></link>
   </head>
   <body>
     <section class="titlebar">
@@ -39,7 +44,7 @@
     </section>
 
     <section class='content clearfix'>
-      <div id='div-start'>
+      <div id='div-instructions'>
         <h1>Some tips for giving good feedback:</h1>
 
         <ul class='ctn-tips'>
@@ -69,16 +74,33 @@
         </div>
 
         <div class='ctn-get-started'>
-          <a id='btn-start' class='btn btn-start pull-right'>Next</a>
+          <a id='btn-start' class='btn btn-blue pull-right'>Next</a>
           <p id='div-mic-check-text'></p>
         </div>
+      </div>
+
+      <div id='div-select-screen'>
+        <h1>Click Share to begin giving feedback by recording your screen and voice.</h1>
+        <canvas id='arrow'></canvas>
+      </div>
+
+      <div id='div-start'>
+        <h1 class='pull-right ctn-now-recording'>Now recording your screen and voice</h1>
+        <div class='ctn-btn-delighted'>
+          <a id='btn-demo-delighted' class='btn-delighted'></a><div class='tooltip'><div class='tooltip-arrow'></div>Click me any time you like anything.</div>
+        </div>
+        <div class='ctn-btn-confused'>
+          <a id='btn-demo-confused' class='btn-confused'></a><div class='tooltip'><div class='tooltip-arrow'></div>Click me if you're grumpy.</div>
+        </div>
+
+        <a id='btn-first-step' class='btn btn-blue pull-right'>Start!</a>
       </div>
 
       <div id='div-step'>
         <div class='div-buttons'>
           <a id='btn-delighted' class='btn btn-delighted'></a>
           <a id='btn-confused' class='btn btn-confused'></a>
-          <a id='btn-next' class='btn btn-next'>Next</a>
+          <a id='btn-next' class='btn btn-blue'>Next</a>
         </div>
         <h3 id='div-step-of-text'></h3>
         <p id='div-description'></p>
@@ -88,7 +110,7 @@
       </div>
 
       <div id='div-finish'>
-        <a id='btn-finish' class='btn btn-finish pull-right'>Finish</a>
+        <a id='btn-finish' class='btn btn-blue pull-right'>Finish</a>
         <p>Thanks for helping out with this study!</p>
       </div>
 
