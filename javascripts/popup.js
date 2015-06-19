@@ -23,8 +23,27 @@ $(function(){
     'btnNext':        $('#btn-next'),
     'btnDelighted':   $('#btn-delighted'),
     'btnConfused':    $('#btn-confused'),
-    'micCheckBars':   $('.mic-check div'),
-    'micLevelBars':   $('.titlebar-recording-level div'),
+
+    'centerWidth':    500,
+    'centerHeight':   325,
+    'centerMinWidth': 410,
+    'centerMinHeight': 325,
+
+    'cornerMargin':   10,
+    'cornerWidth':    400,
+    'cornerHeight':   300,
+    'cornerMinWidth': 250,
+    'cornerMinHeight': 150
   });
+
+  window.microphoneView = new MicrophoneView(eventBus, {
+    'micCheck':     $('.mic-check'),
+    'micCheckBars': $('.mic-check div'),
+    'micLevelBars': $('.titlebar-recording-level div'),
+    'micCheckText': $('#div-mic-check-text')
+
+  });
+
+  window.view.showCenterWindow();
 
 });

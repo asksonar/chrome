@@ -20,17 +20,23 @@ function PopupView(eventBus, model, config) {
   this.$btnNext = config.btnNext;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
-  this.$micCheckBars = config.micCheckBars;
-  this.$micLevelBars = config.micLevelBars;
+
+  this.centerWidth = config.centerWidth;
+  this.centerHeight = config.centerHeight;
+  this.centerMinWidth = config.centerMinWidth;
+  this.centerMinHeight = config.centerMinHeight;
+
+  this.cornerMargin = config.cornerMargin;
+  this.cornerWidth = config.cornerWidth;
+  this.cornerHeight = config.cornerHeight;
+  this.cornerMinWidth = config.cornerMinWidth;
+  this.cornerMinHeight = config.cornerMinHeight;
 
   this.init();
   this.initHandlers();
 }
 
 PopupView.prototype.init = function() {
-  this.audioVisualization = new AudioVisualization(-60, -20);
-  this.audioVisualization.start();
-
   this.$divStart.show();
   this.$divStep.hide();
   this.$divFinish.hide();
@@ -57,6 +63,29 @@ PopupView.prototype.initHandlers = function() {
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
+}
+
+PopupView.prototype.showCenterWindow = function() {
+  chrome.app.window.current().outerBounds.width = this.centerWidth;
+  chrome.app.window.current().outerBounds.height = this.centerHeight;
+  chrome.app.window.current().outerBounds.minWidth = this.centerMinWidth;
+  chrome.app.window.current().outerBounds.minHeight = this.centerMinHeight;
+  chrome.app.window.current().outerBounds.left = Math.round((screen.availWidth - this.centerWidth) / 2);
+  chrome.app.window.current().outerBounds.top = Math.round((screen.availHeight - this.centerHeight) / 2);
+  chrome.app.window.current().show();
+}
+
+PopupView.prototype.showCornerWindow = function() {
+  chrome.app.window.current().outerBounds.width = this.cornerWidth;
+  chrome.app.window.current().outerBounds.height = this.cornerHeight;
+  chrome.app.window.current().outerBounds.minWidth = this.cornerMinWidth;
+  chrome.app.window.current().outerBounds.minHeight = this.cornerMinHeight;
+  chrome.app.window.current().outerBounds.left = screen.availWidth - this.cornerWidth - this.cornerMargin;
+  chrome.app.window.current().outerBounds.top = 0;
+}
+
+PopupView.prototype.showFinishWindow = function() {
+  chrome.app.window.current().setAlwaysOnTop(false);
 }
 
 PopupView.prototype.resizeWindowToFit = function() {
@@ -105,6 +134,7 @@ PopupView.prototype.abort = function() {
 PopupView.prototype.requestRecording = function() {
   // asks for recording and awaits recording success to actually start
   this.eventBus.trigger('requestRecording');
+  this.showCornerWindow();
 }
 
 PopupView.prototype.start = function() {
@@ -138,7 +168,7 @@ PopupView.prototype.next = function() {
     this.$divStep.hide();
     this.$divFinish.fadeIn('slow');
     this.resizeWindowToFit();
-    chrome.app.window.current().setAlwaysOnTop(false);
+    this.showFinishWindow();
   } else {
     this.model.nextStep();
 
@@ -188,37 +218,19 @@ PopupView.prototype.populateUrl = function(url) {
 
 PopupView.prototype.onRecordingStarted = function() {
   this.start();
-
   this.$divRecording.removeClass('off').addClass('on');
-  this.startMicrophoneResponse(this.$micLevelBars);
 }
 
 PopupView.prototype.onRecordingStopped = function() {
   this.$divRecording.removeClass('on').addClass('off');
-  this.stopMicrophoneResponse();
 }
 
 PopupView.prototype.onRecordingFailure = function() {
   this.$divRecording.removeClass('on').addClass('off');
-  this.stopMicrophoneResponse();
 
   if (this.model.currentIndex >= 0) {
     this.abort();
   }
 }
 
-PopupView.prototype.startMicrophoneResponse = function($targets) {
-  this.stopMicrophoneResponse();
 
-  var responseFunction = function() {
-    var amplitudeFiveScale = Math.round(this.audioVisualization.getAmplitude() / 255.0 * 5.0);
-    //console.log(new Date().getSeconds() + '.' + new Date().getMilliseconds() + ':' + amplitudeFiveScale);
-    $targets.removeClass('on').slice(0, amplitudeFiveScale).addClass('on');
-  }
-
-  this.responseLoop = setInterval($.proxy(responseFunction, this), 100);
-}
-
-PopupView.prototype.stopMicrophoneResponse = function() {
-  clearInterval(this.responseLoop);
-}

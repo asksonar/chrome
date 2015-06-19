@@ -1,11 +1,7 @@
-function BackgroundController(eventBus, ajaxer, model, config) {
+function BackgroundController(eventBus, ajaxer, model) {
   this.eventBus = eventBus;
   this.ajaxer = ajaxer;
   this.model = model;
-
-  this.margin = config.margin;
-  this.width = config.width;
-  this.height = config.height;
 
   this.init();
   this.initHandlers();
@@ -54,23 +50,11 @@ BackgroundController.prototype.onLaunched = function(scenario) {
     focused: true,
     alwaysOnTop: true,
     state: 'normal',
-    hidden: true,
-    outerBounds: {
-      width: this.width,
-      height: this.height,
-      top: 0,
-      left: (screen.width - this.width - this.margin)
-    }
+    hidden: true
   }, $.proxy(this.onCreatedWindow, this, scenario));
 }
 
 BackgroundController.prototype.onCreatedWindow = function(scenario, createdWindow) {
-  createdWindow.outerBounds.width = this.width;
-  createdWindow.outerBounds.height = this.height;
-  createdWindow.outerBounds.top = 0;
-  createdWindow.outerBounds.left = screen.width - this.width - this.margin;
-  createdWindow.show();
-
   this.eventBus.trigger('scenarioLoad', {
     'scenario': scenario
   });
