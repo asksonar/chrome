@@ -17,7 +17,6 @@ function PopupView(eventBus, model, config) {
   this.$content = config.content;
   this.$btnAbort = config.btnAbort;
   this.$btnQuestion = config.btnQuestion;
-  this.$btnMinimize = config.btnMinimize;
   this.$btnStart = config.btnStart;
   this.$btnFirstStep = config.btnFirstStep;
   this.$btnNext = config.btnNext;
@@ -43,23 +42,14 @@ function PopupView(eventBus, model, config) {
 }
 
 PopupView.prototype.init = function() {
-  this.$divInstructions.show();
-  this.$divSelectScreen.hide();
-  this.$divStart.hide();
-  this.$divStep.hide();
-  this.$divFinish.hide();
-
-  this.minimizeHeight = this.$titleBar.height();
-  this.resizeWindowToFit();
 }
 
 PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnQuestion, this.openHelp);
-  this.on('click', this.$btnMinimize, this.toggleMinimize);
   this.on('click', this.$btnAbort, this.abort);
 
   this.on('click', this.$btnStart, this.requestRecording);
-  this.on('click', this.$btnFirstStep, this.showFirstStep);
+  this.on('click', this.$btnFirstStep, this.firstStep);
 
   this.on('click', this.$btnNext, this.next);
   this.on('click', this.$btnDelighted, this.delighted);
@@ -77,6 +67,68 @@ PopupView.prototype.initHandlers = function() {
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
+}
+
+PopupView.prototype.showInstructions = function() {
+  this.$divInstructions.show();
+  this.$divSelectScreen.hide();
+  this.$divStart.hide();
+  this.$divStep.hide();
+  this.$divFinish.hide();
+
+  chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    Math.round((screen.availWidth - this.centerWidth) / 2),
+    Math.round((screen.availHeight - this.centerHeight) / 2)
+  );
+  chrome.app.window.current().show();
+}
+
+PopupView.prototype.showSelectScreen = function() {
+  this.$divInstructions.hide();
+  this.showStaticCornerWindow();
+  this.$divSelectScreen.show();
+}
+
+PopupView.prototype.showStart = function() {
+  this.$divSelectScreen.hide();
+  this.showStaticCornerWindow();
+  this.$divStart.show();
+}
+
+PopupView.prototype.showStaticCornerWindow = function() {
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
+}
+
+PopupView.prototype.showStep = function() {
+  this.$divStart.hide();
+
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(null, null)
+  chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
+
+  this.$divStep.show();
+}
+
+PopupView.prototype.showFinish = function() {
+  chrome.app.window.current().setAlwaysOnTop(false);
+  this.$divStep.hide();
+  this.$divFinish.fadeIn('slow');
+}
+
+PopupView.prototype.openHelp = function() {
+  var scenarioHashId = this.model.getUserScenario().hashid;
+  window.open(this.baseUrl + 'studies/' + scenarioHashId + '/help');
 }
 
 PopupView.prototype.showTooltips = function(event) {
@@ -133,96 +185,15 @@ PopupView.prototype.clickTooltips = function(event) {
     });
 }
 
-PopupView.prototype.showCenterWindow = function() {
-  chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    Math.round((screen.availWidth - this.centerWidth) / 2),
-    Math.round((screen.availHeight - this.centerHeight) / 2)
-  );
-  chrome.app.window.current().show();
-}
-
-PopupView.prototype.showStaticCornerWindow = function() {
-  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    screen.availWidth - this.cornerWidth - this.cornerMargin,
-    0
-  );
-}
-
-PopupView.prototype.showResizableCornerWindow = function() {
-  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(null, null)
-  chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    screen.availWidth - this.cornerWidth - this.cornerMargin,
-    0
-  );
-}
-
-PopupView.prototype.showFinishWindow = function() {
-  chrome.app.window.current().setAlwaysOnTop(false);
-}
-
-PopupView.prototype.resizeWindowToFit = function() {
-  //chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
-}
-
-PopupView.prototype.openHelp = function() {
-  var scenarioHashId = this.model.getUserScenario().hashid;
-  window.open(this.baseUrl + 'studies/' + scenarioHashId + '/help');
-}
-
-PopupView.prototype.isMinimized = function() {
-  return this.$titleBar.hasClass('minimized');
-}
-
-PopupView.prototype.restore = function() {
-  this.$titleBar.removeClass('minimized');
-  chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
-}
-
-PopupView.prototype.minimize = function() {
-  this.$titleBar.addClass('minimized');
-  chrome.app.window.current().outerBounds.height = this.minimizeHeight;
-}
-
-PopupView.prototype.toggleMinimize = function() {
-  if (this.isMinimized()) {
-    this.restore();
-  } else {
-    this.minimize();
-  }
-  return false;
-}
-
-PopupView.prototype.finish = function() {
-  window.close();
-}
-
-PopupView.prototype.abort = function() {
-  this.eventBus.trigger('abort', {
-    'scenarioResultHashId': this.model.getScenarioResultHashId()
-  });
-  window.close();
-}
-
 PopupView.prototype.requestRecording = function() {
   // asks for recording and awaits recording success to actually start
   this.eventBus.trigger('requestRecording');
 
-  this.$divInstructions.hide();
-  this.showStaticCornerWindow();
-  this.$divSelectScreen.show();
-  this.resizeWindowToFit();
+  this.showSelectScreen();
 }
 
 PopupView.prototype.start = function() {
-  this.$divSelectScreen.hide();
-  this.$divStart.show();
-  this.resizeWindowToFit();
+  this.showStart();
 
   // we start recording and act as if the first step has already started
   // even though the first step is not yet visualy on the screen
@@ -235,31 +206,22 @@ PopupView.prototype.start = function() {
   });
 }
 
-PopupView.prototype.showFirstStep = function() {
-  this.showResizableCornerWindow();
-
-  this.$divStart.hide();
-  this.$divStep.show();
+PopupView.prototype.firstStep = function() {
+  this.showStep();
 
   this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
   this.$divDescription.html(this.model.getCurrentDescription());
   this.populateUrl(this.model.getCurrentUrl());
   this.$content.hide().fadeIn('slow');
-  this.resizeWindowToFit();
 }
 
 PopupView.prototype.next = function() {
-  this.$btnNext.fadeOut().fadeIn();
-
   if (this.model.isLastStep()) {
     this.eventBus.trigger('finish', {
       'scenarioResultHashId': this.model.getScenarioResultHashId()
     });
 
-    this.$divStep.hide();
-    this.$divFinish.fadeIn('slow');
-    this.resizeWindowToFit();
-    this.showFinishWindow();
+    this.showFinish();
   } else {
     this.model.nextStep();
 
@@ -268,11 +230,13 @@ PopupView.prototype.next = function() {
       'scenarioStepHashId': this.model.getScenarioStepHashId()
     });
 
+    this.$content.hide();
+
     this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
     this.$divDescription.html(this.model.getCurrentDescription());
     this.populateUrl(this.model.getCurrentUrl());
-    this.$content.hide().fadeIn('slow');
-    this.resizeWindowToFit();
+
+    this.$content.fadeIn('slow');
   }
 
 }
@@ -283,6 +247,17 @@ PopupView.prototype.delighted = function() {
 
 PopupView.prototype.confused = function() {
   this.eventBus.trigger('confused');
+}
+
+PopupView.prototype.finish = function() {
+  window.close();
+}
+
+PopupView.prototype.abort = function() {
+  this.eventBus.trigger('abort', {
+    'scenarioResultHashId': this.model.getScenarioResultHashId()
+  });
+  window.close();
 }
 
 PopupView.prototype.populateUrl = function(url) {
@@ -339,7 +314,7 @@ PopupView.prototype.onRecordingFailure = function() {
 
   if (this.model.currentIndex >= 0) {
     this.abort();
+  } else {
+
   }
 }
-
-

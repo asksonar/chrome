@@ -17,7 +17,6 @@ $(function(){
     'recordingTextTime': $('#titlebar-recording-text-time'),
     'content':        $('.content'),
     'btnQuestion':    $('.titlebar-question-button'),
-    'btnMinimize':    $('.titlebar-minimize-button'),
     'btnAbort':       $('.titlebar-close-button'),
 
     'divDescription': $('#div-description'),
@@ -51,6 +50,6 @@ $(function(){
 
   });
 
-  window.view.showCenterWindow();
+  window.view.showInstructions();
 
 });
