@@ -94,7 +94,10 @@ PopupView.prototype.showSelectScreen = function() {
 
 PopupView.prototype.showStart = function() {
   this.$divSelectScreen.hide();
+
+  chrome.app.window.current().setAlwaysOnTop(true);
   this.showStaticCornerWindow();
+
   this.$divStart.show();
 }
 

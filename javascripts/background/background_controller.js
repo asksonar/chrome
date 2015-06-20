@@ -48,7 +48,6 @@ BackgroundController.prototype.onLaunched = function(scenario) {
     id: "sonarDesktopCapture",
     frame: 'none',
     focused: true,
-    alwaysOnTop: true,
     state: 'normal',
     hidden: true
   }, $.proxy(this.onCreatedWindow, this, scenario));
