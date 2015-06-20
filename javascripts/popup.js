@@ -33,15 +33,13 @@ $(function(){
     'ctnTooltips':    $('.tooltip-trigger'),
 
     'centerWidth':    500,
-    'centerHeight':   325,
-    'centerMinWidth': 410,
-    'centerMinHeight': 325,
+    'centerHeight':   310,
 
     'cornerMargin':   10,
     'cornerWidth':    400,
-    'cornerHeight':   300,
-    'cornerMinWidth': 250,
-    'cornerMinHeight': 150
+    'cornerHeight':   135,
+    'cornerMinWidth': 300,
+    'cornerMinHeight': 85
   });
 
   window.microphoneView = new MicrophoneView(eventBus, {

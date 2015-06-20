@@ -133,22 +133,23 @@ PopupView.prototype.clickTooltips = function(event) {
 }
 
 PopupView.prototype.showCenterWindow = function() {
-  chrome.app.window.current().outerBounds.width = this.centerWidth;
-  chrome.app.window.current().outerBounds.height = this.centerHeight;
-  //chrome.app.window.current().outerBounds.minWidth = this.centerMinWidth;
-  //chrome.app.window.current().outerBounds.minHeight = this.centerMinHeight;
-  chrome.app.window.current().outerBounds.left = Math.round((screen.availWidth - this.centerWidth) / 2);
-  chrome.app.window.current().outerBounds.top = Math.round((screen.availHeight - this.centerHeight) / 2);
+  chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    Math.round((screen.availWidth - this.centerWidth) / 2),
+    Math.round((screen.availHeight - this.centerHeight) / 2)
+  );
   chrome.app.window.current().show();
 }
 
 PopupView.prototype.showCornerWindow = function() {
-  chrome.app.window.current().outerBounds.width = this.cornerWidth;
-  chrome.app.window.current().outerBounds.height = this.cornerHeight;
-  //chrome.app.window.current().outerBounds.minWidth = this.cornerMinWidth;
-  //chrome.app.window.current().outerBounds.minHeight = this.cornerMinHeight;
-  chrome.app.window.current().outerBounds.left = screen.availWidth - this.cornerWidth - this.cornerMargin;
-  chrome.app.window.current().outerBounds.top = 0;
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(null, null)
+  chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
 }
 
 PopupView.prototype.showFinishWindow = function() {
@@ -156,7 +157,7 @@ PopupView.prototype.showFinishWindow = function() {
 }
 
 PopupView.prototype.resizeWindowToFit = function() {
-  chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
+  //chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
 }
 
 PopupView.prototype.openHelp = function() {
