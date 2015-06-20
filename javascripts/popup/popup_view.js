@@ -143,7 +143,16 @@ PopupView.prototype.showCenterWindow = function() {
   chrome.app.window.current().show();
 }
 
-PopupView.prototype.showCornerWindow = function() {
+PopupView.prototype.showStaticCornerWindow = function() {
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
+}
+
+PopupView.prototype.showResizableCornerWindow = function() {
   chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
   chrome.app.window.current().outerBounds.setMaximumSize(null, null)
   chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
@@ -205,7 +214,7 @@ PopupView.prototype.requestRecording = function() {
   this.eventBus.trigger('requestRecording');
 
   this.$divInstructions.hide();
-  this.showCornerWindow();
+  this.showStaticCornerWindow();
   this.$divSelectScreen.show();
   this.resizeWindowToFit();
 }
@@ -227,6 +236,8 @@ PopupView.prototype.start = function() {
 }
 
 PopupView.prototype.showFirstStep = function() {
+  this.showResizableCornerWindow();
+
   this.$divStart.hide();
   this.$divStep.show();
 
