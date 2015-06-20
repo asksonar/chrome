@@ -94,6 +94,19 @@
   font-size: 18px;
 }
 
+section {
+  /* based on http://stackoverflow.com/a/8172337 */
+  /* allows us to do height:100% in children */
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  height: auto;
+  left: 0px;
+  right: 0px;
+  width: auto;
+
+}
+
 .content {
   margin-top: 32px;
 }

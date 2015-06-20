@@ -1,8 +1,6 @@
 #div-start {
   padding: 5px;
   background-color: #767676;
-  height: 100%;
-  z-index: 0; /* sets a new context for its children */
 }
 
 .tooltip {
@@ -35,11 +33,11 @@
 
 .ctn-btn-delighted {
   position: relative;
+  margin-bottom: 10px;
 }
 
 .ctn-btn-confused {
   position: relative;
-  margin-top: 10px;
 }
 
 .ctn-now-recording {
@@ -63,7 +61,7 @@
   background-color: #000;
   opacity: .25;
   left: 0;
-  top: 32px;
+  top: 0px;
   z-index: 100;
   display: none;
 }

@@ -86,6 +86,7 @@
 
       <section id='div-start'>
         <h1 class='pull-right ctn-now-recording'>Now recording your screen and voice</h1>
+
         <div class='ctn-btn-delighted ctn-tooltip'>
           <a id='btn-demo-delighted' class='btn btn-delighted tooltip-trigger'></a>
           <div class='tooltip tooltip-base'>
@@ -117,16 +118,37 @@
       </section>
 
       <section id='div-step'>
-        <div class='div-buttons'>
-          <a id='btn-delighted' class='btn btn-delighted'></a>
-          <a id='btn-confused' class='btn btn-confused'></a>
-          <a id='btn-next' class='btn btn-blue'><span>Next</span></a>
+
+        <div class='ctn-btn-feelings'>
+          <div class='ctn-btn-delighted ctn-tooltip'>
+            <a id='btn-delighted' class='btn btn-delighted tooltip-trigger'></a>
+            <div class='tooltip tooltip-hover'>
+              <div class='tooltip-arrow'></div>Something you like? Click me!</span>
+            </div>
+            <div class='tooltip tooltip-click'>
+              <div class='tooltip-arrow'></div>Got it! I made a note that you liked that.</span>
+            </div>
+          </div>
+          <div class='ctn-btn-confused ctn-tooltip'>
+            <a id='btn-confused' class='btn btn-confused tooltip-trigger'></a>
+            <div class='tooltip tooltip-hover'>
+              <div class='tooltip-arrow'></div>Something you don't like? Click me...</span>
+            </div>
+            <div class='tooltip tooltip-click'>
+              <div class='tooltip-arrow'></div>Got it. I made a note that you didn't like that.</span>
+            </div>
+          </div>
         </div>
-        <h3 id='div-step-of-text'></h3>
-        <p id='div-description'></p>
-        <p id='div-url'>
-          <a id='ahref-Url' href='#' target='sonarStepWindow'></a>
-        </p>
+        <div class='ctn-description'>
+          <h3 id='div-step-of-text'></h3><a id='ahref-Url' href='#' target='sonarStepWindow'></a>
+          <p id='div-description'></p>
+        </div>
+        <div class='ctn-btn-next'>
+          <a id='btn-next' class='btn btn-blue pull-right'><span>Next</span></a>
+        </div>
+
+        <div class='shadow'></div>
+
       </section>
 
       <section id='div-finish'>

@@ -135,8 +135,8 @@ PopupView.prototype.clickTooltips = function(event) {
 PopupView.prototype.showCenterWindow = function() {
   chrome.app.window.current().outerBounds.width = this.centerWidth;
   chrome.app.window.current().outerBounds.height = this.centerHeight;
-  chrome.app.window.current().outerBounds.minWidth = this.centerMinWidth;
-  chrome.app.window.current().outerBounds.minHeight = this.centerMinHeight;
+  //chrome.app.window.current().outerBounds.minWidth = this.centerMinWidth;
+  //chrome.app.window.current().outerBounds.minHeight = this.centerMinHeight;
   chrome.app.window.current().outerBounds.left = Math.round((screen.availWidth - this.centerWidth) / 2);
   chrome.app.window.current().outerBounds.top = Math.round((screen.availHeight - this.centerHeight) / 2);
   chrome.app.window.current().show();
@@ -145,8 +145,8 @@ PopupView.prototype.showCenterWindow = function() {
 PopupView.prototype.showCornerWindow = function() {
   chrome.app.window.current().outerBounds.width = this.cornerWidth;
   chrome.app.window.current().outerBounds.height = this.cornerHeight;
-  chrome.app.window.current().outerBounds.minWidth = this.cornerMinWidth;
-  chrome.app.window.current().outerBounds.minHeight = this.cornerMinHeight;
+  //chrome.app.window.current().outerBounds.minWidth = this.cornerMinWidth;
+  //chrome.app.window.current().outerBounds.minHeight = this.cornerMinHeight;
   chrome.app.window.current().outerBounds.left = screen.availWidth - this.cornerWidth - this.cornerMargin;
   chrome.app.window.current().outerBounds.top = 0;
 }
@@ -266,12 +266,10 @@ PopupView.prototype.next = function() {
 
 PopupView.prototype.delighted = function() {
   this.eventBus.trigger('delighted');
-  this.$btnDelighted.fadeOut().fadeIn();
 }
 
 PopupView.prototype.confused = function() {
   this.eventBus.trigger('confused');
-  this.$btnConfused.fadeOut().fadeIn();
 }
 
 PopupView.prototype.populateUrl = function(url) {

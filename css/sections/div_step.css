@@ -1,40 +1,41 @@
 #div-step {
-  position: relative;
-  min-height: 60px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 80px;
+  padding: 5px;
 }
 
-#btn-delighted {
+.ctn-btn-feelings {
   position: absolute;
-  top: 0px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
+  width: 100%;
 }
 
-#btn-confused {
+.ctn-btn-next {
   position: absolute;
-  top: 33px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  height: auto;
 }
 
 #btn-next {
-  position: absolute;
-  top: 0px;
-  right: 0px;
   height: 100%;
-  padding: 0px 0px 0px 0px;
+  max-height: 90px;
   width: 40px;
+  padding: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ctn-description {
+  position: relative;
+  margin-left: 45px;
+  margin-right: 45px;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 1px; /* a pixel gets cut off because we hide overflow */
+}
+
+.ctn-description > :last-child {
+  padding-bottom: 10px; /* a little spacing for when we scroll */
 }
 
 #div-step-of-text {
@@ -43,4 +44,22 @@
 
 #div-description {
   display: inline;
+}
+
+@media (max-height: 120px) {
+  #div-step .ctn-btn-delighted {
+    position: absolute;
+    width: 100%;
+  }
+
+  #div-step .ctn-btn-confused {
+    position: absolute;
+    width: 100%;
+    left: 45px;
+  }
+
+  #div-step .ctn-description {
+    margin-left: 90px;
+  }
+
 }
