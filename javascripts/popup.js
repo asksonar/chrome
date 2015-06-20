@@ -14,6 +14,7 @@ $(function(){
 
     'divRecording':   $('.titlebar-recording'),
     'titleBar':       $('.titlebar'),
+    'recordingTextTime': $('#titlebar-recording-text-time'),
     'content':        $('.content'),
     'btnQuestion':    $('.titlebar-question-button'),
     'btnMinimize':    $('.titlebar-minimize-button'),

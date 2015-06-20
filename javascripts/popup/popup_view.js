@@ -9,6 +9,7 @@ function PopupView(eventBus, model, config) {
   this.$divStep = config.divStep;
   this.$divFinish = config.divFinish;
   this.$divRecording = config.divRecording;
+  this.$recordingTextTime = config.recordingTextTime;
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
   this.$ahrefUrl = config.ahrefUrl;
@@ -118,14 +119,14 @@ PopupView.prototype.clickTooltips = function(event) {
   thisEl.find('.tooltip').css({opacity:0});
   thisEl.find('.tooltip-click')
     .css({opacity:1})
-    .delay(500)
+    .delay(1000)
     .animate({opacity:0}, function(){
       thisEl.find('.tooltip-base').css('opacity', 1);
     });
   thisEl.closest('section').find('.shadow')
     .addClass('shadow-dark')
     .show()
-    .delay(500)
+    .delay(1000)
     .fadeOut(function() {
       $(this).removeClass('shadow-dark');
       thisEl.removeClass('shadow-hover');
@@ -295,11 +296,31 @@ PopupView.prototype.populateUrl = function(url) {
 
 PopupView.prototype.onRecordingStarted = function() {
   this.start();
+
+  this.$recordingTextTime.html('00:00');
+  var timeUpdateFunction = function() {
+
+    var timeText = this.$recordingTextTime.html();
+    var minsText = parseInt(timeText.split(":")[0]);
+    var secsText = parseInt(timeText.split(":")[1]);
+
+    secsText += 1;
+    if (secsText == 60) {
+      minsText += 1;
+      secsText = 0;
+    }
+    this.$recordingTextTime.html(
+      ('00' + minsText).slice(-2) + ':' + ('00' + secsText).slice(-2)
+    );
+  }
+  this.recordingTextTimeUpdate = setInterval($.proxy(timeUpdateFunction, this), 1000);
+
   this.$divRecording.removeClass('off').addClass('on');
 }
 
 PopupView.prototype.onRecordingStopped = function() {
   this.$divRecording.removeClass('on').addClass('off');
+  clearInterval(this.recordingTextTimeUpdate);
 }
 
 PopupView.prototype.onRecordingFailure = function() {

@@ -29,8 +29,10 @@
 .titlebar-recording-text {
   float: left;
   color: #FFF;
-  line-height: 24px;
+  line-height: 28px; /* doesn't quite line up perfectly */
   font-size: 14px;
+  min-width: 40px;
+  text-align: left;
 }
 
 .titlebar-recording-icon {
