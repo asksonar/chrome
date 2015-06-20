@@ -70,7 +70,6 @@ PopupView.prototype.on = function(eventType, element, clickHandler) {
 }
 
 PopupView.prototype.showInstructions = function() {
-  this.$divInstructions.show();
   this.$divSelectScreen.hide();
   this.$divStart.hide();
   this.$divStep.hide();
@@ -82,6 +81,8 @@ PopupView.prototype.showInstructions = function() {
     Math.round((screen.availWidth - this.centerWidth) / 2),
     Math.round((screen.availHeight - this.centerHeight) / 2)
   );
+
+  this.$divInstructions.show();
   chrome.app.window.current().show();
 }
 
@@ -315,6 +316,6 @@ PopupView.prototype.onRecordingFailure = function() {
   if (this.model.currentIndex >= 0) {
     this.abort();
   } else {
-
+    this.showInstructions();
   }
 }
