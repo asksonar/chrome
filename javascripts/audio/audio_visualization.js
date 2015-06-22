@@ -10,6 +10,7 @@ AudioVisualization.prototype.init = function() {
   this.analyser.fftSize = 32;
   this.analyser.minDecibels = this.minDecibels
   this.analyser.maxDecibels = this.maxDecibels; // raise from default of -90
+  this.analyser.smoothingTimeConstant = .9;
 }
 
 AudioVisualization.prototype.start = function() {

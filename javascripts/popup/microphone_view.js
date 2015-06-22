@@ -82,6 +82,8 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
   this.stopMicrophoneResponse();
 
   var responseFunction = function() {
+    this.responseLoop = requestAnimationFrame($.proxy(responseFunction, this));
+
     var amplitudePercent = this.audioVisualization.getAmplitude() / 255.0;
     if (amplitudePercent < .20) {
       this.mostRecentQuietNoise = Date.now();
@@ -100,9 +102,9 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
     $targets.slice(amplitudeScaled).removeClass('on');
   }
 
-  this.responseLoop = setInterval($.proxy(responseFunction, this), 100);
+  responseFunction.call(this);
 }
 
 MicrophoneView.prototype.stopMicrophoneResponse = function() {
-  clearInterval(this.responseLoop);
+  window.cancelAnimationFrame(this.responseLoop);
 }
