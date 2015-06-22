@@ -65,6 +65,7 @@ PopupView.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
+  this.eventBus.on('recordingHeard', this.onRecordingHeard, this);
   this.eventBus.on('uploadProgress', this.onUploadProgress, this);
   this.eventBus.on('uploadFinish', this.onUploadFinish, this);
 }
@@ -195,6 +196,10 @@ PopupView.prototype.clickTooltips = function(event) {
 }
 
 PopupView.prototype.requestRecording = function() {
+  if (this.$btnStart.hasClass('disabled')) {
+    return;
+  }
+
   // asks for recording and awaits recording success to actually start
   this.eventBus.trigger('requestRecording');
 
@@ -326,6 +331,10 @@ PopupView.prototype.onRecordingFailure = function() {
   } else {
     this.showInstructions();
   }
+}
+
+PopupView.prototype.onRecordingHeard = function() {
+  this.$btnStart.removeClass('disabled');
 }
 
 PopupView.prototype.onUploadProgress = function(event, eventData) {

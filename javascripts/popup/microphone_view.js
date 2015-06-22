@@ -13,7 +13,7 @@ function MicrophoneView(eventBus, config) {
 MicrophoneView.prototype.init = function() {
   this.mostRecentLoudNoise = null;
   this.mostRecentQuietNoise = null;
-  this.mostRecentNoise = null;
+  this.hasNoise = null;
 
   this.audioVisualization = new AudioVisualization(-60, -25);
   this.audioVisualization.start();
@@ -33,7 +33,7 @@ MicrophoneView.prototype.startMicCheck = function() {
   this.micCheckLoop = setInterval($.proxy(function() {
     var micCheckAge = Date.now() - this.micCheckStartTime;
 
-    if (!this.mostRecentNoise && micCheckAge > 5000) {
+    if (!this.hasNoise && micCheckAge > 5000) {
       this.$micCheckText.html("Sorry, we can't quite hear you.  Is your mic on?");
       this.$micCheck.addClass('color-confused').removeClass('color-delighted');
       this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
@@ -52,6 +52,7 @@ MicrophoneView.prototype.startMicCheck = function() {
       this.$micCheckText.html("Testing, testing, 1 2 3.  Try talking into the mic.");
 
     } else {
+      this.eventBus.trigger('recordingHeard');
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
       this.$micCheck.addClass('color-delighted').removeClass('color-confused');
       this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
@@ -92,7 +93,7 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
     }
 
     if (amplitudePercent > 0) {
-      this.mostRecentNoise = Date.now();
+      this.hasNoise = true;
     }
 
     var amplitudeScaled = Math.round(amplitudePercent * $targets.length);
