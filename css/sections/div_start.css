@@ -77,3 +77,9 @@
 .tooltip-click {
   opacity: 0;
 }
+
+#div-start svg {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+}

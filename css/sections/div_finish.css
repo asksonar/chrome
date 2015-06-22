@@ -5,3 +5,28 @@
 #div-finish p {
   line-height: 30px;
 }
+
+.progress {
+  background-color: #D8D8D8;
+  height: 20px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+
+.progress-bar {
+  animation: progress-bar-stripes 2s linear infinite;
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;
+  background-color: #F69526;
+  height: 20px;
+  transition: width .6s ease;
+  width: 5%;
+}
+
+@keyframes progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}

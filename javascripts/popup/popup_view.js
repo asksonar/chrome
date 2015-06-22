@@ -26,6 +26,8 @@ function PopupView(eventBus, model, config) {
 
   this.$ctnTooltips = config.ctnTooltips;
 
+  this.$progressBar = config.progressBar;
+
   this.centerWidth = config.centerWidth;
   this.centerHeight = config.centerHeight;
   this.centerMinWidth = config.centerMinWidth;
@@ -63,6 +65,8 @@ PopupView.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
+  this.eventBus.on('uploadProgress', this.onUploadProgress, this);
+  this.eventBus.on('uploadFinish', this.onUploadFinish, this);
 }
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
@@ -127,6 +131,7 @@ PopupView.prototype.showStep = function() {
 PopupView.prototype.showFinish = function() {
   chrome.app.window.current().setAlwaysOnTop(false);
   this.$divStep.hide();
+  this.showStaticCornerWindow();
   this.$divFinish.fadeIn('slow');
 }
 
@@ -321,4 +326,15 @@ PopupView.prototype.onRecordingFailure = function() {
   } else {
     this.showInstructions();
   }
+}
+
+PopupView.prototype.onUploadProgress = function(event, eventData) {
+  this.$progressBar.width(Math.min(Math.max(eventData.percentage, 5), 100) + '%');
+}
+
+PopupView.prototype.onUploadFinish = function() {
+  this.$progressBar.width('100%');
+  this.$divFinish.delay(1000).fadeOut(1000, function(){
+    window.close();
+  });
 }

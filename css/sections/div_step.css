@@ -34,16 +34,16 @@
   padding-top: 1px; /* a pixel gets cut off because we hide overflow */
 }
 
-.ctn-description > :last-child {
-  padding-bottom: 10px; /* a little spacing for when we scroll */
-}
-
 #div-step-of-text {
   display: inline;
 }
 
+#ahref-Url {
+  margin-left: 5px;
+}
+
 #div-description {
-  display: inline;
+  margin-top: 5px;
 }
 
 @media (max-height: 120px) {

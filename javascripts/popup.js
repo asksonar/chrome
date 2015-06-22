@@ -32,6 +32,8 @@ $(function(){
 
     'ctnTooltips':    $('.tooltip-trigger'),
 
+    'progressBar':    $('.progress-bar'),
+
     'centerWidth':    500,
     'centerHeight':   310,
 
