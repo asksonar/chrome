@@ -24,22 +24,22 @@
 
 @font-face {
   font-family: 'BrandonGrotesque-Medium';
-  src: url('/webfonts/2DEDB0_0_0.eot');
-  src: url('/webfonts/2DEDB0_0_0.eot?#iefix') format('embedded-opentype'),
-    url('/webfonts/2DEDB0_0_0.woff2') format('woff2'),
-    url('/webfonts/2DEDB0_0_0.woff') format('woff'),
-    url('/webfonts/2DEDB0_0_0.ttf') format('truetype'),
-    url('/webfonts/2DEDB0_0_0.svg#wf') format('svg');
+  src: url('/fonts/2DEDB0_0_0.eot');
+  src: url('/fonts/2DEDB0_0_0.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/2DEDB0_0_0.woff2') format('woff2'),
+    url('/fonts/2DEDB0_0_0.woff') format('woff'),
+    url('/fonts/2DEDB0_0_0.ttf') format('truetype'),
+    url('/fonts/2DEDB0_0_0.svg#wf') format('svg');
 }
 
 
 @font-face {
   font-family: 'BrandonGrotesque-Regular';
-  src: url('/webfonts/2DEDB0_1_0.eot');
-  src: url('/webfonts/2DEDB0_1_0.eot?#iefix') format('embedded-opentype'),
-    url('/webfonts/2DEDB0_1_0.woff2') format('woff2'),
-    url('/webfonts/2DEDB0_1_0.woff') format('woff'),
-    url('/webfonts/2DEDB0_1_0.ttf') format('truetype'),
-    url('/webfonts/2DEDB0_1_0.svg#wf') format('svg');
+  src: url('/fonts/2DEDB0_1_0.eot');
+  src: url('/fonts/2DEDB0_1_0.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/2DEDB0_1_0.woff2') format('woff2'),
+    url('/fonts/2DEDB0_1_0.woff') format('woff'),
+    url('/fonts/2DEDB0_1_0.ttf') format('truetype'),
+    url('/fonts/2DEDB0_1_0.svg#wf') format('svg');
 }
 

@@ -45,6 +45,14 @@ function PnaclVideoEncoder(url, isPortable) {
     if (api.onCrash) api.onCrash(coreDump);
   }
 
+  /**
+   * Extract major chrome version from user agent string.
+   * @return {number} major chrome Version or 0 if it cannot be determined.
+   */
+  function getChromeVersion() {
+    return Number((/Chrome\/(\d+)/.exec(window.navigator.userAgent) || [, 0])[1]);
+  }
+
   pnacl.onMessage = function onMessage(msg) {
     msg = msg.data;
     if (DEFERRED_OPERATIONS.indexOf(msg.type) >= 0) {
@@ -167,6 +175,7 @@ function PnaclVideoEncoder(url, isPortable) {
   api.start = function(config) {
     if (!/^\/html5_(temporary|persistent)\//.test(config.filename))
       throw new Error('invalid filename');
+    config.chromeVersion = getChromeVersion();
     var operationPromise = startDeferredOperation();
     startTimeoutTimer = window.setTimeout(function startTimedOut() {
       // rejects the operationPromise and unloads module.

@@ -29,8 +29,10 @@
 .titlebar-recording-text {
   float: left;
   color: #FFF;
-  line-height: 24px;
+  line-height: 28px; /* doesn't quite line up perfectly */
   font-size: 14px;
+  min-width: 40px;
+  text-align: left;
 }
 
 .titlebar-recording-icon {
@@ -85,7 +87,7 @@
   width: 44px;
 }
 
-.titlebar-buttons div {
+.titlebar-buttons .btn-text {
   display: inline-block;
   width: 20px;
   text-align: center;
@@ -94,161 +96,65 @@
   font-size: 18px;
 }
 
-.content {
-  margin-top: 32px;
+section {
+  /* based on http://stackoverflow.com/a/8172337 */
+  /* allows us to do height:100% in children */
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  height: auto;
+  left: 0px;
+  right: 0px;
+  width: auto;
+
 }
 
-.content > div {
-  padding: 10px 10px 10px 10px;
+.content {
+  margin-top: 32px;
 }
 
 .btn-delighted,
 .btn-confused {
   display: inline-block;
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
 }
 
 .btn-delighted {
   content: url('/images/face_delight.svg');
   background: #1CC67D;
   display: inline-block;
+  color:  #167248; /* for the box shadow */
 }
 
 .btn-confused {
   content: url('/images/face_bummer.svg');
   background: #F57340;
+  color: #AE3F1B; /* for the box shadow */
 }
 
-.btn-start, .btn-next, .btn-finish {
+.btn-blue {
   background-color: #05647C;
-  color: #FFF;
   display: inline-block;
-  padding: 4px 10px;
+  padding: 8px 12px 4px 12px;
+  color: #013E4C; /* for the box shadow: saturate 5%, darken 10% */
 }
 
-#div-start p {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-#div-start ul {
-  margin-top: -10px;
-  padding-left: 0;
-  list-style: none;
-}
-
-#div-start li i {
-  margin-left: 5px;
-  margin-right: 10px;
-}
-
-#div-start .btn-delighted,
-#div-start .btn-confused {
-  width: 18px;
-  height: 18px;
-  margin: 0px 3px -3px 3px;
-  opacity: .75;
-}
-
-#div-start .btn-next {
-  padding-top: 2px;
-  padding-bottom: 2px;
-  margin: 0px 3px;
-  opacity: .75;
-}
-
-#div-start.started .ctn-get-started {
-  display: none;
-}
-
-#div-start.started .ctn-already-started {
-  display: block;
-}
-
-.ctn-mic-check {
-  margin-top: 20px;
-}
-
-.mic-check {
-  margin-right: 10px;
-}
-
-.mic-check i {
-  color: #05647C;
+.btn-blue span {
+  font-family: BrandonGrotesque-Medium;
   font-size: 18px;
+  color: #FFF; /* for the text */
 }
 
-.mic-check div {
-  background-color: #999;
-  height: 15px;
-  width: 6px;
-  border-radius: 3px;
+.btn-green {
+  background-color: #31B6AE;
   display: inline-block;
+  padding: 8px 12px 4px 12px;
+  color: #219288;
 }
 
-.mic-check .on {
-  background-color: #05647C;
-}
-
-.ctn-already-started {
-  display: none;
-  border-top: 1px solid #E3E3E3;
-  margin: 20px;
-}
-
-.ctn-get-started h1 {
-  margin-top: 10px;
-  line-height: 30px;
-}
-
-#div-step {
-  position: relative;
-  min-height: 60px;
-  padding-left: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 80px;
-}
-
-#div-step .btn-delighted {
-  position: absolute;
-  top: 0px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
-}
-
-#div-step .btn-confused {
-  position: absolute;
-  top: 33px;
-  right: 40px;
-  height: 30px;
-  width: 30px;
-  margin: 3px;
-}
-
-#div-step .btn-next {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  height: 100%;
-  padding: 0px 0px 0px 0px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#div-step-of-text {
-  display: inline;
-}
-
-#div-description {
-  display: inline;
-}
-
-#div-finish p {
-  line-height: 30px;
+.btn-green span {
+  font-family: BrandonGrotesque-Medium;
+  font-size: 18px;
+  color: #FFF;
 }

@@ -3,64 +3,158 @@ function PopupView(eventBus, model, config) {
   this.model = model;
 
   this.baseUrl = config.baseUrl;
+  this.$divInstructions = config.divInstructions;
+  this.$divSelectScreen = config.divSelectScreen;
   this.$divStart = config.divStart;
   this.$divStep = config.divStep;
   this.$divFinish = config.divFinish;
-  this.$divRecording = config.divRecording;
+  this.$divAbort = config.divAbort;
+  this.$divAborted = config.divAborted;
+
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
   this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
   this.$content = config.content;
-  this.$btnQuestion = config.btnQuestion;
-  this.$btnMinimize = config.btnMinimize;
+
   this.$btnAbort = config.btnAbort;
-  this.$btnFinish = config.btnFinish;
+  this.$btnAbortYes = config.btnAbortYes;
+  this.$btnAbortNo = config.btnAbortNo;
+  this.$btnAbortConfirm = config.btnAbortConfirm;
+
+  this.$btnQuestion = config.btnQuestion;
   this.$btnStart = config.btnStart;
+  this.$btnFirstStep = config.btnFirstStep;
   this.$btnNext = config.btnNext;
+  this.$btnFinish = config.btnFinish;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
-  this.$micCheckBars = config.micCheckBars;
-  this.$micLevelBars = config.micLevelBars;
+
+  this.$ctnTooltips = config.ctnTooltips;
+
+  this.$progressBar = config.progressBar;
+
+  this.centerWidth = config.centerWidth;
+  this.centerHeight = config.centerHeight;
+  this.centerMinWidth = config.centerMinWidth;
+  this.centerMinHeight = config.centerMinHeight;
+
+  this.cornerMargin = config.cornerMargin;
+  this.cornerWidth = config.cornerWidth;
+  this.cornerHeight = config.cornerHeight;
+  this.cornerMinWidth = config.cornerMinWidth;
+  this.cornerMinHeight = config.cornerMinHeight;
 
   this.init();
   this.initHandlers();
 }
 
 PopupView.prototype.init = function() {
-  this.audioVisualization = new AudioVisualization(-60, -20);
-  this.audioVisualization.start();
-
-  this.$divStart.show();
-  this.$divStep.hide();
-  this.$divFinish.hide();
-
-  this.minimizeHeight = this.$titleBar.height();
-  this.resizeWindowToFit();
 }
 
 PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnQuestion, this.openHelp);
-  this.on('click', this.$btnMinimize, this.toggleMinimize);
-  this.on('click', this.$btnAbort, this.abort);
+  this.on('click', this.$btnAbort, this.showAbort);
+  this.on('click', this.$btnAbortYes, this.abort);
+  this.on('click', this.$btnAbortNo, this.hideAbort);
+  this.on('click', this.$btnAbortConfirm, this.abort);
 
   this.on('click', this.$btnStart, this.requestRecording);
+  this.on('click', this.$btnFirstStep, this.firstStep);
+
   this.on('click', this.$btnNext, this.next);
   this.on('click', this.$btnDelighted, this.delighted);
   this.on('click', this.$btnConfused, this.confused);
   this.on('click', this.$btnFinish, this.finish);
 
+  this.on('mouseenter', this.$ctnTooltips, this.showTooltips);
+  this.on('mouseleave', this.$ctnTooltips, this.hideTooltips);
+  this.on('click', this.$ctnTooltips, this.clickTooltips);
+
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
+  this.eventBus.on('recordingHeard', this.onRecordingHeard, this);
+  this.eventBus.on('uploadProgress', this.onUploadProgress, this);
+  this.eventBus.on('uploadFinish', this.onUploadFinish, this);
 }
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
 }
 
-PopupView.prototype.resizeWindowToFit = function() {
-  chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
+PopupView.prototype.showInstructions = function() {
+  this.$divSelectScreen.hide();
+  this.$divStart.hide();
+  this.$divStep.hide();
+  this.$divFinish.hide();
+
+  chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    Math.round((screen.availWidth - this.centerWidth) / 2),
+    Math.round((screen.availHeight - this.centerHeight) / 2)
+  );
+
+  this.$divInstructions.show();
+  chrome.app.window.current().show();
+}
+
+PopupView.prototype.showSelectScreen = function() {
+  this.$divInstructions.hide();
+  this.showStaticCornerWindow();
+  this.$divSelectScreen.show();
+}
+
+PopupView.prototype.showStart = function() {
+  this.$divSelectScreen.hide();
+
+  chrome.app.window.current().setAlwaysOnTop(true);
+  this.showStaticCornerWindow();
+
+  this.$divStart.show();
+}
+
+PopupView.prototype.showStaticCornerWindow = function() {
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
+}
+
+PopupView.prototype.showStep = function() {
+  this.$divStart.hide();
+
+  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
+  chrome.app.window.current().outerBounds.setMaximumSize(null, null)
+  chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
+  chrome.app.window.current().outerBounds.setPosition(
+    screen.availWidth - this.cornerWidth - this.cornerMargin,
+    0
+  );
+
+  this.$divStep.show();
+}
+
+PopupView.prototype.showFinish = function() {
+  chrome.app.window.current().setAlwaysOnTop(false);
+  this.$divStep.hide();
+  this.showStaticCornerWindow();
+  this.$divFinish.fadeIn('slow');
+}
+
+PopupView.prototype.showAbort = function() {
+  this.$divAbort.css({display:'flex'});
+}
+
+PopupView.prototype.hideAbort = function() {
+  this.$divAbort.css({display:'none'});
+}
+
+PopupView.prototype.showAborted = function() {
+  this.$divAborted.css({display:'flex'});
 }
 
 PopupView.prototype.openHelp = function() {
@@ -68,27 +162,130 @@ PopupView.prototype.openHelp = function() {
   window.open(this.baseUrl + 'studies/' + scenarioHashId + '/help');
 }
 
-PopupView.prototype.isMinimized = function() {
-  return this.$titleBar.hasClass('minimized');
-}
+PopupView.prototype.showTooltips = function(event) {
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
 
-PopupView.prototype.restore = function() {
-  this.$titleBar.removeClass('minimized');
-  chrome.app.window.current().outerBounds.height = this.$content.outerHeight(true);
-}
-
-PopupView.prototype.minimize = function() {
-  this.$titleBar.addClass('minimized');
-  chrome.app.window.current().outerBounds.height = this.minimizeHeight;
-}
-
-PopupView.prototype.toggleMinimize = function() {
-  if (this.isMinimized()) {
-    this.restore();
-  } else {
-    this.minimize();
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
   }
-  return false;
+
+  thisEl.addClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-hover').css({opacity:1});
+  thisEl.closest('section').find('.shadow').show();
+}
+
+PopupView.prototype.hideTooltips = function(event) {
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
+
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
+  }
+
+  thisEl.removeClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-base').css({opacity:1});
+  thisEl.closest('section').find('.shadow').hide();
+}
+
+PopupView.prototype.clickTooltips = function(event) {
+  var thisEl = $(event.currentTarget).closest('.ctn-tooltip');
+
+  // don't interrupt previous clickTooltips
+  if (thisEl.find('.tooltip-click').queue().length) {
+    return;
+  }
+
+  thisEl.addClass('shadow-hover');
+  thisEl.find('.tooltip').css({opacity:0});
+  thisEl.find('.tooltip-click')
+    .css({opacity:1})
+    .delay(1000)
+    .animate({opacity:0}, function(){
+      thisEl.find('.tooltip-base').css('opacity', 1);
+    });
+  thisEl.closest('section').find('.shadow')
+    .addClass('shadow-dark')
+    .show()
+    .delay(1000)
+    .fadeOut(function() {
+      $(this).removeClass('shadow-dark');
+      thisEl.removeClass('shadow-hover');
+    });
+}
+
+PopupView.prototype.requestRecording = function() {
+  if (this.$btnStart.hasClass('disabled')) {
+    return;
+  }
+
+  // asks for recording and awaits recording success to actually start
+  this.eventBus.trigger('requestRecording');
+
+  this.showSelectScreen();
+}
+
+PopupView.prototype.start = function() {
+  this.showStart();
+
+  // we start recording and act as if the first step has already started
+  // even though the first step is not yet visualy on the screen
+  // until they click this.$btnFirstStep
+  this.model.firstStep();
+
+  this.eventBus.trigger('start', {
+    'scenarioResultHashId': this.model.getScenarioResultHashId(),
+    'scenarioStepHashId': this.model.getScenarioStepHashId()
+  });
+}
+
+PopupView.prototype.firstStep = function() {
+  this.showStep();
+
+  this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
+  this.$divDescription.html(this.model.getCurrentDescription());
+  this.populateUrl(this.model.getCurrentUrl());
+  this.$content.hide().fadeIn('slow');
+}
+
+PopupView.prototype.next = function() {
+  if (this.model.isLastStep()) {
+    this.eventBus.trigger('finish', {
+      'scenarioResultHashId': this.model.getScenarioResultHashId()
+    });
+
+    this.showFinish();
+  } else {
+    this.model.nextStep();
+
+    this.eventBus.trigger('next', {
+      'scenarioResultHashId': this.model.getScenarioResultHashId(),
+      'scenarioStepHashId': this.model.getScenarioStepHashId()
+    });
+
+    this.$content.hide();
+
+    this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
+    this.$divDescription.html(this.model.getCurrentDescription());
+    this.populateUrl(this.model.getCurrentUrl());
+
+    if (this.model.isLastStep()) {
+      this.$btnNext.html('<span>Finish</span>');
+    }
+
+    this.$content.fadeIn('slow');
+  }
+
+}
+
+PopupView.prototype.delighted = function() {
+  this.eventBus.trigger('delighted');
+}
+
+PopupView.prototype.confused = function() {
+  this.eventBus.trigger('confused');
 }
 
 PopupView.prototype.finish = function() {
@@ -102,67 +299,6 @@ PopupView.prototype.abort = function() {
   window.close();
 }
 
-PopupView.prototype.requestRecording = function() {
-  // asks for recording and awaits recording success to actually start
-  this.eventBus.trigger('requestRecording');
-}
-
-PopupView.prototype.start = function() {
-  this.$divStart.hide();
-  this.$divStart.addClass('started');
-
-  this.eventBus.trigger('start', {
-    'scenarioResultHashId': this.model.getScenarioResultHashId()
-  });
-
-  this.$divStep.show();
-
-  this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
-  this.$divDescription.html(this.model.getCurrentDescription());
-  this.populateUrl(this.model.getCurrentUrl());
-  this.$content.hide().fadeIn('slow');
-  this.resizeWindowToFit();
-}
-
-PopupView.prototype.next = function() {
-  this.$btnNext.fadeOut().fadeIn();
-
-  if (this.model.isLastStep()) {
-    this.eventBus.trigger('finish', {
-      'scenarioResultHashId': this.model.getScenarioResultHashId()
-    });
-
-    this.$divStep.hide();
-    this.$divFinish.fadeIn('slow');
-    this.resizeWindowToFit();
-    chrome.app.window.current().setAlwaysOnTop(false);
-  } else {
-    this.eventBus.trigger('next', {
-      'scenarioResultHashId': this.model.getScenarioResultHashId(),
-      'resultStepHashId': this.model.getResultStepHashId()
-    });
-
-    this.model.nextStep();
-
-    this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
-    this.$divDescription.html(this.model.getCurrentDescription());
-    this.populateUrl(this.model.getCurrentUrl());
-    this.$content.hide().fadeIn('slow');
-    this.resizeWindowToFit();
-  }
-
-}
-
-PopupView.prototype.delighted = function() {
-  this.eventBus.trigger('delighted');
-  this.$btnDelighted.fadeOut().fadeIn();
-}
-
-PopupView.prototype.confused = function() {
-  this.eventBus.trigger('confused');
-  this.$btnConfused.fadeOut().fadeIn();
-}
-
 PopupView.prototype.populateUrl = function(url) {
   if (!url) {
     this.$ahrefUrl.html('');
@@ -170,7 +306,7 @@ PopupView.prototype.populateUrl = function(url) {
   }
 
   var targetUrl = url.indexOf('http') == 0 ? url : 'http://' + url;
-  var displayUrl = 'Go to ' +
+  var displayUrl =
     ( url.indexOf('https://') == 0 ? url.substring('https://'.length)
     : url.indexOf('http://') == 0 ? url.substring('http://'.length)
     : url );
@@ -181,37 +317,36 @@ PopupView.prototype.populateUrl = function(url) {
 
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);
+  window.open(targetUrl);
 }
 
 PopupView.prototype.onRecordingStarted = function() {
   this.start();
-
-  this.$divRecording.removeClass('off').addClass('on');
-  this.startMicrophoneResponse(this.$micLevelBars);
 }
 
 PopupView.prototype.onRecordingStopped = function() {
-  this.$divRecording.removeClass('on').addClass('off');
-  this.stopMicrophoneResponse();
+
 }
 
 PopupView.prototype.onRecordingFailure = function() {
-  this.$divRecording.removeClass('on').addClass('off');
-  this.stopMicrophoneResponse();
-}
-
-PopupView.prototype.startMicrophoneResponse = function($targets) {
-  this.stopMicrophoneResponse();
-
-  var responseFunction = function() {
-    var amplitudeFiveScale = Math.round(this.audioVisualization.getAmplitude() / 255.0 * 5.0);
-    //console.log(new Date().getSeconds() + '.' + new Date().getMilliseconds() + ':' + amplitudeFiveScale);
-    $targets.removeClass('on').slice(0, amplitudeFiveScale).addClass('on');
+  if (this.model.currentIndex >= 0) {
+    this.showAborted();
+  } else {
+    this.showInstructions();
   }
-
-  this.responseLoop = setInterval($.proxy(responseFunction, this), 100);
 }
 
-PopupView.prototype.stopMicrophoneResponse = function() {
-  clearInterval(this.responseLoop);
+PopupView.prototype.onRecordingHeard = function() {
+  this.$btnStart.removeClass('disabled');
+}
+
+PopupView.prototype.onUploadProgress = function(event, eventData) {
+  this.$progressBar.width(Math.min(Math.max(eventData.percentage, 5), 100) + '%');
+}
+
+PopupView.prototype.onUploadFinish = function() {
+  this.$progressBar.width('100%');
+  this.$divFinish.delay(1000).fadeOut(1000, function(){
+    window.close();
+  });
 }

@@ -1,7 +1,7 @@
 .PHONY: nacl all
 
 current_dir=$(shell pwd)
-nacl_builder_image=schibum/castify-naclbuilder:gif-1.2
+nacl_builder_image=schibum/castify-naclbuilder:1.6
 
 all: | setup nacl
 

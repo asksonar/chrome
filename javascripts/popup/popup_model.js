@@ -6,7 +6,7 @@ function PopupModel(eventBus) {
 }
 
 PopupModel.prototype.init = function() {
-  this.currentIndex = 0;
+  this.currentIndex = -1;
   this.userScenario = null;
 }
 
@@ -17,6 +17,10 @@ PopupModel.prototype.initHandlers = function() {
 PopupModel.prototype.onScenarioLoaded = function(event, eventData) {
   this.scenarioResultHashId = Object.keys(eventData.scenario)[0];
   this.userScenario = eventData.scenario[this.scenarioResultHashId];
+}
+
+PopupModel.prototype.firstStep = function() {
+  this.currentIndex = 0;
 }
 
 PopupModel.prototype.nextStep = function() {
@@ -31,7 +35,7 @@ PopupModel.prototype.getScenarioResultHashId = function() {
   return this.scenarioResultHashId;
 }
 
-PopupModel.prototype.getResultStepHashId = function() {
+PopupModel.prototype.getScenarioStepHashId = function() {
   return this.userScenario.steps[this.currentIndex].hashid;
 }
 

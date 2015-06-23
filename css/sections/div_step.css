@@ -1,0 +1,81 @@
+#div-step {
+  padding: 5px;
+}
+
+.ctn-btn-feelings {
+  position: absolute;
+  width: 100%;
+}
+
+.ctn-btn-next {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  height: auto;
+}
+
+#btn-next {
+  height: 100%;
+  max-height: 90px;
+  width: 45px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctn-description {
+  position: relative;
+  margin-left: 45px;
+  margin-right: 45px;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 1px; /* a pixel gets cut off because we hide overflow */
+}
+
+#div-step-of-text {
+  display: inline;
+}
+
+#ahref-Url {
+  margin-left: 5px;
+}
+
+#div-description {
+  margin-top: 5px;
+}
+
+#ctn-speech-reminder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #05647C;
+  color: white;
+  opacity: 0; /* should alternate with .95 */
+
+  display: none; /* should alternate with flex */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-height: 120px) {
+  #div-step .ctn-btn-delighted {
+    position: absolute;
+    width: 100%;
+  }
+
+  #div-step .ctn-btn-confused {
+    position: absolute;
+    width: 100%;
+    left: 45px;
+  }
+
+  #div-step .ctn-description {
+    margin-left: 90px;
+  }
+
+}
