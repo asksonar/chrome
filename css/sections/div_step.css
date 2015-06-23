@@ -18,7 +18,7 @@
 #btn-next {
   height: 100%;
   max-height: 90px;
-  width: 40px;
+  width: 45px;
   padding: 0px;
   display: flex;
   align-items: center;
@@ -45,6 +45,24 @@
 #div-description {
   margin-top: 5px;
 }
+
+#ctn-speech-reminder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #05647C;
+  color: white;
+  opacity: 0; /* should alternate with .95 */
+
+  display: none; /* should alternate with flex */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
 
 @media (max-height: 120px) {
   #div-step .ctn-btn-delighted {

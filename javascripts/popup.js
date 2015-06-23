@@ -12,9 +12,7 @@ $(function(){
     'divStep':        $('#div-step'),
     'divFinish':      $('#div-finish'),
 
-    'divRecording':   $('.titlebar-recording'),
     'titleBar':       $('.titlebar'),
-    'recordingTextTime': $('#titlebar-recording-text-time'),
     'content':        $('.content'),
     'btnQuestion':    $('.titlebar-question-button'),
     'btnAbort':       $('.titlebar-close-button'),
@@ -40,15 +38,18 @@ $(function(){
     'cornerMargin':   10,
     'cornerWidth':    400,
     'cornerHeight':   135,
-    'cornerMinWidth': 300,
-    'cornerMinHeight': 85
+    'cornerMinWidth': 330, /* so talk notice won't wrap */
+    'cornerMinHeight': 85 /* fits smily face buttons */
   });
 
   window.microphoneView = new MicrophoneView(eventBus, {
     'micCheck':     $('.mic-check'),
     'micCheckBars': $('.mic-check div'),
     'micLevelBars': $('.titlebar-recording-level div'),
-    'micCheckText': $('#div-mic-check-text')
+    'micCheckText': $('#div-mic-check-text'),
+    'speechReminder': $('#ctn-speech-reminder'),
+    'divRecording':   $('.titlebar-recording'),
+    'recordingTextTime': $('#titlebar-recording-text-time')
 
   });
 

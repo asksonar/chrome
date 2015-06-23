@@ -6,6 +6,10 @@ function MicrophoneView(eventBus, config) {
   this.$micCheckText = config.micCheckText;
   this.$micLevelBars = config.micLevelBars;
 
+  this.$divRecording = config.divRecording;
+  this.$recordingTextTime = config.recordingTextTime;
+  this.$speechReminder = config.speechReminder;
+
   this.init();
   this.initHandlers();
 }
@@ -26,57 +30,24 @@ MicrophoneView.prototype.initHandlers = function() {
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
 }
 
-MicrophoneView.prototype.startMicCheck = function() {
-  this.micCheckStartTime = Date.now();
-
-  this.startMicrophoneResponse(this.$micCheckBars);
-  this.micCheckLoop = setInterval($.proxy(function() {
-    var micCheckAge = Date.now() - this.micCheckStartTime;
-
-    if (!this.hasNoise && micCheckAge > 5000) {
-      this.$micCheckText.html("Sorry, we can't quite hear you.  Is your mic on?");
-      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
-      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
-
-    } else if (!this.mostRecentLoudNoise && micCheckAge > 5000) {
-      this.$micCheckText.html("Sorry, we can't quite hear you.  Could you speak up a bit?");
-      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
-      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
-
-    } else if ((Date.now() - this.mostRecentQuietNoise) > 2000 && micCheckAge > 2000) {
-      this.$micCheckText.html("We suggest moving somewhere with less background noise.");
-      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
-      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
-
-    } else if (!this.mostRecentLoudNoise) {
-      this.$micCheckText.html("Testing, testing, 1 2 3.  Try talking into the mic.");
-
-    } else {
-      this.eventBus.trigger('recordingHeard');
-      this.$micCheckText.html("Your audio checks out.  Let's get started.");
-      this.$micCheck.addClass('color-delighted').removeClass('color-confused');
-      this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
-    }
-
-  }, this), 500);
-}
-
-MicrophoneView.prototype.stopMicCheck = function() {
-  clearInterval(this.micCheckLoop);
-  this.stopMicrophoneResponse();
-}
-
 MicrophoneView.prototype.onRecordingStarted = function() {
   this.stopMicCheck();
   this.startMicrophoneResponse(this.$micLevelBars);
+  this.startRecordingTextTime();
+  this.startSpeechReminder();
+  this.$divRecording.removeClass('off').addClass('on');
 }
 
 MicrophoneView.prototype.onRecordingStopped = function() {
   this.stopMicrophoneResponse();
+  this.stopSpeechReminder();
+  this.stopRecordingTextTime();
+  this.stopSpeechReminder();
+  this.$divRecording.removeClass('on').addClass('off');
 }
 
 MicrophoneView.prototype.onRecordingFailure = function() {
-  this.stopMicrophoneResponse();
+  this.onRecordingStopped();
 }
 
 MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
@@ -108,4 +79,96 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
 
 MicrophoneView.prototype.stopMicrophoneResponse = function() {
   window.cancelAnimationFrame(this.responseLoop);
+}
+
+MicrophoneView.prototype.startMicCheck = function() {
+  this.micCheckStartTime = Date.now();
+
+  this.startMicrophoneResponse(this.$micCheckBars);
+  this.micCheckLoop = setInterval($.proxy(function() {
+    var micCheckAge = Date.now() - this.micCheckStartTime;
+
+    if (!this.hasNoise && micCheckAge > 5000) {
+      this.$micCheckText.html("Sorry, we can't quite hear you.  Is your mic on?");
+      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
+      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
+
+    } else if (!this.mostRecentLoudNoise && micCheckAge > 5000) {
+      this.$micCheckText.html("Sorry, we can't quite hear you.  Could you speak up a bit?");
+      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
+      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
+
+    } else if ((Date.now() - this.mostRecentQuietNoise) > 2000 && micCheckAge > 2000) {
+      this.$micCheckText.html("We suggest moving somewhere with less background noise.");
+      this.$micCheck.addClass('color-confused').removeClass('color-delighted');
+      this.$micCheckText.addClass('color-confused').removeClass('color-delighted');
+
+    } else if (!this.mostRecentLoudNoise) {
+      this.$micCheckText.html("Mic check!  Try talking out loud to get started.");
+
+    } else {
+      this.eventBus.trigger('recordingHeard');
+      this.$micCheckText.html("Your audio checks out.  Let's get started.");
+      this.$micCheck.addClass('color-delighted').removeClass('color-confused');
+      this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
+    }
+
+  }, this), 500);
+}
+
+MicrophoneView.prototype.stopMicCheck = function() {
+  clearInterval(this.micCheckLoop);
+  this.stopMicrophoneResponse();
+}
+
+MicrophoneView.prototype.startRecordingTextTime = function() {
+  this.$recordingTextTime.html('00:00');
+  var timeUpdateFunction = function() {
+
+    var timeText = this.$recordingTextTime.html();
+    var minsText = parseInt(timeText.split(":")[0]);
+    var secsText = parseInt(timeText.split(":")[1]);
+
+    secsText += 1;
+    if (secsText == 60) {
+      minsText += 1;
+      secsText = 0;
+    }
+    this.$recordingTextTime.html(
+      ('00' + minsText).slice(-2) + ':' + ('00' + secsText).slice(-2)
+    );
+  }
+  this.recordingTextTimeUpdate = setInterval($.proxy(timeUpdateFunction, this), 1000);
+}
+
+MicrophoneView.prototype.stopRecordingTextTime = function() {
+  clearInterval(this.recordingTextTimeUpdate);
+}
+
+MicrophoneView.prototype.startSpeechReminder = function() {
+  // just to reset the starting timer
+  this.mostRecentLoudNoise = Date.now();
+
+  this.speechReminderLoop = setInterval($.proxy(function() {
+    if (this.$speechReminder.queue().length) {
+      return;
+    }
+
+    if ((Date.now() - this.mostRecentLoudNoise) > 7000) {
+      this.$speechReminder
+        .css({display:'flex'})
+        .animate({opacity:.95}, 1000);
+    } else {
+      this.$speechReminder
+        .animate({opacity:0}, 500, function() {
+          $(this).css({display: 'none'});
+        });
+    }
+
+  }, this), 250);
+}
+
+
+MicrophoneView.prototype.stopSpeechReminder = function() {
+  clearInterval(this.speechReminderLoop);
 }
