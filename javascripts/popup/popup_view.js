@@ -283,7 +283,7 @@ PopupView.prototype.populateUrl = function(url) {
   }
 
   var targetUrl = url.indexOf('http') == 0 ? url : 'http://' + url;
-  var displayUrl = 'Go to ' +
+  var displayUrl =
     ( url.indexOf('https://') == 0 ? url.substring('https://'.length)
     : url.indexOf('http://') == 0 ? url.substring('http://'.length)
     : url );
@@ -294,6 +294,7 @@ PopupView.prototype.populateUrl = function(url) {
 
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);
+  window.open(targetUrl);
 }
 
 PopupView.prototype.onRecordingStarted = function() {
