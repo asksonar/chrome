@@ -62,8 +62,6 @@
   text-align: center;
 }
 
-
-
 @media (max-height: 120px) {
   #div-step .ctn-btn-delighted {
     position: absolute;

@@ -11,11 +11,16 @@ $(function(){
     'divStart':       $('#div-start'),
     'divStep':        $('#div-step'),
     'divFinish':      $('#div-finish'),
+    'divAbort':       $('#div-abort'),
+    'divAborted':     $('#div-aborted'),
 
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
     'btnQuestion':    $('.titlebar-question-button'),
     'btnAbort':       $('.titlebar-close-button'),
+    'btnAbortYes':    $('#btn-abort-yes'),
+    'btnAbortNo':     $('#btn-abort-no'),
+    'btnAbortConfirm': $('#btn-abort-confirm'),
 
     'divDescription': $('#div-description'),
     'divStepOfText':  $('#div-step-of-text'),

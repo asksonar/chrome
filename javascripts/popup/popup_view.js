@@ -8,12 +8,20 @@ function PopupView(eventBus, model, config) {
   this.$divStart = config.divStart;
   this.$divStep = config.divStep;
   this.$divFinish = config.divFinish;
+  this.$divAbort = config.divAbort;
+  this.$divAborted = config.divAborted;
+
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
   this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
   this.$content = config.content;
+
   this.$btnAbort = config.btnAbort;
+  this.$btnAbortYes = config.btnAbortYes;
+  this.$btnAbortNo = config.btnAbortNo;
+  this.$btnAbortConfirm = config.btnAbortConfirm;
+
   this.$btnQuestion = config.btnQuestion;
   this.$btnStart = config.btnStart;
   this.$btnFirstStep = config.btnFirstStep;
@@ -46,7 +54,10 @@ PopupView.prototype.init = function() {
 
 PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnQuestion, this.openHelp);
-  this.on('click', this.$btnAbort, this.abort);
+  this.on('click', this.$btnAbort, this.showAbort);
+  this.on('click', this.$btnAbortYes, this.abort);
+  this.on('click', this.$btnAbortNo, this.hideAbort);
+  this.on('click', this.$btnAbortConfirm, this.abort);
 
   this.on('click', this.$btnStart, this.requestRecording);
   this.on('click', this.$btnFirstStep, this.firstStep);
@@ -132,6 +143,18 @@ PopupView.prototype.showFinish = function() {
   this.$divStep.hide();
   this.showStaticCornerWindow();
   this.$divFinish.fadeIn('slow');
+}
+
+PopupView.prototype.showAbort = function() {
+  this.$divAbort.css({display:'flex'});
+}
+
+PopupView.prototype.hideAbort = function() {
+  this.$divAbort.css({display:'none'});
+}
+
+PopupView.prototype.showAborted = function() {
+  this.$divAborted.css({display:'flex'});
 }
 
 PopupView.prototype.openHelp = function() {
@@ -307,7 +330,7 @@ PopupView.prototype.onRecordingStopped = function() {
 
 PopupView.prototype.onRecordingFailure = function() {
   if (this.model.currentIndex >= 0) {
-    this.abort();
+    this.showAborted();
   } else {
     this.showInstructions();
   }

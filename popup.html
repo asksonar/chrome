@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="css/sections/div_start.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_step.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_finish.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_abort.css"></link>
   </head>
   <body>
     <section class="titlebar">
@@ -174,6 +175,23 @@
         <p class='sub'>This window will close when the upload finishes.</p>
         <div class='progress'>
           <div class='progress-bar'></div>
+        </div>
+      </section>
+
+      <section id='div-abort'>
+        <div>
+          <h1>Are you sure you want to abandon this study?</h1>
+          <br/>
+          <a id='btn-abort-yes' class='btn btn-green'><span>Yes, stop the study.</span></a>
+          <a id='btn-abort-no' class='btn btn-blue'><span>No, I'll continue on.</span></a>
+        </div>
+      </section>
+
+      <section id='div-aborted'>
+        <div>
+          <h1>This study has been interrupted and must now be closed.</h1>
+          <br/>
+          <a id='btn-abort-confirm' class='btn btn-green'><span>Close the study.</span></a>
         </div>
       </section>
 
