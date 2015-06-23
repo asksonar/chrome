@@ -32,22 +32,17 @@ MicrophoneView.prototype.initHandlers = function() {
 
 MicrophoneView.prototype.onRecordingStarted = function() {
   this.stopMicCheck();
-  this.startMicrophoneResponse(this.$micLevelBars);
-  this.startRecordingTextTime();
-  this.startSpeechReminder();
-  this.$divRecording.removeClass('off').addClass('on');
+  this.startRecordingText();
 }
 
 MicrophoneView.prototype.onRecordingStopped = function() {
-  this.stopMicrophoneResponse();
-  this.stopSpeechReminder();
-  this.stopRecordingTextTime();
-  this.stopSpeechReminder();
-  this.$divRecording.removeClass('on').addClass('off');
+  this.stopRecordingText();
 }
 
 MicrophoneView.prototype.onRecordingFailure = function() {
   this.onRecordingStopped();
+  // if going back to the instructions page...
+  this.startMicCheck();
 }
 
 MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
@@ -119,6 +114,21 @@ MicrophoneView.prototype.startMicCheck = function() {
 MicrophoneView.prototype.stopMicCheck = function() {
   clearInterval(this.micCheckLoop);
   this.stopMicrophoneResponse();
+}
+
+MicrophoneView.prototype.startRecordingText = function() {
+  this.startMicrophoneResponse(this.$micLevelBars);
+  this.startRecordingTextTime();
+  this.startSpeechReminder();
+  this.$divRecording.removeClass('off').addClass('on');
+}
+
+MicrophoneView.prototype.stopRecordingText = function() {
+  this.stopMicrophoneResponse();
+  this.stopSpeechReminder();
+  this.stopRecordingTextTime();
+  this.stopSpeechReminder();
+  this.$divRecording.removeClass('on').addClass('off');
 }
 
 MicrophoneView.prototype.startRecordingTextTime = function() {
