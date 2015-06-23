@@ -318,9 +318,7 @@ PopupView.prototype.onRecordingHeard = function() {
 }
 
 PopupView.prototype.onUploadProgress = function(event, eventData) {
-  if (this.$divFinish.visible()) {
-    this.$progressBar.width(Math.min(Math.max(eventData.percentage, 5), 100) + '%');
-  }
+  this.$progressBar.width(Math.min(Math.max(eventData.percentage, 5), 100) + '%');
 }
 
 PopupView.prototype.onUploadFinish = function() {
