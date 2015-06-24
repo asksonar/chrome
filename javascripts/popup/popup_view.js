@@ -10,6 +10,7 @@ function PopupView(eventBus, model, config) {
   this.$divFinish = config.divFinish;
   this.$divAbort = config.divAbort;
   this.$divAborted = config.divAborted;
+  this.$divAlert = config.divAlert;
 
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
@@ -72,6 +73,7 @@ PopupView.prototype.initHandlers = function() {
   this.on('click', this.$ctnTooltips, this.clickTooltips);
 
   this.eventBus.on('scenarioLoad', this.showInstructions, this);
+  this.eventBus.on('alertWindow', this.showAlert, this);
 
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
@@ -83,6 +85,13 @@ PopupView.prototype.initHandlers = function() {
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
+}
+
+PopupView.prototype.showAlert = function() {
+  var currentAlwaysOnTop = chrome.app.window.current().isAlwaysOnTop();
+  chrome.app.window.current().setAlwaysOnTop(true);
+  chrome.app.window.current().setAlwaysOnTop(currentAlwaysOnTop);
+  this.$divAlert.fadeIn().fadeOut().fadeIn().fadeOut();
 }
 
 PopupView.prototype.showInstructions = function(event, eventData) {

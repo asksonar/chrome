@@ -28,6 +28,7 @@ BackgroundController.prototype.onMessaged = function(request, sender, sendRespon
   } else if (request.launchApp) {
     if (chrome.app.window.get("sonarDesktopCapture")) {
       sendResponse('A study is already in progress.');
+      this.eventBus.trigger('alertWindow');
     } else {
       this.onLaunched(request.launchApp);
       sendResponse(true);

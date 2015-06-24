@@ -13,6 +13,7 @@ $(function(){
     'divFinish':      $('#div-finish'),
     'divAbort':       $('#div-abort'),
     'divAborted':     $('#div-aborted'),
+    'divAlert':       $('#div-alert'),
 
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
