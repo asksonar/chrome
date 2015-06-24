@@ -102,7 +102,10 @@ MicrophoneView.prototype.startMicCheck = function() {
       this.$micCheckText.html("Mic check!  Try talking out loud to get started.");
 
     } else {
-      this.eventBus.trigger('recordingHeard');
+      if (this.recordingHeardTriggered !== true) {
+        this.eventBus.trigger('recordingHeard');
+        this.recordingHeardTriggered = true;
+      }
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
       this.$micCheck.addClass('color-delighted').removeClass('color-confused');
       this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
