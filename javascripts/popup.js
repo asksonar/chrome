@@ -58,6 +58,4 @@ $(function(){
 
   });
 
-  window.view.showInstructions();
-
 });

@@ -71,6 +71,8 @@ PopupView.prototype.initHandlers = function() {
   this.on('mouseleave', this.$ctnTooltips, this.hideTooltips);
   this.on('click', this.$ctnTooltips, this.clickTooltips);
 
+  this.eventBus.on('scenarioLoad', this.showInstructions, this);
+
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
@@ -83,17 +85,22 @@ PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
 }
 
-PopupView.prototype.showInstructions = function() {
+PopupView.prototype.showInstructions = function(event, eventData) {
   this.$divSelectScreen.hide();
   this.$divStart.hide();
   this.$divStep.hide();
   this.$divFinish.hide();
 
+  var windowScreen = window.screen;
+  if (eventData && eventData.scenario && eventData.scenario.screen) {
+    windowScreen = eventData.scenario.screen;
+  }
+
   chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
   chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
   chrome.app.window.current().outerBounds.setPosition(
-    Math.round((screen.availWidth - this.centerWidth) / 2),
-    Math.round((screen.availHeight - this.centerHeight) / 2)
+    windowScreen.availLeft + Math.round((windowScreen.availWidth - this.centerWidth) / 2),
+    windowScreen.availTop + Math.round((windowScreen.availHeight - this.centerHeight) / 2)
   );
 
   this.$divInstructions.show();
@@ -119,8 +126,8 @@ PopupView.prototype.showStaticCornerWindow = function() {
   chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
   chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
   chrome.app.window.current().outerBounds.setPosition(
-    screen.availWidth - this.cornerWidth - this.cornerMargin,
-    0
+    screen.availLeft + screen.availWidth - this.cornerWidth - this.cornerMargin,
+    screen.availTop + 0
   );
 }
 
@@ -131,8 +138,8 @@ PopupView.prototype.showStep = function() {
   chrome.app.window.current().outerBounds.setMaximumSize(null, null)
   chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
   chrome.app.window.current().outerBounds.setPosition(
-    screen.availWidth - this.cornerWidth - this.cornerMargin,
-    0
+    screen.availLeft + screen.availWidth - this.cornerWidth - this.cornerMargin,
+    screen.availTop + 0
   );
 
   this.$divStep.show();
