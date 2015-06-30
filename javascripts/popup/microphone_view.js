@@ -167,7 +167,7 @@ MicrophoneView.prototype.startSpeechReminder = function() {
       return;
     }
 
-    if ((Date.now() - this.mostRecentLoudNoise) > 7000) {
+    if ((Date.now() - this.mostRecentLoudNoise) > 15000) {
       this.$speechReminder
         .css({display:'flex'})
         .animate({opacity:.95}, 1000);
