@@ -28,6 +28,7 @@ BackgroundController.prototype.onMessaged = function(request, sender, sendRespon
   } else if (request.launchApp) {
     if (chrome.app.window.get("sonarDesktopCapture")) {
       sendResponse('A study is already in progress.');
+      this.eventBus.trigger('alertWindow');
     } else {
       this.onLaunched(request.launchApp);
       sendResponse(true);
@@ -82,7 +83,7 @@ BackgroundController.prototype.testLaunch = function() {
         },
         {
           "hashid":"V57O4oo5",
-          "description":"Has no site",
+          "description":"Cillum tail ipsum laborum, esse labore tongue aliqua turkey kielbasa pork sint pancetta lorem. Alcatra ribeye ground round sed deserunt biltong minim meatball. Ad meatloaf chicken fugiat, biltong salami aliqua leberkas. Eiusmod veniam elit proident deserunt. Bacon picanha commodo doner labore pork chop, occaecat exercitation filet mignon biltong bresaola deserunt veniam. Nulla pariatur kevin, doner quis laboris veniam non. Sed ham alcatra hamburger, veniam turducken est beef ribs bresaola short loin aliqua filet mignon beef eu.",
           "url":""
         }
       ]

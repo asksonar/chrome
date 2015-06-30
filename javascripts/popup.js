@@ -13,6 +13,7 @@ $(function(){
     'divFinish':      $('#div-finish'),
     'divAbort':       $('#div-abort'),
     'divAborted':     $('#div-aborted'),
+    'divAlert':       $('#div-alert'),
 
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
@@ -22,6 +23,7 @@ $(function(){
     'btnAbortNo':     $('#btn-abort-no'),
     'btnAbortConfirm': $('#btn-abort-confirm'),
 
+    'divTitle':       $('#div-title'),
     'divDescription': $('#div-description'),
     'divStepOfText':  $('#div-step-of-text'),
     'ahrefUrl':       $('#ahref-Url'),
@@ -57,7 +59,5 @@ $(function(){
     'recordingTextTime': $('#titlebar-recording-text-time')
 
   });
-
-  window.view.showInstructions();
 
 });

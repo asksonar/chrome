@@ -19,3 +19,9 @@
 #div-aborted {
   opacity: 1;
 }
+
+#div-alert {
+  display: none; /* to be modified with .fadeIn() */
+  border: 10px solid #F69526;
+  opacity: .95;
+}

@@ -102,7 +102,10 @@ MicrophoneView.prototype.startMicCheck = function() {
       this.$micCheckText.html("Mic check!  Try talking out loud to get started.");
 
     } else {
-      this.eventBus.trigger('recordingHeard');
+      if (this.recordingHeardTriggered !== true) {
+        this.eventBus.trigger('recordingHeard');
+        this.recordingHeardTriggered = true;
+      }
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
       this.$micCheck.addClass('color-delighted').removeClass('color-confused');
       this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
@@ -164,7 +167,7 @@ MicrophoneView.prototype.startSpeechReminder = function() {
       return;
     }
 
-    if ((Date.now() - this.mostRecentLoudNoise) > 7000) {
+    if ((Date.now() - this.mostRecentLoudNoise) > 15000) {
       this.$speechReminder
         .css({display:'flex'})
         .animate({opacity:.95}, 1000);
