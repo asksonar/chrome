@@ -28,7 +28,7 @@
 .ctn-description {
   position: relative;
   margin-left: 45px;
-  margin-right: 45px;
+  margin-right: 48px; /* to accomodate custom scroll bar */
   height: 100%;
   overflow-y: auto;
   padding-top: 1px; /* a pixel gets cut off because we hide overflow */
