@@ -23,6 +23,7 @@ $(function(){
     'btnAbortNo':     $('#btn-abort-no'),
     'btnAbortConfirm': $('#btn-abort-confirm'),
 
+    'divTitle':       $('#div-title'),
     'divDescription': $('#div-description'),
     'divStepOfText':  $('#div-step-of-text'),
     'ahrefUrl':       $('#ahref-Url'),

@@ -12,6 +12,7 @@ function PopupView(eventBus, model, config) {
   this.$divAborted = config.divAborted;
   this.$divAlert = config.divAlert;
 
+  this.$divTitle = config.divTitle;
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
   this.$ahrefUrl = config.ahrefUrl;
@@ -260,10 +261,14 @@ PopupView.prototype.start = function() {
 PopupView.prototype.firstStep = function() {
   this.showStep();
 
+  this.$content.hide();
+
   this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
   this.$divDescription.html(this.model.getCurrentDescription());
   this.populateUrl(this.model.getCurrentUrl());
-  this.$content.hide().fadeIn('slow');
+
+  this.$content.fadeIn('slow');
+  this.resizeStepDescription();
 }
 
 PopupView.prototype.next = function() {
@@ -292,8 +297,18 @@ PopupView.prototype.next = function() {
     }
 
     this.$content.fadeIn('slow');
+    this.resizeStepDescription();
   }
 
+}
+
+PopupView.prototype.resizeStepDescription = function() {
+  var sectionPadding = this.$divStep.outerHeight() - this.$divStep.height(); /* calculate padding */
+  var totalHeight = sectionPadding
+                  + this.$divDescription.outerHeight(true) /* include padding and margin */
+                  + this.$divTitle.outerHeight(true) /* include padding and margin */
+                  + this.$titleBar.height(); /* has no padding or margin */
+  chrome.app.window.current().outerBounds.height = totalHeight;
 }
 
 PopupView.prototype.delighted = function() {
