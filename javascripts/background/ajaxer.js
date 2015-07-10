@@ -8,7 +8,7 @@ function Ajaxer(eventBus, config) {
 Ajaxer.prototype.init = function() {
 }
 
-Ajaxer.prototype.send = function(command, params, blob) {
+Ajaxer.prototype.send = function(command, params, blob, callback) {
   var formData = new FormData();
   formData.append('params', JSON.stringify(params));
   if (blob) {
@@ -23,29 +23,16 @@ Ajaxer.prototype.send = function(command, params, blob) {
     contentType: false,
     processData: false,
     type: 'POST'
-  }).done(function(){
+  }).done(function(response){
     console.log('Delivered message: ' + command);
     console.log(params);
+    if (callback) {
+      callback(response);
+    }
   }).fail(function(){
     console.log('Failed message: ' + command);
     console.log(params);
-  }).always($.proxy(function() {
-    if (blob) {
-      this.uploadFinish();
-    }
-  }, this));
-}
-
-Ajaxer.prototype.uploadProgress = function (event) {
-  if (event.lengthComputable) {
-    this.eventBus.trigger('uploadProgress',
-      {percentage: event.loaded / event.total * 100}
-    );
-  }
-}
-
-Ajaxer.prototype.uploadFinish = function() {
-  this.eventBus.trigger('uploadFinish');
+  });
 }
 
 Ajaxer.prototype.notifyStart = function(scenarioResultHashId) {
@@ -72,9 +59,39 @@ Ajaxer.prototype.notifyStep = function(resultStep) {
   });
 }
 
-Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, steps, file) {
+Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
   this.send('video.finish', {
     'scenarioResultHashId': scenarioResultHashId,
     'steps': steps
-  }, file);
+  }, null, callback);
+}
+
+Ajaxer.prototype.uploadVideo = function(uuid, file) {
+  var s3 = new AWS.S3({
+    'accessKeyId': 'AKIAJ2I34IB32N2LZWGA',
+    'secretAccessKey': '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',
+    'endpoint': 'http://s3-us-west-1.amazonaws.com'
+  });
+
+  var params = {Bucket: 'upload.videos.asksonar', Key: uuid, Body: file};
+  var managedUpload = s3.upload(params, $.proxy(this.uploadFinish, this));
+
+  managedUpload.on('httpUploadProgress', $.proxy(this.uploadProgress, this));
+}
+
+Ajaxer.prototype.uploadProgress = function (event) {
+  if (event.lengthComputable) {
+    this.eventBus.trigger('uploadProgress',
+      {percentage: event.loaded / event.total * 100}
+    );
+  }
+}
+
+Ajaxer.prototype.uploadFinish = function(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    this.send('video.upload', {'uuid': data.Location.split('/').pop() });
+    this.eventBus.trigger('uploadFinish');
+  }
 }
