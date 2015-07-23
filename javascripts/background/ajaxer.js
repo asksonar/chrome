@@ -10,7 +10,11 @@ Ajaxer.prototype.init = function() {
 
 Ajaxer.prototype.send = function(command, params, blob, callback) {
   var formData = new FormData();
-  formData.append('params', JSON.stringify(params));
+  if (params) {
+    $.each(params, function(key, value){
+      formData.append(key, value);
+    });
+  }
   if (blob) {
     formData.append('dataBinary', blob);
     formData.append('dataMimeType', blob.type);
@@ -36,37 +40,41 @@ Ajaxer.prototype.send = function(command, params, blob, callback) {
 }
 
 Ajaxer.prototype.notifyStart = function(scenarioResultHashId) {
-  this.send('data.start', {
-    'scenarioResultHashId': scenarioResultHashId
+  this.send('/studies/' + scenarioResultHashId, {
+    '_method': 'PATCH',
+    'status': 'inprogress'
   });
 }
 
 Ajaxer.prototype.notifyFinish = function(scenarioResultHashId) {
-  this.send('data.finish', {
-    'scenarioResultHashId': scenarioResultHashId
+  this.send('/studies/' + scenarioResultHashId, {
+    '_method': 'PATCH',
+    'status': 'completed'
   });
 }
 
 Ajaxer.prototype.notifyAbort = function(scenarioResultHashId) {
-  this.send('data.abort', {
-    'scenarioResultHashId': scenarioResultHashId
+  this.send('/studies/' + scenarioResultHashId, {
+    '_method': 'PATCH',
+    'status': 'aborted'
   });
 }
 
 Ajaxer.prototype.notifyStep = function(resultStep) {
-  this.send('data.step', {
-    'step': resultStep
+  this.send('/studies/' + resultStep.scenarioResultHashId + '/step', {
+    '_method': 'POST',
+    'step_json': JSON.stringify(resultStep)
   });
 }
 
 Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
-  this.send('video.finish', {
-    'scenarioResultHashId': scenarioResultHashId,
-    'steps': steps
+  this.send('/studies/' + scenarioResultHashId + '/video', {
+    '_method': 'POST',
+    'steps_json': JSON.stringify(steps)
   }, null, callback);
 }
 
-Ajaxer.prototype.uploadVideo = function(uuid, file) {
+Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, file) {
   var s3 = new AWS.S3({
     'accessKeyId': 'AKIAJ2I34IB32N2LZWGA',
     'secretAccessKey': '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',
@@ -74,7 +82,7 @@ Ajaxer.prototype.uploadVideo = function(uuid, file) {
   });
 
   var params = {Bucket: 'upload.videos.asksonar', Key: uuid, Body: file};
-  var managedUpload = s3.upload(params, $.proxy(this.uploadFinish, this));
+  var managedUpload = s3.upload(params, $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid));
 
   managedUpload.on('httpUploadProgress', $.proxy(this.uploadProgress, this));
 }
@@ -87,11 +95,15 @@ Ajaxer.prototype.uploadProgress = function (event) {
   }
 }
 
-Ajaxer.prototype.uploadFinish = function(err, data) {
+Ajaxer.prototype.uploadFinish = function(scenarioResultHashId, uuid, err, data) {
   if (err) {
     console.log(err);
   } else {
-    this.send('video.upload', {'uuid': data.Location.split('/').pop() });
+    //debugger;
+    //var uuid = data.Location.split('/').pop();
+    this.send('/studies/' + scenarioResultHashId + '/video/' + uuid, {
+      '_method': 'PATCH'
+    });
     this.eventBus.trigger('uploadFinish');
   }
 }
