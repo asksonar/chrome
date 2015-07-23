@@ -25,6 +25,10 @@ BackgroundController.prototype.initHandlers = function() {
 BackgroundController.prototype.onMessaged = function(request, sender, sendResponse) {
   if (request === 'isInstalledApp?') {
     sendResponse(true);
+    // auto-update if no study in progress
+    if (!chrome.app.window.get("sonarDesktopCapture")) {
+      this.update();
+    }
   } else if (request.launchApp) {
     if (chrome.app.window.get("sonarDesktopCapture")) {
       sendResponse('A study is already in progress.');
@@ -36,10 +40,20 @@ BackgroundController.prototype.onMessaged = function(request, sender, sendRespon
   }
 }
 
-BackgroundController.prototype.onLaunched = function(scenario) {
-  if (scenario && scenario.source) {
-    // checking for Object {isKioskSession: false, source: "reload"}
-    // or Object {isKioskSession: false, source: "extensions_page"}
+BackgroundController.prototype.update = function() {
+  // https://developer.chrome.com/extensions/runtime#method-requestUpdateCheck
+  chrome.runtime.requestUpdateCheck(function(status, details) {
+    if (status == 'update_available') {
+      chrome.runtime.reload();
+    }
+  });
+}
+
+BackgroundController.prototype.onLaunched = function(launchApp) {
+  if (!launchApp
+    || !launchApp.scenario
+    || !launchApp.scenarioResultHashId
+    || !launchApp.screen) {
     return;
   }
 
@@ -51,12 +65,13 @@ BackgroundController.prototype.onLaunched = function(scenario) {
     focused: true,
     state: 'normal',
     hidden: true
-  }, $.proxy(this.onCreatedWindow, this, scenario));
+  }, $.proxy(this.onCreatedWindow, this, launchApp));
 }
 
-BackgroundController.prototype.onCreatedWindow = function(scenario, createdWindow) {
+BackgroundController.prototype.onCreatedWindow = function(launchApp, createdWindow) {
   this.eventBus.trigger('scenarioLoad', {
-    'scenario': scenario
+    'scenario': launchApp.scenario,
+    'scenarioResultHashId': launchApp.scenarioResultHashId
   });
 }
 

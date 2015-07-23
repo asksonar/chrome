@@ -102,8 +102,8 @@ PopupView.prototype.showInstructions = function(event, eventData) {
   this.$divFinish.hide();
 
   var windowScreen = window.screen;
-  if (eventData && eventData.scenario && eventData.scenario.screen) {
-    windowScreen = eventData.scenario.screen;
+  if (eventData && eventData.screen) {
+    windowScreen = eventData.screen;
   }
 
   chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
