@@ -1,6 +1,10 @@
 function Ajaxer(eventBus, config) {
   this.eventBus = eventBus;
   this.url = config.url
+  this.accessKeyId = config.accessKeyId;
+  this.secretAccessKey = config.secretAccessKey;
+  this.endpoint = config.endpoint;
+  this.bucket = config.bucket;
 
   this.init();
 }
@@ -76,12 +80,12 @@ Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
 
 Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, file) {
   var s3 = new AWS.S3({
-    'accessKeyId': 'AKIAJ2I34IB32N2LZWGA',
-    'secretAccessKey': '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',
-    'endpoint': 'http://s3-us-west-1.amazonaws.com'
+    'accessKeyId': this.accessKeyId,
+    'secretAccessKey': this.secretAccessKey,
+    'endpoint': this.endpoint
   });
 
-  var params = {Bucket: 'upload.videos.asksonar', Key: uuid, Body: file};
+  var params = {Bucket: this.bucket, Key: uuid, Body: file};
   var managedUpload = s3.upload(params, $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid));
 
   managedUpload.on('httpUploadProgress', $.proxy(this.uploadProgress, this));
