@@ -25,10 +25,9 @@ BackgroundController.prototype.initHandlers = function() {
 BackgroundController.prototype.onMessaged = function(request, sender, sendResponse) {
   if (request === 'isInstalledApp?') {
     sendResponse(true);
-    // auto-update if no study in progress
-    if (!chrome.app.window.get("sonarDesktopCapture")) {
-      this.update();
-    }
+  } else if (request === 'update!') {
+    this.update(sendResponse);
+    return true; // indicates aysnch-ness
   } else if (request.launchApp) {
     if (chrome.app.window.get("sonarDesktopCapture")) {
       sendResponse('A study is already in progress.');
@@ -40,11 +39,19 @@ BackgroundController.prototype.onMessaged = function(request, sender, sendRespon
   }
 }
 
-BackgroundController.prototype.update = function() {
+BackgroundController.prototype.update = function(sendResponse) {
+  // auto-update if no study in progress
   // https://developer.chrome.com/extensions/runtime#method-requestUpdateCheck
   chrome.runtime.requestUpdateCheck(function(status, details) {
     if (status == 'update_available') {
-      chrome.runtime.reload();
+      if (!chrome.app.window.get("sonarDesktopCapture")) {
+        sendResponse(true);
+        chrome.runtime.reload();
+      } else {
+        sendResponse(false);
+      }
+    } else {
+      sendResponse(true);
     }
   });
 }
