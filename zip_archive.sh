@@ -23,6 +23,7 @@ cp -r javascripts archive/javascripts
 cp -L manifest.json archive/manifest.json
 cp -L manifest_encoder.nmf archive/manifest_encoder.nmf
 cp -L popup.html archive/popup.html
+cp -L config.prod.js archive/javascripts/config.js
 
 rm     "Archive$(cat manifest.json | grep \"version\" | cut -d \" -f 4).zip"
 zip -r "Archive$(cat manifest.json | grep \"version\" | cut -d \" -f 4).zip" archive

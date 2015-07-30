@@ -15,8 +15,8 @@ PopupModel.prototype.initHandlers = function() {
 }
 
 PopupModel.prototype.onScenarioLoaded = function(event, eventData) {
-  this.scenarioResultHashId = Object.keys(eventData.scenario)[0];
-  this.userScenario = eventData.scenario[this.scenarioResultHashId];
+  this.userScenario = eventData.scenario;
+  this.scenarioResultHashId = eventData.scenarioResultHashId;
 }
 
 PopupModel.prototype.firstStep = function() {

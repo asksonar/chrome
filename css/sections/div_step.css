@@ -31,6 +31,12 @@
   margin-right: 48px; /* to accomodate custom scroll bar */
   height: 100%;
   overflow-y: auto;
+}
+
+#div-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-top: 1px; /* a pixel gets cut off because we hide overflow */
 }
 
@@ -54,7 +60,7 @@
   width: 100%;
   background-color: #05647C;
   color: white;
-  opacity: 0; /* should alternate with .95 */
+  opacity: .95;
 
   display: none; /* should alternate with flex */
   align-items: center;

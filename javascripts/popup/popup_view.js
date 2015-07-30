@@ -102,8 +102,8 @@ PopupView.prototype.showInstructions = function(event, eventData) {
   this.$divFinish.hide();
 
   var windowScreen = window.screen;
-  if (eventData && eventData.scenario && eventData.scenario.screen) {
-    windowScreen = eventData.scenario.screen;
+  if (eventData && eventData.screen) {
+    windowScreen = eventData.screen;
   }
 
   chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
@@ -341,10 +341,6 @@ PopupView.prototype.populateUrl = function(url) {
     ( url.indexOf('https://') == 0 ? url.substring('https://'.length)
     : url.indexOf('http://') == 0 ? url.substring('http://'.length)
     : url );
-
-  if (displayUrl.indexOf('/') > 0) {
-    displayUrl = displayUrl.substring(0, displayUrl.indexOf('/'));
-  }
 
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);

@@ -168,14 +168,9 @@ MicrophoneView.prototype.startSpeechReminder = function() {
     }
 
     if ((Date.now() - this.mostRecentLoudNoise) > 15000) {
-      this.$speechReminder
-        .css({display:'flex'})
-        .animate({opacity:.95}, 1000);
+      this.$speechReminder.css({display:'flex'});
     } else {
-      this.$speechReminder
-        .animate({opacity:0}, 500, function() {
-          $(this).css({display: 'none'});
-        });
+      this.$speechReminder.css({display:'none'});
     }
 
   }, this), 250);
