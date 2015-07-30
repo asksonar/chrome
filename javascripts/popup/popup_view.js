@@ -342,10 +342,6 @@ PopupView.prototype.populateUrl = function(url) {
     : url.indexOf('http://') == 0 ? url.substring('http://'.length)
     : url );
 
-  if (displayUrl.indexOf('/') > 0) {
-    displayUrl = displayUrl.substring(0, displayUrl.indexOf('/'));
-  }
-
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);
   window.open(targetUrl);
