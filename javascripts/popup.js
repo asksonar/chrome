@@ -29,6 +29,7 @@ $(function(){
     'ahrefUrl':       $('#ahref-Url'),
 
     'btnStart':       $('#btn-start'),
+    'divAlertStart':  $('#alert-start'),
     'btnFirstStep':   $('#btn-first-step'),
     'btnNext':        $('#btn-next'),
     'btnFinish':      $('#btn-finish'),

@@ -26,6 +26,7 @@ function PopupView(eventBus, model, config) {
 
   this.$btnQuestion = config.btnQuestion;
   this.$btnStart = config.btnStart;
+  this.$divAlertStart = config.divAlertStart;
   this.$btnFirstStep = config.btnFirstStep;
   this.$btnNext = config.btnNext;
   this.$btnFinish = config.btnFinish;
@@ -98,6 +99,7 @@ PopupView.prototype.showAlert = function() {
 PopupView.prototype.showInstructions = function(event, eventData) {
   this.$divSelectScreen.hide();
   this.$divStart.hide();
+  window.clearInterval(this.highlightStartInterval);
   this.$divStep.hide();
   this.$divFinish.hide();
 
@@ -130,6 +132,24 @@ PopupView.prototype.showStart = function() {
   this.showStaticCornerWindow();
 
   this.$divStart.show();
+  this.highlightStartInterval = window.setInterval($.proxy(this.highlightStart, this), 7 * 1000);
+}
+
+PopupView.prototype.highlightStart = function() {
+  var left = this.$btnFirstStep.offset().left;
+  var top = this.$btnFirstStep.offset().top;
+  var width = this.$btnFirstStep.outerWidth();
+  var height = this.$btnFirstStep.outerHeight();
+
+  var padding = 5; /* defined in css */
+  var topOffset = 32; /* height of the titlebar which is not include in position relative parent */
+
+  this.$divAlertStart.css({
+    left: left - padding,
+    top: top - padding - topOffset,
+    width: width,
+    height: height
+  }).fadeIn().fadeOut().fadeIn().fadeOut();
 }
 
 PopupView.prototype.showStaticCornerWindow = function() {
@@ -143,6 +163,7 @@ PopupView.prototype.showStaticCornerWindow = function() {
 
 PopupView.prototype.showStep = function() {
   this.$divStart.hide();
+  window.clearInterval(this.highlightStartInterval);
 
   chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
   chrome.app.window.current().outerBounds.setMaximumSize(null, null)
