@@ -39,6 +39,8 @@ $(function(){
     'ctnTooltips':    $('.tooltip-trigger'),
 
     'progressBar':    $('.progress-bar'),
+    'btnProgressPause':  $('#btn-progress-pause'),
+    'btnProgressPlay':   $('#btn-progress-play'),
 
     'centerWidth':    500,
     'centerHeight':   310,

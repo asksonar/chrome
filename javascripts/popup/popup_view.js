@@ -36,6 +36,8 @@ function PopupView(eventBus, model, config) {
   this.$ctnTooltips = config.ctnTooltips;
 
   this.$progressBar = config.progressBar;
+  this.$btnProgressPause = config.btnProgressPause;
+  this.$btnProgressPlay = config.btnProgressPlay;
 
   this.centerWidth = config.centerWidth;
   this.centerHeight = config.centerHeight;
@@ -74,6 +76,9 @@ PopupView.prototype.initHandlers = function() {
   this.on('mouseleave', this.$ctnTooltips, this.hideTooltips);
   this.on('click', this.$ctnTooltips, this.clickTooltips);
 
+  this.on('click', this.$btnProgressPause, this.pauseUpload);
+  this.on('click', this.$btnProgressPlay, this.resumeUpload);
+
   this.eventBus.on('scenarioLoad', this.showInstructions, this);
   this.eventBus.on('alertWindow', this.showAlert, this);
 
@@ -83,6 +88,7 @@ PopupView.prototype.initHandlers = function() {
   this.eventBus.on('recordingHeard', this.onRecordingHeard, this);
   this.eventBus.on('uploadProgress', this.onUploadProgress, this);
   this.eventBus.on('uploadFinish', this.onUploadFinish, this);
+
 }
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
@@ -397,4 +403,16 @@ PopupView.prototype.onUploadFinish = function() {
   this.$divFinish.delay(1000).fadeOut(1000, function(){
     window.close();
   });
+}
+
+PopupView.prototype.pauseUpload = function() {
+  this.$btnProgressPause.hide();
+  this.$btnProgressPlay.show();
+  this.eventBus.trigger('pauseUpload');
+}
+
+PopupView.prototype.resumeUpload = function() {
+  this.$btnProgressPlay.hide();
+  this.$btnProgressPause.show();
+  this.eventBus.trigger('resumeUpload');
 }
