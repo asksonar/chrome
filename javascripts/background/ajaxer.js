@@ -7,9 +7,15 @@ function Ajaxer(eventBus, config) {
   this.bucket = config.bucket;
 
   this.init();
+  this.initHandlers();
 }
 
 Ajaxer.prototype.init = function() {
+}
+
+Ajaxer.prototype.initHandlers = function() {
+  this.eventBus.on('pauseUpload', this.onPauseUpload, this);
+  this.eventBus.on('resumeUpload', this.onResumeUpload, this);
 }
 
 Ajaxer.prototype.send = function(command, params, blob, callback) {
@@ -85,10 +91,27 @@ Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, file) {
     'endpoint': this.endpoint
   });
 
-  var params = {Bucket: this.bucket, Key: uuid, Body: file};
-  var managedUpload = s3.upload(params, $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid));
+  this.uploader = new Uploader({
+    s3: s3,
+    bucket: this.bucket,
+    key: uuid,
+    file: file,
+    onProgress: $.proxy(this.uploadProgress, this),
+    onFinish: $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid),
+    onError: function(error) {
+      console.log(error);
+    }
+  });
 
-  managedUpload.on('httpUploadProgress', $.proxy(this.uploadProgress, this));
+  this.uploader.start();
+}
+
+Ajaxer.prototype.onPauseUpload = function() {
+  this.uploader.pause();
+}
+
+Ajaxer.prototype.onResumeUpload = function() {
+  this.uploader.resume();
 }
 
 Ajaxer.prototype.uploadProgress = function (event) {
