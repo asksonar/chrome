@@ -335,7 +335,9 @@ PopupView.prototype.resizeStepDescription = function() {
                   + this.$divDescription.outerHeight(true) /* include padding and margin */
                   + this.$divTitle.outerHeight(true) /* include padding and margin */
                   + this.$titleBar.height(); /* has no padding or margin */
-  chrome.app.window.current().outerBounds.height = totalHeight;
+  // it's difficult to accurately resize when the happy faces move around,
+  // so we set the minimum height to two stacked faces
+  chrome.app.window.current().outerBounds.height = Math.max(totalHeight, this.cornerHeight);
 }
 
 PopupView.prototype.delighted = function() {
@@ -371,7 +373,9 @@ PopupView.prototype.populateUrl = function(url) {
 
   this.$ahrefUrl.attr('href', targetUrl);
   this.$ahrefUrl.html(displayUrl);
-  window.open(targetUrl);
+  window.setTimeout(function() {
+    window.open(targetUrl);
+  }, 0);
 }
 
 PopupView.prototype.onRecordingStarted = function() {
