@@ -83,6 +83,11 @@ MicrophoneView.prototype.startMicCheck = function() {
   this.micCheckLoop = setInterval($.proxy(function() {
     var micCheckAge = Date.now() - this.micCheckStartTime;
 
+    if (this.recordingHeardTriggered !== true && this.hasNoise) {
+      this.eventBus.trigger('recordingHeard');
+      this.recordingHeardTriggered = true;
+    }
+
     if (!this.hasNoise && micCheckAge > 5000) {
       this.$micCheckText.html("Sorry, we can't quite hear you.  Is your mic on?");
       this.$micCheck.addClass('color-confused').removeClass('color-delighted');
@@ -102,10 +107,6 @@ MicrophoneView.prototype.startMicCheck = function() {
       this.$micCheckText.html("Mic check!  Try talking out loud to get started.");
 
     } else {
-      if (this.recordingHeardTriggered !== true) {
-        this.eventBus.trigger('recordingHeard');
-        this.recordingHeardTriggered = true;
-      }
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
       this.$micCheck.addClass('color-delighted').removeClass('color-confused');
       this.$micCheckText.addClass('color-delighted').removeClass('color-confused');
