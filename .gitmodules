@@ -1,3 +1,0 @@
-[submodule "external/libcastify"]
-	path = external/libcastify
-	url = git@github.com:w69b/libcastify.git
