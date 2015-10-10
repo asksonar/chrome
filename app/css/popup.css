@@ -1,0 +1,160 @@
+.titlebar {
+  width: 100%;
+  height: 32px;
+  background-color: #1CA5C9;
+  -webkit-app-region: drag;
+  cursor: move;
+  position: absolute;
+}
+
+.titlebar-center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px; /* large enough to fit most items */
+  text-align: center; /* then center children within that 100px space */
+}
+
+.titlebar-icon {
+  height: 24px;
+  margin-top: 4px;
+}
+
+.titlebar-recording {
+  height: 24px;
+  margin: 4px;
+  padding: 0px 10px;
+  text-align: center;
+}
+
+.titlebar-recording-text {
+  float: left;
+  color: #FFF;
+  line-height: 28px; /* doesn't quite line up perfectly */
+  font-size: 14px;
+  min-width: 40px;
+  text-align: left;
+}
+
+.titlebar-recording-icon {
+  float: left;
+  margin-left: 5px;
+}
+
+.titlebar-recording-icon i {
+  color: #FFF;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.titlebar-recording-level {
+  float: left;
+  margin-left: 5px;
+  margin-top: 2px;
+  transform: rotate(180deg); /* so we can jQuery select in natural order */
+}
+
+.titlebar-recording-level div {
+  background-color: #999;
+  width: 10px;
+  height: 3px;
+  border-radius: 3px;
+  margin: 1px;
+}
+
+.titlebar-recording-level .on {
+  background-color: #FFF;
+}
+
+.titlebar-recording.on {
+  background-color: #F69526;
+}
+
+.titlebar-recording.off {
+  background-color: #999;
+}
+
+.titlebar-recording.on .off {
+  display: none;
+}
+
+.titlebar-recording.off .on {
+  display: none;
+}
+
+.titlebar-buttons {
+  -webkit-app-region: no-drag;
+  margin: 0px 4px;
+  width: 44px;
+}
+
+.titlebar-buttons .btn-text {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  line-height: 32px;
+  color: #FFF;
+  font-size: 18px;
+}
+
+section {
+  /* based on http://stackoverflow.com/a/8172337 */
+  /* allows us to do height:100% in children */
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  height: auto;
+  left: 0px;
+  right: 0px;
+  width: auto;
+
+}
+
+.content {
+  margin-top: 32px;
+}
+
+.btn-delighted,
+.btn-confused {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-delighted {
+  content: url('/images/face_delight.svg');
+  background: #1CC67D;
+  display: inline-block;
+  color:  #167248; /* for the box shadow */
+}
+
+.btn-confused {
+  content: url('/images/face_bummer.svg');
+  background: #F57340;
+  color: #AE3F1B; /* for the box shadow */
+}
+
+.btn-blue {
+  background-color: #05647C;
+  display: inline-block;
+  padding: 8px 12px 4px 12px;
+  color: #013E4C; /* for the box shadow: saturate 5%, darken 10% */
+}
+
+.btn-blue span {
+  font-family: BrandonGrotesque-Medium;
+  font-size: 18px;
+  color: #FFF; /* for the text */
+}
+
+.btn-green {
+  background-color: #31B6AE;
+  display: inline-block;
+  padding: 8px 12px 4px 12px;
+  color: #219288;
+}
+
+.btn-green span {
+  font-family: BrandonGrotesque-Medium;
+  font-size: 18px;
+  color: #FFF;
+}

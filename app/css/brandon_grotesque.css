@@ -1,0 +1,45 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 3009968, 2015-04-15T19:56:21-0400
+ *
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are
+ * explicitly restricted from using the Licensed Webfonts(s).
+ *
+ * You may obtain a valid license at the URLs below.
+ *
+ * Webfont: BrandonGrotesque-Medium by HVD Fonts
+ * URL: http://www.myfonts.com/fonts/hvdfonts/brandon-grotesque/medium/
+ *
+ * Webfont: BrandonGrotesque-Regular by HVD Fonts
+ * URL: http://www.myfonts.com/fonts/hvdfonts/brandon-grotesque/regular/
+ *
+ *
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3009968
+ * Licensed pageviews: 10,000
+ * Webfonts copyright: Copyright (c) 2009 by Hannes von Doehren. All rights reserved.
+ *
+ * © 2015 MyFonts Inc
+*/
+
+@font-face {
+  font-family: 'BrandonGrotesque-Medium';
+  src: url('/fonts/2DEDB0_0_0.eot');
+  src: url('/fonts/2DEDB0_0_0.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/2DEDB0_0_0.woff2') format('woff2'),
+    url('/fonts/2DEDB0_0_0.woff') format('woff'),
+    url('/fonts/2DEDB0_0_0.ttf') format('truetype'),
+    url('/fonts/2DEDB0_0_0.svg#wf') format('svg');
+}
+
+
+@font-face {
+  font-family: 'BrandonGrotesque-Regular';
+  src: url('/fonts/2DEDB0_1_0.eot');
+  src: url('/fonts/2DEDB0_1_0.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/2DEDB0_1_0.woff2') format('woff2'),
+    url('/fonts/2DEDB0_1_0.woff') format('woff'),
+    url('/fonts/2DEDB0_1_0.ttf') format('truetype'),
+    url('/fonts/2DEDB0_1_0.svg#wf') format('svg');
+}
+

@@ -1,0 +1,27 @@
+#div-abort, #div-aborted {
+  display: none; /* to be replaced with display: flex */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #383838;
+  color: #FFF;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#div-abort {
+  opacity: .95;
+}
+
+#div-aborted {
+  opacity: 1;
+}
+
+#div-alert {
+  display: none; /* to be modified with .fadeIn() */
+  border: 10px solid #F69526;
+  opacity: .95;
+}
