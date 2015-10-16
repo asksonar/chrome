@@ -291,7 +291,7 @@ PopupView.prototype.firstStep = function() {
   this.$content.hide();
 
   this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
-  this.$divDescription.html(this.model.getCurrentDescription());
+  this.$divDescription.text(this.model.getCurrentDescription());
   this.populateUrl(this.model.getCurrentUrl());
 
   this.$content.fadeIn('slow');
@@ -316,7 +316,7 @@ PopupView.prototype.next = function() {
     this.$content.hide();
 
     this.$divStepOfText.html('Step ' + this.model.getCurrentStepDisplay() + ' of ' + this.model.getTotalStepDisplay() + ':');
-    this.$divDescription.html(this.model.getCurrentDescription());
+    this.$divDescription.text(this.model.getCurrentDescription());
     this.populateUrl(this.model.getCurrentUrl());
 
     if (this.model.isLastStep()) {
