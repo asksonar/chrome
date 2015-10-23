@@ -26,6 +26,7 @@ $(function(){
     'divTitle':       $('#div-title'),
     'divDescription': $('#div-description'),
     'divStepOfText':  $('#div-step-of-text'),
+    'divCtnDescription': $('.ctn-description'),
     'ahrefUrl':       $('#ahref-Url'),
 
     'btnStart':       $('#btn-start'),
@@ -35,6 +36,9 @@ $(function(){
     'btnFinish':      $('#btn-finish'),
     'btnDelighted':   $('#btn-delighted'),
     'btnConfused':    $('#btn-confused'),
+
+    'btnShowLess':    $('.btn-show-less'),
+    'btnShowMore':    $('.btn-show-more'),
 
     'ctnTooltips':    $('.tooltip-trigger'),
 

@@ -15,6 +15,7 @@ function PopupView(eventBus, model, config) {
   this.$divTitle = config.divTitle;
   this.$divDescription = config.divDescription;
   this.$divStepOfText = config.divStepOfText;
+  this.$divCtnDescription = config.divCtnDescription;
   this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
   this.$content = config.content;
@@ -32,6 +33,9 @@ function PopupView(eventBus, model, config) {
   this.$btnFinish = config.btnFinish;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
+
+  this.$btnShowLess = config.btnShowLess;
+  this.$btnShowMore = config.btnShowMore;
 
   this.$ctnTooltips = config.ctnTooltips;
 
@@ -55,6 +59,7 @@ function PopupView(eventBus, model, config) {
 }
 
 PopupView.prototype.init = function() {
+  chrome.app.window.current().setAlwaysOnTop(true);
 }
 
 PopupView.prototype.initHandlers = function() {
@@ -71,6 +76,9 @@ PopupView.prototype.initHandlers = function() {
   this.on('click', this.$btnDelighted, this.delighted);
   this.on('click', this.$btnConfused, this.confused);
   this.on('click', this.$btnFinish, this.finish);
+
+  this.on('click', this.$btnShowLess, this.showLess);
+  this.on('click', this.$btnShowMore, this.showMore);
 
   this.on('mouseenter', this.$ctnTooltips, this.showTooltips);
   this.on('mouseleave', this.$ctnTooltips, this.hideTooltips);
@@ -91,6 +99,16 @@ PopupView.prototype.initHandlers = function() {
 
 }
 
+PopupView.prototype.showLess = function() {
+  this.$divStep.removeClass('expanded').addClass('collapsed');
+  this.resizeStepDescription();
+};
+
+PopupView.prototype.showMore = function() {
+  this.$divStep.removeClass('collapsed').addClass('expanded');
+  this.resizeStepDescription();
+};
+
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
 }
@@ -101,6 +119,94 @@ PopupView.prototype.showAlert = function() {
   chrome.app.window.current().setAlwaysOnTop(currentAlwaysOnTop);
   this.$divAlert.fadeIn().fadeOut().fadeIn().fadeOut();
 }
+
+PopupView.prototype.resizeLarge = function(resizable) {
+  // chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
+  // chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
+  chrome.app.window.current().outerBounds.width = this.centerWidth;
+  chrome.app.window.current().outerBounds.height = this.centerHeight;
+};
+
+PopupView.prototype.resizeSmall = function(resizable) {
+  // chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
+  // chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
+
+  chrome.app.window.current().outerBounds.width = this.cornerWidth;
+  chrome.app.window.current().outerBounds.height = this.cornerHeight;
+};
+
+PopupView.prototype.moveCenter = function(width, height, duration) {
+  var windowScreen = window.screen;
+
+  this.move(
+    windowScreen.availLeft + Math.round((windowScreen.availWidth - width) / 2),
+    windowScreen.availTop + Math.round((windowScreen.availHeight - height) / 2),
+    duration
+  );
+};
+
+PopupView.prototype.moveCenterTop = function(width, height, duration) {
+  var windowScreen = window.screen;
+
+  this.move(
+    windowScreen.availLeft + Math.round((windowScreen.availWidth - width) / 2),
+    windowScreen.availTop + 0,
+    duration
+  );
+};
+
+PopupView.prototype.move = function(targetLeft, targetTop, duration) {
+  if (duration === 'fast') {
+    duration = 200;
+  } else if (duration === 'slow') {
+    duration = 600;
+  } else {
+    duration = parseInt(duration);
+    if (duration === 0) {
+      duration = 0;
+    } else {
+      duration = duration || 400;
+    }
+  }
+
+  var startLeft = chrome.app.window.current().outerBounds.left;
+  var startTop = chrome.app.window.current().outerBounds.top;
+
+  var startTime;
+
+  function step(timestamp) {
+    if (!startTime) {
+      startTime = timestamp;
+    }
+    var progress = timestamp - startTime;
+
+    var newLeft = Math.round((targetLeft - startLeft) * (progress / duration) + startLeft);
+    var newTop = Math.round((targetTop - startTop) * (progress / duration) + startTop);
+
+    if (progress < duration) {
+      chrome.app.window.current().outerBounds.setPosition(newLeft, newTop);
+      window.requestAnimationFrame(step);
+    } else {
+      chrome.app.window.current().outerBounds.setPosition(targetLeft, targetTop);
+    }
+  }
+
+  if (duration === 0) {
+    chrome.app.window.current().outerBounds.setPosition(targetLeft, targetTop);
+  } else {
+    window.requestAnimationFrame(step);
+  }
+};
+
+PopupView.prototype.moveCenterResizeLarge = function(duration) {
+  this.resizeLarge();
+  this.moveCenter(this.centerWidth, this.centerHeight, duration);
+};
+
+PopupView.prototype.moveCenterTopResizeSmall = function(duration) {
+  this.resizeSmall();
+  this.moveCenterTop(this.cornerWidth, this.cornerHeight, duration);
+};
 
 PopupView.prototype.showInstructions = function(event, eventData) {
   this.$divSelectScreen.hide();
@@ -114,28 +220,27 @@ PopupView.prototype.showInstructions = function(event, eventData) {
     windowScreen = eventData.screen;
   }
 
-  chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    windowScreen.availLeft + Math.round((windowScreen.availWidth - this.centerWidth) / 2),
-    windowScreen.availTop + Math.round((windowScreen.availHeight - this.centerHeight) / 2)
-  );
+  this.moveCenterResizeLarge(0);
 
   this.$divInstructions.show();
   chrome.app.window.current().show();
-}
+};
 
 PopupView.prototype.showSelectScreen = function() {
   this.$divInstructions.hide();
-  this.showStaticCornerWindow();
+  this.resizeSmall();
+  this.move(
+    screen.availLeft + screen.availWidth - this.cornerWidth,
+    screen.availTop + 0,
+    0
+  );
   this.$divSelectScreen.show();
 }
 
 PopupView.prototype.showStart = function() {
   this.$divSelectScreen.hide();
 
-  chrome.app.window.current().setAlwaysOnTop(true);
-  this.showStaticCornerWindow();
+  this.moveCenterResizeLarge(0);
 
   this.$divStart.show();
   this.highlightStartInterval = window.setInterval($.proxy(this.highlightStart, this), 7 * 1000);
@@ -158,34 +263,20 @@ PopupView.prototype.highlightStart = function() {
   }).fadeIn().fadeOut().fadeIn().fadeOut();
 }
 
-PopupView.prototype.showStaticCornerWindow = function() {
-  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    screen.availLeft + screen.availWidth - this.cornerWidth - this.cornerMargin,
-    screen.availTop + 0
-  );
-}
-
 PopupView.prototype.showStep = function() {
   this.$divStart.hide();
   window.clearInterval(this.highlightStartInterval);
 
-  chrome.app.window.current().outerBounds.setMinimumSize(this.cornerMinWidth, this.cornerMinHeight);
-  chrome.app.window.current().outerBounds.setMaximumSize(null, null)
-  chrome.app.window.current().outerBounds.setSize(this.cornerWidth, this.cornerHeight);
-  chrome.app.window.current().outerBounds.setPosition(
-    screen.availLeft + screen.availWidth - this.cornerWidth - this.cornerMargin,
-    screen.availTop + 0
-  );
+  // this.moveCenterTopResizeSmall();
+  // this.moveCenterTop(this.cornerWidth, this.cornerHeight);
 
   this.$divStep.show();
 }
 
 PopupView.prototype.showFinish = function() {
+  this.resizeSmall();
   chrome.app.window.current().setAlwaysOnTop(false);
   this.$divStep.hide();
-  this.showStaticCornerWindow();
   this.$divFinish.fadeIn('slow');
 }
 
@@ -286,6 +377,10 @@ PopupView.prototype.start = function() {
 }
 
 PopupView.prototype.firstStep = function() {
+  this.$content.width(this.cornerWidth);
+  chrome.app.window.current().outerBounds.width = this.cornerWidth;
+  this.moveCenterTop(this.cornerWidth, this.cornerHeight);
+
   this.showStep();
 
   this.$content.hide();
@@ -294,9 +389,13 @@ PopupView.prototype.firstStep = function() {
   this.$divDescription.text(this.model.getCurrentDescription());
   this.populateUrl(this.model.getCurrentUrl());
 
+  if (this.model.isLastStep()) {
+    this.$btnNext.html("<span class='expanded-text'>Finish the study!</span><span class='collapsed-text'>Finish</span>");
+  }
+
   this.$content.fadeIn('slow');
   this.resizeStepDescription();
-}
+};
 
 PopupView.prototype.next = function() {
   if (this.model.isLastStep()) {
@@ -307,6 +406,8 @@ PopupView.prototype.next = function() {
     this.showFinish();
   } else {
     this.model.nextStep();
+
+    this.showMore();
 
     this.eventBus.trigger('next', {
       'scenarioResultHashId': this.model.getScenarioResultHashId(),
@@ -320,7 +421,7 @@ PopupView.prototype.next = function() {
     this.populateUrl(this.model.getCurrentUrl());
 
     if (this.model.isLastStep()) {
-      this.$btnNext.html('<span>Finish</span>');
+      this.$btnNext.html("<span class='expanded-text'>Finish the study!</span><span class='collapsed-text'>Finish</span>");
     }
 
     this.$content.fadeIn('slow');
@@ -331,13 +432,21 @@ PopupView.prototype.next = function() {
 
 PopupView.prototype.resizeStepDescription = function() {
   var sectionPadding = this.$divStep.outerHeight() - this.$divStep.height(); /* calculate padding */
-  var totalHeight = sectionPadding
-                  + this.$divDescription.outerHeight(true) /* include padding and margin */
-                  + this.$divTitle.outerHeight(true) /* include padding and margin */
-                  + this.$titleBar.height(); /* has no padding or margin */
+
+
+//  var totalHeight = sectionPadding
+//                  + this.$divDescription.outerHeight(true) /* include padding and margin */
+//                  + this.$divTitle.outerHeight(true) /* include padding and margin */
+//                  + this.$titleBar.height(); /* has no padding or margin */
   // it's difficult to accurately resize when the happy faces move around,
   // so we set the minimum height to two stacked faces
-  chrome.app.window.current().outerBounds.height = Math.max(totalHeight, this.cornerHeight);
+
+  var totalHeight = sectionPadding +
+    this.$divCtnDescription.outerHeight(true) +
+    this.$titleBar.height();
+
+  // chrome.app.window.current().outerBounds.height = Math.max(totalHeight, this.cornerHeight);
+  chrome.app.window.current().outerBounds.height = Math.max(totalHeight, 86);
 }
 
 PopupView.prototype.delighted = function() {

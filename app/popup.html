@@ -82,23 +82,55 @@
       <section id='div-select-screen'>
         <h1>Click Share to begin giving feedback by recording your screen and voice.</h1>
         <svg width="200px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+          <!-- <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse">
             <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #F69526;"></path>
+          </marker> -->
+          <marker id="markerArrow" markerWidth="16" markerHeight="16" refX="0" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M0,0 L0,16 L16,8 L0,0" style="fill: #F69526;"></path>
           </marker>
-          <path d="M150 5 Q 125 45 10 45" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 3; stroke-linecap:round"></path>
+
+<!--           <path d="M150 5 Q 125 45 10 45" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 3; stroke-linecap:round"></path>
+ -->
+
+          <path d="M150 5 Q 125 40 15 40" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 7; stroke-linecap:round"></path>
+
         </svg>
       </section>
 
       <section id='div-start'>
-        <h1 class='pull-right ctn-now-recording'>Now recording your screen and voice</h1>
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="175px" height="50px">
-          <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+        <h1 class='ctn-now-recording'>
+          <i class='fa fa-video-camera'></i>
+          Now recording your screen and voice
+        </h1>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="200px" height="50px">
+          <!-- <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto" markerUnits="userSpaceOnUse">
             <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #F69526;"></path>
           </marker>
-          <path d="M20 30 Q 30 10 60 10" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 3; stroke-linecap:round"></path>
+ -->
+          <marker id="markerArrow" markerWidth="16" markerHeight="16" refX="0" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M0,0 L0,16 L16,8 L0,0" style="fill: #F69526;"></path>
+          </marker>
+
+          <!-- <path d="M20 45 Q 30 10 60 10" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 7; stroke-linecap:round"></path> -->
+
+          <path d="M20 30 Q 40 10 80 10" marker-end="url(#markerArrow)" style="fill: transparent; stroke: #F69526; stroke-width: 7; stroke-linecap:round"></path>
         </svg>
 
-        <div class='ctn-btn-delighted ctn-tooltip'>
+        <div class='ctn-start-mid clearfix'>
+          <div class='ctn-start-left'>
+            <ul class='ctn-tips'>
+              <li><i class='fa fa-video-camera sub'></i>Show us what works.</li>
+              <li><i class='fa fa-bullhorn sub'></i>Speak your thoughts out loud.</li>
+              <li><i class='fa fa-trophy sub'></i>Bonus points for honesty!</li>
+            </ul>
+          </div>
+
+          <div class='ctn-start-right'>
+            <img src='images/home_seetobelieve@2x.png'></img>
+          </div>
+        </div>
+
+        <!-- <div class='ctn-btn-delighted ctn-tooltip'>
           <a id='btn-demo-delighted' class='btn btn-delighted tooltip-trigger'></a>
           <div class='tooltip tooltip-base'>
             <div class='tooltip-arrow'></div>Click me any time you like anything.</span>
@@ -121,18 +153,22 @@
           <div class='tooltip tooltip-click'>
             <div class='tooltip-arrow'></div>Fine, see if I care.</span>
           </div>
+        </div> -->
+
+        <!-- <div id='alert-start'></div> -->
+
+        <!-- <h2>Ready to get started?</h2> -->
+
+        <div class='ctn-start-buttons'>
+          <a id='btn-first-step' class='btn btn-blue'><span>Let's get started!</span></a>
         </div>
-
-        <div id='alert-start'></div>
-
-        <a id='btn-first-step' class='btn btn-blue pull-right'><span>Start!</span></a>
 
         <div class='shadow'></div>
       </section>
 
-      <section id='div-step'>
+      <section id='div-step' class='expanded'>
 
-        <div class='ctn-btn-feelings'>
+        <!-- <div class='ctn-btn-feelings'>
           <div class='ctn-btn-delighted ctn-tooltip'>
             <a id='btn-delighted' class='btn btn-delighted tooltip-trigger'></a>
             <div class='tooltip tooltip-hover'>
@@ -151,15 +187,34 @@
               <div class='tooltip-arrow'></div>Got it. I made a note that you didn't like that.</span>
             </div>
           </div>
-        </div>
+        </div> -->
+
+
         <div class='ctn-description'>
-          <div id='div-title'>
-            <h3 id='div-step-of-text'></h3><a id='ahref-Url' href='#' target='sonarStepWindow'></a>
+
+          <div class='ctn-step-top'>
+            <div class='ctn-title'>
+              <div id='div-title'>
+                <h1 id='div-step-of-text'></h1>
+                <a id='ahref-Url' href='#' target='sonarStepWindow'></a>
+              </div>
+            </div>
+
+            <div class='ctn-btn-next'>
+              <a id='btn-next' class='btn btn-blue'><span class='expanded-text'>Next step!</span><span class='collapsed-text'>Next</span></a>
+            </div>
           </div>
+
           <p id='div-description'></p>
         </div>
-        <div class='ctn-btn-next'>
-          <a id='btn-next' class='btn btn-blue pull-right'><span>Next</span></a>
+
+        <div class='ctn-expand'>
+          <div class='btn-green btn-show-less'>
+            <i class='fa fa-caret-up'></i><div>show less</div><i class='fa fa-caret-up'></i>
+          </div>
+          <div class='btn-green btn-show-more'>
+            <i class='fa fa-caret-down'></i><div>show more</div><i class='fa fa-caret-down'></i>
+          </div>
         </div>
 
         <div class='shadow'></div>

@@ -95,12 +95,12 @@ BackgroundController.prototype.testLaunch = function() {
         },
         {
           "hashid":"V3gW0ood",
-          "description":"Has http",
+          "description":"Please go to the site and log in.",
           "url":"http://www.example.com/"
         },
         {
           "hashid":"8D0ewPP2",
-          "description":"has https",
+          "description":"Click on feature 1 (2nd from the right on the top nav) and do action 1. Any feedback so far? (remember to speak out loud)",
           "url":"https://example.com"
         },
         {
