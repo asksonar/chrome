@@ -71,7 +71,8 @@ BackgroundController.prototype.onLaunched = function(launchApp) {
     frame: 'none',
     focused: true,
     state: 'normal',
-    hidden: true
+    hidden: true,
+    resizable: false
   }, $.proxy(this.onCreatedWindow, this, launchApp));
 }
 

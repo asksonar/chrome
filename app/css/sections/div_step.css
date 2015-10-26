@@ -11,11 +11,6 @@
   padding: 0px 20px 20px 20px;
 }
 
-/*.ctn-btn-feelings {
-  position: absolute;
-  width: 100%;
-}*/
-
 .expanded .collapsed-text {
   display: none;
 }
@@ -36,12 +31,6 @@
   /* cover up the URL floating behind it */
   padding-left: 5px;
   background: #FFF;
-
-  /*position: absolute;
-  right: 5px;
-  top: 5px;
-  bottom: 5px;
-  height: auto;*/
 }
 
 .collapsed .ctn-btn-next {
@@ -51,37 +40,16 @@
 
 .expanded #btn-next {
   padding: 10px 26px 6px;
-  /*
-  height: 100%;
-  max-height: 90px;
-  width: 45px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;*/
 }
 
 .collapsed #btn-next {
   padding: 10px 10px 6px;
 }
 
-/*.collapsed .ctn-description {
-  position: relative;
-  margin-left: 45px;
-  margin-right: 48px;  to accomodate custom scroll bar
-  height: 100%;
-  overflow-y: auto;
-}
-*/
 .ctn-step-top {
   position: relative;
 }
 
-/*.ctn-title {
-  padding-top: 20px;
-  padding-bottom: 15px;
-}
-*/
 .expanded .ctn-title {
   padding-top: 20px;
   padding-bottom: 15px;
@@ -125,25 +93,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding-top: 1px; /* a pixel gets cut off because we hide overflow */
-  /*margin-bottom: 15px;*/
 }
 
 .collapsed #div-title {
   display: none;
 }
-
-/*#div-step-of-text {
-  display: inline;
-}
-
-#ahref-Url {
-  margin-left: 5px;
-}
-*/
-/*#div-description {
-  margin-top: 5px;
-}
-*/
 
 .expanded #div-description {
   font-size: 18px;
@@ -165,7 +119,6 @@
   left: 0;
   height: 100%;
   width: 100%;
-  /*background-color: #05647C;*/
   background-color: #767676;
   color: #FFF;
   opacity: .95;
@@ -182,21 +135,3 @@ body:hover #ctn-speech-reminder {
   visibility: hidden;
   opacity: 0;
 }
-
-/*@media (max-height: 120px) {
-  #div-step .ctn-btn-delighted {
-    position: absolute;
-    width: 100%;
-  }
-
-  #div-step .ctn-btn-confused {
-    position: absolute;
-    width: 100%;
-    left: 45px;
-  }
-
-  #div-step .ctn-description {
-    margin-left: 90px;
-  }
-
-}*/

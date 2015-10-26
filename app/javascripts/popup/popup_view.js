@@ -120,19 +120,17 @@ PopupView.prototype.showAlert = function() {
   this.$divAlert.fadeIn().fadeOut().fadeIn().fadeOut();
 }
 
-PopupView.prototype.resizeLarge = function(resizable) {
-  // chrome.app.window.current().outerBounds.setMinimumSize(this.centerWidth, this.centerHeight);
-  // chrome.app.window.current().outerBounds.setMaximumSize(this.centerWidth, this.centerHeight);
-  chrome.app.window.current().outerBounds.width = this.centerWidth;
-  chrome.app.window.current().outerBounds.height = this.centerHeight;
+PopupView.prototype.resize = function(width, height) {
+  chrome.app.window.current().outerBounds.width = width;
+  chrome.app.window.current().outerBounds.height = height;
+}
+
+PopupView.prototype.resizeLarge = function() {
+  this.resize(this.centerWidth, this.centerHeight);
 };
 
-PopupView.prototype.resizeSmall = function(resizable) {
-  // chrome.app.window.current().outerBounds.setMinimumSize(this.cornerWidth, this.cornerHeight);
-  // chrome.app.window.current().outerBounds.setMaximumSize(this.cornerWidth, this.cornerHeight);
-
-  chrome.app.window.current().outerBounds.width = this.cornerWidth;
-  chrome.app.window.current().outerBounds.height = this.cornerHeight;
+PopupView.prototype.resizeSmall = function() {
+  this.resize(this.cornerWidth, this.cornerHeight);
 };
 
 PopupView.prototype.moveCenter = function(width, height, duration) {
@@ -266,9 +264,6 @@ PopupView.prototype.highlightStart = function() {
 PopupView.prototype.showStep = function() {
   this.$divStart.hide();
   window.clearInterval(this.highlightStartInterval);
-
-  // this.moveCenterTopResizeSmall();
-  // this.moveCenterTop(this.cornerWidth, this.cornerHeight);
 
   this.$divStep.show();
 }
@@ -432,20 +427,10 @@ PopupView.prototype.next = function() {
 
 PopupView.prototype.resizeStepDescription = function() {
   var sectionPadding = this.$divStep.outerHeight() - this.$divStep.height(); /* calculate padding */
-
-
-//  var totalHeight = sectionPadding
-//                  + this.$divDescription.outerHeight(true) /* include padding and margin */
-//                  + this.$divTitle.outerHeight(true) /* include padding and margin */
-//                  + this.$titleBar.height(); /* has no padding or margin */
-  // it's difficult to accurately resize when the happy faces move around,
-  // so we set the minimum height to two stacked faces
-
   var totalHeight = sectionPadding +
     this.$divCtnDescription.outerHeight(true) +
     this.$titleBar.height();
 
-  // chrome.app.window.current().outerBounds.height = Math.max(totalHeight, this.cornerHeight);
   chrome.app.window.current().outerBounds.height = Math.max(totalHeight, 86);
 }
 
