@@ -1,6 +1,8 @@
 require 'json'
 # require 'pry'
 
+STDOUT.sync = true
+
 module PublishChromeApp
   CLIENT_ID = '231041669423-6epg7kt1j1qm15tjn0taumtotgh2nvsn.apps.googleusercontent.com'
   CLIENT_SECRET = 'RaUFWkQfppV7y1BVkHIIYlOM'
@@ -32,7 +34,7 @@ module PublishChromeApp
 
     archive_name = archive_name(pwd)
     archive_path = File.expand_path(File.join(pwd, 'archives', archive_name))
-    fail "Archive file #{archive_name} already exists!" if File.exist?(archive_path)
+    # fail "Archive file #{archive_name} already exists!" if File.exist?(archive_path)
 
     fail unless system "cd #{pwd} && mkdir -p archives"
     fail unless system "cd #{pwd} && rm -rf archive"
