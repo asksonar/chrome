@@ -71,7 +71,8 @@ BackgroundController.prototype.onLaunched = function(launchApp) {
     frame: 'none',
     focused: true,
     state: 'normal',
-    hidden: true
+    hidden: true,
+    resizable: false
   }, $.proxy(this.onCreatedWindow, this, launchApp));
 }
 
@@ -84,24 +85,24 @@ BackgroundController.prototype.onCreatedWindow = function(launchApp, createdWind
 
 BackgroundController.prototype.testLaunch = function() {
   var testData = {
-    "YXjbMRzg":{
+    scenario: {
       "hashid":"2mP50myq",
       "description":"This a test of urls",
       "steps":[
         {
           "hashid":"8jjenddw",
           "description":"Bacon ipsum dolor amet pig consectetur irure ham, prosciutto tenderloin deserunt dolor. Elit strip steak pancetta, rump commodo andouille excepteur ut fugiat pork flank tongue tri-tip. Pork ipsum ut, cupim brisket turkey pork loin t-bone et cow ground round ribeye. Aliqua eiusmod enim doner brisket frankfurter eu kielbasa pork loin sunt officia bacon. Leberkas ball tip flank cupidatat pork chop meatloaf. Shankle enim laborum pariatur brisket irure.",
-          "url":"www.yourwebsite.com"
+          "url":"www.example.com"
         },
         {
           "hashid":"V3gW0ood",
-          "description":"Has http",
-          "url":"http://www.test.com/"
+          "description":"Please go to the site and log in.",
+          "url":"http://www.example.com/"
         },
         {
           "hashid":"8D0ewPP2",
-          "description":"has https",
-          "url":"https://reddit.com"
+          "description":"Click on feature 1 (2nd from the right on the top nav) and do action 1. Any feedback so far? (remember to speak out loud)",
+          "url":"https://example.com"
         },
         {
           "hashid":"V57O4oo5",
@@ -109,11 +110,18 @@ BackgroundController.prototype.testLaunch = function() {
           "url":""
         }
       ]
+    },
+    scenarioResultHashId: "YXjbMRzg",
+    screen: {
+      availHeight: 874,
+      availLeft: 0,
+      availTop: 22,
+      availWidth: 1440
     }
-  }
+  };
 
   this.onLaunched(testData);
-}
+};
 
 BackgroundController.prototype.onStarted = function(event, eventData) {
   this.model.startStudy();
