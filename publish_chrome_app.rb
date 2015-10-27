@@ -7,7 +7,7 @@ module PublishChromeApp
   CLIENT_ID = '231041669423-6epg7kt1j1qm15tjn0taumtotgh2nvsn.apps.googleusercontent.com'
   CLIENT_SECRET = 'RaUFWkQfppV7y1BVkHIIYlOM'
   REFRESH_TOKEN = '1/emk_yDLwENtJIVm4mWCobZKt3Zt9CPn5AGFsDCbMP4I'
-  APP_ID = 'lpfpminhdepambpbepajinmnpipofgfo'
+  APP_ID = 'ifnadmakmckbjjhbnjcjpfeeljhhmgib'
 
   module_function
 
