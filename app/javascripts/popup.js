@@ -38,8 +38,6 @@ $(function(){
     'btnShowLess':    $('.btn-show-less'),
     'btnShowMore':    $('.btn-show-more'),
 
-    'ctnTooltips':    $('.tooltip-trigger'),
-
     'progressBar':    $('.progress-bar'),
     'btnProgressPause':  $('#btn-progress-pause'),
     'btnProgressPlay':   $('#btn-progress-play'),
