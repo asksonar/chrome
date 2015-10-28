@@ -25,7 +25,6 @@ function PopupView(eventBus, model, config) {
   this.$btnAbortNo = config.btnAbortNo;
   this.$btnAbortConfirm = config.btnAbortConfirm;
 
-  this.$btnQuestion = config.btnQuestion;
   this.$btnStart = config.btnStart;
   this.$btnFirstStep = config.btnFirstStep;
   this.$btnNext = config.btnNext;
@@ -62,7 +61,6 @@ PopupView.prototype.init = function() {
 }
 
 PopupView.prototype.initHandlers = function() {
-  this.on('click', this.$btnQuestion, this.openHelp);
   this.on('click', this.$btnAbort, this.showAbort);
   this.on('click', this.$btnAbortYes, this.abort);
   this.on('click', this.$btnAbortNo, this.hideAbort);
@@ -97,16 +95,6 @@ PopupView.prototype.initHandlers = function() {
   this.eventBus.on('uploadFinish', this.onUploadFinish, this);
 
 }
-
-PopupView.prototype.showLess = function() {
-  this.$divStep.removeClass('expanded').addClass('collapsed');
-  this.resizeStepDescription();
-};
-
-PopupView.prototype.showMore = function() {
-  this.$divStep.removeClass('collapsed').addClass('expanded');
-  this.resizeStepDescription();
-};
 
 PopupView.prototype.on = function(eventType, element, clickHandler) {
   element.on(eventType, $.proxy(clickHandler, this));
@@ -264,11 +252,6 @@ PopupView.prototype.hideAbort = function() {
 
 PopupView.prototype.showAborted = function() {
   this.$divAborted.css({display:'flex'});
-}
-
-PopupView.prototype.openHelp = function() {
-  var scenarioHashId = this.model.getUserScenario().hashid;
-  window.open(this.baseUrl + 'studies/' + scenarioHashId + '/help');
 }
 
 PopupView.prototype.showTooltips = function(event) {

@@ -17,7 +17,6 @@ $(function(){
 
     'titleBar':       $('.titlebar'),
     'content':        $('.content'),
-    'btnQuestion':    $('.titlebar-question-button'),
     'btnAbort':       $('.titlebar-close-button'),
     'btnAbortYes':    $('#btn-abort-yes'),
     'btnAbortNo':     $('#btn-abort-no'),
