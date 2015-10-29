@@ -1,12 +1,9 @@
-function StepView(config) {
+function StepView(config, model) {
   this.$section = config.section;
-  this.width = config.width;
-  this.minHeight = config.minHeight;
 
   this.$btnNext = config.btnNext;
   this.$btnDelighted = config.btnDelighted;
   this.$btnConfused = config.btnConfused;
-
   this.$btnShowLess = config.btnShowLess;
   this.$btnShowMore = config.btnShowMore;
 
@@ -17,15 +14,25 @@ function StepView(config) {
   this.$titleBar = config.titleBar;
 
   this.$speechReminder = config.speechReminder;
+
+  this.width = config.width;
+  this.minHeight = config.minHeight;
+
+  this.model = model;
+
+  this.initHandlers();
 }
 
-StepView.prototype.initHandlers = function() {
-  this.on('click', this.$btnNext, this.onNextStep);
-  this.on('click', this.$btnDelighted, this.delighted);
-  this.on('click', this.$btnConfused, this.confused);
+StepView.prototype = Object.create(SectionView.prototype);
+StepView.prototype.constructor = SectionView;
 
-  this.on('click', this.$btnShowLess, this.showLess);
-  this.on('click', this.$btnShowMore, this.showMore);
+StepView.prototype.initHandlers = function() {
+  this.$btnNext.on('click', $.proxy(this.onNextStep, this));
+  this.$btnDelighted.on('click', $.proxy(this.delighted, this));
+  this.$btnConfused.on('click', $.proxy(this.confused, this));
+
+  this.$btnShowLess.on('click', $.proxy(this.showLess, this));
+  this.$btnShowMore.on('click', $.proxy(this.showMore, this));
 };
 
 StepView.prototype.show = function() {
@@ -67,7 +74,7 @@ StepView.prototype.updateFields = function() {
 };
 
 StepView.prototype.resizeStepDescription = function() {
-  var sectionPadding = this.$divStep.outerHeight() - this.$divStep.height(); /* calculate padding */
+  var sectionPadding = this.$section.outerHeight() - this.$section.height(); /* calculate padding */
   var totalHeight = sectionPadding +
     this.$divCtnDescription.outerHeight(true) +
     this.$titleBar.height();
@@ -76,12 +83,12 @@ StepView.prototype.resizeStepDescription = function() {
 };
 
 StepView.prototype.showLess = function() {
-  this.$divStep.removeClass('expanded').addClass('collapsed');
+  this.$section.removeClass('expanded').addClass('collapsed');
   this.resizeStepDescription();
 };
 
 StepView.prototype.showMore = function() {
-  this.$divStep.removeClass('collapsed').addClass('expanded');
+  this.$section.removeClass('collapsed').addClass('expanded');
   this.resizeStepDescription();
 };
 

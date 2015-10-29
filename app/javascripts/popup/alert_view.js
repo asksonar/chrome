@@ -1,5 +1,9 @@
-function AlertView(config) {
+function AlertView(config, eventBus) {
   this.$divAlert = config.divAlert;
+
+  this.eventBus = eventBus;
+
+  this.initHandlers();
 }
 
 AlertView.prototype.initHandlers = function() {

@@ -4,6 +4,8 @@ function ExpertFlow(config, eventBus) {
   this.finish = config.finishWithTitle;
 
   this.eventBus = eventBus;
+
+  this.initHandlers();
 }
 
 ExpertFlow.prototype.initHandlers = function() {

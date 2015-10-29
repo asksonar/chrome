@@ -1,15 +1,17 @@
 function EasyFlow(config, eventBus) {
-  this.instructions = config.instructions;
-  this.selectScreen = config.selectScreen;
-  this.start = config.start;
-  this.next = config.step;
-  this.finish = config.finish;
+  this.instructionsSection = config.instructions;
+  this.selectScreenSection = config.selectScreen;
+  this.startSection = config.start;
+  this.stepSection = config.step;
+  this.finishSection = config.finish;
 
   this.eventBus = eventBus;
+
+  this.initHandlers();
 }
 
 EasyFlow.prototype.initHandlers = function() {
-  this.eventBus.on('scenarioLoad', $.proxy(this.onScenarioLoad, this));
+  this.eventBus.on('scenarioLoad', this.onScenarioLoad, this);
 };
 
 EasyFlow.prototype.onScenarioLoad = function(event, eventData) {
@@ -19,19 +21,19 @@ EasyFlow.prototype.onScenarioLoad = function(event, eventData) {
 };
 
 EasyFlow.prototype.start = function() {
-  this.instructions.onNext(this.selectScreen);
-  this.selectScreen.onNext(this.start);
-  this.selectScreen.onPrev(this.instructions);
-  this.start.onNext(this.step);
-  this.next.onNext(this.finish);
-  this.finish.onNext(this.close);
+  this.instructionsSection.onNext(this.selectScreenSection);
+  this.selectScreenSection.onNext(this.startSection);
+  this.selectScreenSection.onPrev(this.instructionsSection);
+  this.startSection.onNext(this.stepSection);
+  this.stepSection.onNext(this.finishSection);
+  this.finishSection.onNext(this.close);
 
-  this.selectScreen.hide();
-  this.start.hide();
-  this.next.hide();
-  this.finish.hide();
+  this.selectScreenSection.hide();
+  this.startSection.hide();
+  this.stepSection.hide();
+  this.finishSection.hide();
 
-  this.instructions.show();
+  this.instructionsSection.show();
 
   chrome.app.window.current().show();
 };

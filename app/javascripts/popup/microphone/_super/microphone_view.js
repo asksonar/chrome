@@ -9,13 +9,13 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
     var now = Date.now();
     var amplitudePercent = this.audioVisualization.getAmplitude() / 255.0;
     if (amplitudePercent < 0.20) {
-      this.mostRecentQuietNoise = now;
+      this._mostRecentQuietNoise = now;
     } else if (amplitudePercent > 0.70) {
-      this.mostRecentLoudNoise = now;
+      this._mostRecentLoudNoise = now;
     }
 
     if (amplitudePercent > 0) {
-      this.mostRecentNoise = now;
+      this._mostRecentNoise = now;
     }
 
     var amplitudeScaled = Math.round(amplitudePercent * $targets.length);
@@ -33,13 +33,13 @@ MicrophoneView.prototype.stopMicrophoneResponse = function() {
 };
 
 MicrophoneView.prototype.mostRecentLoudNoise = function() {
-  return this.mostRecentQuietNoise;
+  return this._mostRecentQuietNoise;
 };
 
 MicrophoneView.prototype.mostRecentQuietNoise = function() {
-  return this.mostRecentQuietNoise;
+  return this._mostRecentQuietNoise;
 };
 
 MicrophoneView.prototype.mostRecentNoise = function() {
-  return this.mostRecentNoise;
+  return this._mostRecentNoise;
 };

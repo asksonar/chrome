@@ -1,12 +1,23 @@
-function MicrophoneCheck() {
+function MicrophoneCheck(config) {
   this.$micCheck = config.micCheck
   this.$micCheckBars = config.micCheckBars;
   this.$micCheckText = config.micCheckText;
+
+  this.init();
 }
+
+MicrophoneCheck.prototype = Object.create(MicrophoneView.prototype);
+MicrophoneCheck.prototype.constructor = MicrophoneView;
 
 MicrophoneCheck.prototype.init = function() {
   this.audioVisualization = new AudioVisualization(-60, -25);
   this.audioVisualization.start();
+
+  this.privateEventBus = $({});
+};
+
+MicrophoneCheck.prototype.on = function() {
+  this.privateEventBus.on.apply(this.privateEventBus, arguments);
 };
 
 MicrophoneCheck.prototype.start = function() {
@@ -28,7 +39,7 @@ MicrophoneView.prototype.startMicCheck = function() {
     var micCheckAge = Date.now() - this.micCheckStartTime;
 
     if (this.recordingHeardTriggered !== true && this.mostRecentNoise()) {
-      this.trigger('recordingHeard');
+      this.privateEventBus.trigger('recordingHeard');
       this.recordingHeardTriggered = true;
     }
 
@@ -50,7 +61,7 @@ MicrophoneView.prototype.startMicCheck = function() {
     } else if (!this.mostRecentLoudNoise()) {
       this.$micCheckText.html("Mic check!  Try talking out loud to get started.");
 
-    } else {
+    } else if (this.mostRecentNoise()) {
       this.$micCheckText.html("Your audio checks out.  Let's get started.");
       this.$micCheck.addClass('color-delighted').removeClass('color-confused');
       this.$micCheckText.addClass('color-delighted').removeClass('color-confused');

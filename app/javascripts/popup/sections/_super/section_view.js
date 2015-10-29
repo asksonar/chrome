@@ -34,7 +34,7 @@ SectionView.prototype.close = function() {
 
 SectionView.prototype.resize = function(width, height) {
   if (parseInt(width)) {
-    this.$section.width(width);
+    $('.content').width(width); // TODO: abstract this more neatly
     chrome.app.window.current().outerBounds.width = width;
   }
   if (parseInt(height)) {
@@ -103,7 +103,7 @@ SectionView.prototype.moveCenterTop = function(width, duration) {
 
 SectionView.prototype.moveRightTop = function(width, duration) {
   this.move(
-    screen.availLeft + screen.availWidth - this.cornerWidth,
+    screen.availLeft + screen.availWidth - width,
     screen.availTop + 0,
     duration
   );

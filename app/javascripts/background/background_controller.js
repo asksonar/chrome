@@ -79,6 +79,7 @@ BackgroundController.prototype.onLaunched = function(launchApp) {
 
 BackgroundController.prototype.onCreatedWindow = function(launchApp, createdWindow) {
   this.eventBus.trigger('scenarioLoad', {
+    'flowType': 'easyFlow',
     'scenario': launchApp.scenario,
     'scenarioResultHashId': launchApp.scenarioResultHashId
   });

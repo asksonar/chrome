@@ -4,10 +4,15 @@ function InstructionsView(config, microphoneCheck) {
   this.height = config.height;
   this.$btnStart = config.btnStart;
   this.microphoneCheck = microphoneCheck;
+
+  this.initHandlers();
 }
 
+InstructionsView.prototype = Object.create(SectionView.prototype);
+InstructionsView.prototype.constructor = SectionView;
+
 InstructionsView.prototype.initHandlers = function() {
-  this.on('click', this.$btnStart, $.proxy(this.onStart, this));
+  this.$btnStart.on('click', $.proxy(this.onStart, this));
   this.microphoneCheck.on('recordingHeard', $.proxy(this.onRecordingHeard, this));
 };
 
@@ -19,8 +24,14 @@ InstructionsView.prototype.onStart = function() {
   }
 };
 
+InstructionsView.prototype.onRecordingHeard = function() {
+  this.$btnStart.removeClass('disabled');
+};
+
 InstructionsView.prototype.show = function() {
   this.microphoneCheck.start();
+  this.resize(this.width, this.height);
+  this.moveCenter(this.width, this.height, 0);
   this.$section.show();
 };
 
@@ -29,12 +40,3 @@ InstructionsView.prototype.hide = function() {
   this.$section.hide();
 };
 
-InstructionsView.prototype.onRecordingHeard = function() {
-  this.$btnStart.removeClass('disabled');
-};
-
-InstructionsView.prototype.show = function() {
-  this.resize(this.width, this.height);
-  this.moveCenter(this.width, this.height, 0);
-  this.$section.show();
-};

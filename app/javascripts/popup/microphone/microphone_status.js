@@ -1,8 +1,16 @@
-function MicrophoneStatus() {
+function MicrophoneStatus(config, eventBus) {
   this.$micLevelBars = config.micLevelBars;
   this.$divRecording = config.divRecording;
   this.$recordingTextTime = config.recordingTextTime;
+
+  this.eventBus = eventBus;
+
+  this.init();
+  this.initHandlers();
 }
+
+MicrophoneStatus.prototype = Object.create(MicrophoneView.prototype);
+MicrophoneStatus.prototype.constructor = MicrophoneView;
 
 MicrophoneStatus.prototype.init = function() {
   this.audioVisualization = new AudioVisualization(-60, -25);
