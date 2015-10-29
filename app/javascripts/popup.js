@@ -57,14 +57,6 @@ $(function(){
     'height':   135
   }, eventBus);
 
-  // window.control = new ControlView({
-
-  // });
-
-  // window.finishWithTitle = new FinishWithTitleView({
-
-  // });
-
   window.alert = new AlertView({
     'divAlert': $('#div-alert')
   }, eventBus);
@@ -92,11 +84,5 @@ $(function(){
     'step': step,
     'finish': finish
   }, eventBus);
-
-  // window.expertFlow = new ExpertFlow({
-  //   'selectScreen': selectScreen,
-  //   'control': control,
-  //   'finish': finish
-  // }, eventBus);
 
 });
