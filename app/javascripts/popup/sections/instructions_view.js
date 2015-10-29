@@ -19,6 +19,16 @@ InstructionsView.prototype.onStart = function() {
   }
 };
 
+InstructionsView.prototype.show = function() {
+  this.microphoneCheck.start();
+  this.$section.show();
+};
+
+InstructionsView.prototype.hide = function() {
+  this.microphoneCheck.stop();
+  this.$section.hide();
+};
+
 InstructionsView.prototype.onRecordingHeard = function() {
   this.$btnStart.removeClass('disabled');
 };
