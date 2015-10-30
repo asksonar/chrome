@@ -3,6 +3,9 @@ function MicrophoneView() {}
 MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
   this.stopMicrophoneResponse();
 
+  this.audioVisualization = new AudioVisualization(-60, -25);
+  this.audioVisualization.start();
+
   var responseFunction = function() {
     this.responseLoop = requestAnimationFrame($.proxy(responseFunction, this));
 
@@ -18,11 +21,13 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
       this._mostRecentNoise = now;
     }
 
-    var amplitudeScaled = Math.round(amplitudePercent * $targets.length);
-    //console.log(new Date().getSeconds() + '.' + new Date().getMilliseconds() + ':' + amplitudeScaled);
+    if ($targets) {
+      var amplitudeScaled = Math.round(amplitudePercent * $targets.length);
+      //console.log(new Date().getSeconds() + '.' + new Date().getMilliseconds() + ':' + amplitudeScaled);
 
-    $targets.slice(0, amplitudeScaled).addClass('on');
-    $targets.slice(amplitudeScaled).removeClass('on');
+      $targets.slice(0, amplitudeScaled).addClass('on');
+      $targets.slice(amplitudeScaled).removeClass('on');
+    }
   };
 
   responseFunction.call(this);
@@ -30,10 +35,13 @@ MicrophoneView.prototype.startMicrophoneResponse = function($targets) {
 
 MicrophoneView.prototype.stopMicrophoneResponse = function() {
   window.cancelAnimationFrame(this.responseLoop);
+  if (this.audioVisualization) {
+    this.audioVisualization.stop();
+  }
 };
 
 MicrophoneView.prototype.mostRecentLoudNoise = function() {
-  return this._mostRecentQuietNoise;
+  return this._mostRecentLoudNoise;
 };
 
 MicrophoneView.prototype.mostRecentQuietNoise = function() {

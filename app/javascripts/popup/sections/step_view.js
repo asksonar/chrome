@@ -1,4 +1,4 @@
-function StepView(config, model) {
+function StepView(config, speechReminder, model) {
   this.$section = config.section;
 
   this.$btnNext = config.btnNext;
@@ -13,7 +13,7 @@ function StepView(config, model) {
   this.$ahrefUrl = config.ahrefUrl;
   this.$titleBar = config.titleBar;
 
-  this.$speechReminder = config.speechReminder;
+  this.speechReminder = speechReminder;
 
   this.width = config.width;
   this.minHeight = config.minHeight;
@@ -39,7 +39,7 @@ StepView.prototype.show = function() {
   this.resize(this.width);
   this.moveCenterTop(this.width);
 
-  this.startSpeechReminder();
+  this.speechReminder.start();
 
   // section is shown by updateFields
   this.updateFields();
@@ -48,7 +48,7 @@ StepView.prototype.show = function() {
 };
 
 StepView.prototype.hide = function() {
-  this.stopSpeechReminder();
+  this.speechReminder.stop();
   this.$section.hide();
 };
 
@@ -117,27 +117,4 @@ StepView.prototype.populateUrl = function(url) {
   window.setTimeout(function() {
     window.open(targetUrl);
   }, 0);
-};
-
-StepView.prototype.startSpeechReminder = function() {
-  // just to reset the starting timer
-  this.mostRecentLoudNoise = Date.now();
-
-  this.speechReminderLoop = setInterval($.proxy(function() {
-    if (this.$speechReminder.queue().length) {
-      return;
-    }
-
-    if ((Date.now() - this.mostRecentLoudNoise) > 15000) {
-      this.$speechReminder.css({display:'flex'});
-    } else {
-      this.$speechReminder.css({display:'none'});
-    }
-
-  }, this), 250);
-};
-
-
-StepView.prototype.stopSpeechReminder = function() {
-  clearInterval(this.speechReminderLoop);
 };

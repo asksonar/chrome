@@ -5,17 +5,11 @@ function MicrophoneStatus(config, eventBus) {
 
   this.eventBus = eventBus;
 
-  this.init();
   this.initHandlers();
 }
 
 MicrophoneStatus.prototype = Object.create(MicrophoneView.prototype);
 MicrophoneStatus.prototype.constructor = MicrophoneView;
-
-MicrophoneStatus.prototype.init = function() {
-  this.audioVisualization = new AudioVisualization(-60, -25);
-  this.audioVisualization.start();
-};
 
 MicrophoneStatus.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);

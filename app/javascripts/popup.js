@@ -3,10 +3,10 @@ $(function(){
   window.model = new PopupModel(eventBus);
 
   window.microphoneCheck = new MicrophoneCheck({
-      'micCheck':     $('.mic-check'),
-      'micCheckBars': $('.mic-check div'),
-      'micCheckText': $('#div-mic-check-text')
-    });
+    'micCheck':     $('.mic-check'),
+    'micCheckBars': $('.mic-check div'),
+    'micCheckText': $('#div-mic-check-text')
+  });
   window.instructions = new InstructionsView({
     'section':  $('#div-instructions'),
     'width':    500,
@@ -27,6 +27,10 @@ $(function(){
     'height':       310
   }, model);
 
+
+  window.speechReminder = new SpeechReminder({
+    'speechReminder': $('#ctn-speech-reminder'),
+  });
   window.step = new StepView({
     'section':            $('#div-step'),
 
@@ -42,11 +46,9 @@ $(function(){
     'ahrefUrl':           $('#ahref-Url'),
     'titleBar':           $('.titlebar'),
 
-    'speechReminder': $('#ctn-speech-reminder'),
-
     'width':              400,
     'minHeight':          86
-  }, model);
+  }, speechReminder, model);
 
   window.finish = new FinishView({
     'section':  $('#div-finish'),

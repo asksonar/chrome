@@ -11,11 +11,17 @@ AudioVisualization.prototype.init = function() {
   this.analyser.minDecibels = this.minDecibels
   this.analyser.maxDecibels = this.maxDecibels; // raise from default of -90
   this.analyser.smoothingTimeConstant = .9;
-}
+};
 
 AudioVisualization.prototype.start = function() {
   navigator.webkitGetUserMedia({audio: true}, $.proxy(this.gotStream, this), $.proxy(this.gotStreamError, this));
-}
+};
+
+AudioVisualization.prototype.stop = function() {
+  this.stream.getTracks().forEach(function(track) {
+    track.stop();
+  });
+};
 
 AudioVisualization.prototype.gotStream = function(stream) {
   this.stream = stream;
@@ -23,15 +29,15 @@ AudioVisualization.prototype.gotStream = function(stream) {
 
   var source = this.context.createMediaStreamSource(stream);
   source.connect(this.analyser);
-}
+};
 
 AudioVisualization.prototype.gotStreamError = function(error) {
   console.log("Error getting audio stream for visualization: " + error);
-}
+};
 
 AudioVisualization.prototype.onStreamEnded = function() {
   console.log("Terminated audio stream for visualization.");
-}
+};
 
 AudioVisualization.prototype.getAmplitude = function() {
   var bufferLength = this.analyser.frequencyBinCount;
@@ -46,4 +52,4 @@ AudioVisualization.prototype.getAmplitude = function() {
   }
 
   return maxHeight;
-}
+};

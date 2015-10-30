@@ -10,9 +10,6 @@ MicrophoneCheck.prototype = Object.create(MicrophoneView.prototype);
 MicrophoneCheck.prototype.constructor = MicrophoneView;
 
 MicrophoneCheck.prototype.init = function() {
-  this.audioVisualization = new AudioVisualization(-60, -25);
-  this.audioVisualization.start();
-
   this.privateEventBus = $({});
 };
 
