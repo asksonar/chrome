@@ -1,70 +1,90 @@
 $(function(){
   window.eventBus = new PopupEventBus();
-
   window.model = new PopupModel(eventBus);
 
-  window.view = new PopupView(eventBus, model, {
-    'baseUrl':        'http://my.asksonar.com/',
-    //'baseUrl':        'http://dockerhost:3000/',
-    'divInstructions':$('#div-instructions'),
-    'divSelectScreen':$('#div-select-screen'),
-    'divStart':       $('#div-start'),
-    'divStep':        $('#div-step'),
-    'divFinish':      $('#div-finish'),
+  window.microphoneCheck = new MicrophoneCheck({
+    'micCheck':     $('.mic-check'),
+    'micCheckBars': $('.mic-check div'),
+    'micCheckText': $('#div-mic-check-text')
+  });
+  window.instructions = new InstructionsView({
+    'section':  $('#div-instructions'),
+    'width':    500,
+    'height':   310,
+    'btnStart': $('#btn-start')
+  }, microphoneCheck);
+
+  window.selectScreen = new SelectScreenView({
+    'section':  $('#div-select-screen'),
+    'width':    400,
+    'height':   135
+  }, eventBus, model);
+
+  window.start = new StartView({
+    'section':      $('#div-start'),
+    'btnFirstStep': $('#btn-first-step'),
+    'width':        500,
+    'height':       310
+  }, model);
+
+
+  window.speechReminder = new SpeechReminder({
+    'speechReminder': $('#ctn-speech-reminder'),
+  });
+  window.step = new StepView({
+    'section':            $('#div-step'),
+
+    'btnNext':            $('#btn-next'),
+    'btnDelighted':       $('#btn-delighted'),
+    'btnConfused':        $('#btn-confused'),
+    'btnShowLess':        $('.btn-show-less'),
+    'btnShowMore':        $('.btn-show-more'),
+
+    'divDescription':     $('#div-description'),
+    'divStepOfText':      $('#div-step-of-text'),
+    'divCtnDescription':  $('.ctn-description'),
+    'ahrefUrl':           $('#ahref-Url'),
+    'titleBar':           $('.titlebar'),
+
+    'width':              400,
+    'minHeight':          86
+  }, speechReminder, model);
+
+  window.finish = new FinishView({
+    'section':  $('#div-finish'),
+    'progressBar':    $('.progress-bar'),
+    'btnProgressPause':  $('#btn-progress-pause'),
+    'btnProgressPlay':   $('#btn-progress-play'),
+    'width':    400,
+    'height':   135
+  }, eventBus);
+
+  window.alert = new AlertView({
+    'divAlert': $('#div-alert')
+  }, eventBus);
+
+  window.abort = new AbortView({
     'divAbort':       $('#div-abort'),
     'divAborted':     $('#div-aborted'),
-    'divAlert':       $('#div-alert'),
 
-    'titleBar':       $('.titlebar'),
-    'content':        $('.content'),
-    'btnQuestion':    $('.titlebar-question-button'),
     'btnAbort':       $('.titlebar-close-button'),
     'btnAbortYes':    $('#btn-abort-yes'),
     'btnAbortNo':     $('#btn-abort-no'),
     'btnAbortConfirm': $('#btn-abort-confirm'),
+  }, eventBus, model);
 
-    'divTitle':       $('#div-title'),
-    'divDescription': $('#div-description'),
-    'divStepOfText':  $('#div-step-of-text'),
-    'divCtnDescription': $('.ctn-description'),
-    'ahrefUrl':       $('#ahref-Url'),
-
-    'btnStart':       $('#btn-start'),
-    'divAlertStart':  $('#alert-start'),
-    'btnFirstStep':   $('#btn-first-step'),
-    'btnNext':        $('#btn-next'),
-    'btnFinish':      $('#btn-finish'),
-    'btnDelighted':   $('#btn-delighted'),
-    'btnConfused':    $('#btn-confused'),
-
-    'btnShowLess':    $('.btn-show-less'),
-    'btnShowMore':    $('.btn-show-more'),
-
-    'ctnTooltips':    $('.tooltip-trigger'),
-
-    'progressBar':    $('.progress-bar'),
-    'btnProgressPause':  $('#btn-progress-pause'),
-    'btnProgressPlay':   $('#btn-progress-play'),
-
-    'centerWidth':    500,
-    'centerHeight':   310,
-
-    'cornerMargin':   10,
-    'cornerWidth':    400,
-    'cornerHeight':   135,
-    'cornerMinWidth': 330, /* so talk notice won't wrap */
-    'cornerMinHeight': 85 /* fits smily face buttons */
-  });
-
-  window.microphoneView = new MicrophoneView(eventBus, {
-    'micCheck':     $('.mic-check'),
-    'micCheckBars': $('.mic-check div'),
+  window.microphoneStatus = new MicrophoneStatus({
     'micLevelBars': $('.titlebar-recording-level div'),
-    'micCheckText': $('#div-mic-check-text'),
-    'speechReminder': $('#ctn-speech-reminder'),
     'divRecording':   $('.titlebar-recording'),
     'recordingTextTime': $('#titlebar-recording-text-time')
+  }, eventBus);
 
-  });
+  window.easyFlow = new EasyFlow({
+    'instructions': instructions,
+    'selectScreen': selectScreen,
+    'start': start,
+    'step': step,
+    'finish': finish
+  }, eventBus);
 
 });

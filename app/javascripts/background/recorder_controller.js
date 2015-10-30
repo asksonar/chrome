@@ -32,11 +32,15 @@ RecorderController.prototype.initEncoder = function() {
 
 RecorderController.prototype.stopStreams = function() {
   if (this.videoStream) {
-    this.videoStream.stop();
+    this.videoStream.getTracks().forEach(function(track) {
+      track.stop();
+    });
     this.videoStream = null;
   }
   if (this.audioStream) {
-    this.audioStream.stop();
+    this.audioStream.getTracks().forEach(function(track) {
+      track.stop();
+    });
     this.audioStream = null;
   }
 }

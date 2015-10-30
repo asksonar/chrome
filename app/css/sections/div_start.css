@@ -117,10 +117,3 @@
   top: -25px;
   right: 0px;
 }
-
-#alert-start {
-  position: absolute;
-  display: none; /* to be modified with .fadeIn() */
-  border: 5px solid #F69526;
-  opacity: .95;
-}
