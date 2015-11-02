@@ -53,13 +53,14 @@ StepView.prototype.hide = function() {
 };
 
 StepView.prototype.onNextStep = function() {
-  var hasNextStep = this.model.nextStep();
-  if (hasNextStep) {
+  if (this.model.isLastStep()) {
+    this.model.finishStep();
+    this.next();
+  } else {
+    this.model.nextStep();
     this.updateFields();
     this.showMore();
     this.$section.fadeIn('slow');
-  } else {
-    this.next();
   }
 };
 
