@@ -28,19 +28,18 @@ PopupModel.prototype.startStep = function() {
 };
 
 PopupModel.prototype.nextStep = function() {
-  if (this.isLastStep()) {
-    this.eventBus.trigger('finish', {
-      'scenarioResultHashId': this.getScenarioResultHashId()
-    });
-    return false;
-  } else {
-    this.eventBus.trigger('next', {
-      'scenarioResultHashId': this.getScenarioResultHashId(),
-      'scenarioStepHashId': this.getScenarioStepHashId()
-    });
-    this.currentIndex += 1;
-    return true;
-  }
+  this.currentIndex += 1;
+  this.eventBus.trigger('next', {
+    'scenarioResultHashId': this.getScenarioResultHashId(),
+    'scenarioStepHashId': this.getScenarioStepHashId()
+  });
+};
+
+PopupModel.prototype.finishStep = function() {
+  // this.currentIndex should equal this.userScenario.steps.length - 1
+  this.eventBus.trigger('finish', {
+    'scenarioResultHashId': this.getScenarioResultHashId()
+  });
 };
 
 PopupModel.prototype.getUserScenario = function() {
