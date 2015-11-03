@@ -1,6 +1,5 @@
 #div-start {
-  padding: 5px;
-  background-color: #767676;
+  padding: 20px;
 }
 
 .tooltip {
@@ -41,13 +40,48 @@
 }
 
 .ctn-now-recording {
-  color: #fff;
-  margin: 5px;
-  width: 150px;
+  margin-top: -10px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 1px solid #F69526;
+  background-color: rgba(246, 149, 38, 0.75); /* .75 of border color */
+  color: #FFF;
+}
+
+.ctn-start-left {
+  font-size: 18px;
+  width: 60%;
+  float: left;
+}
+
+.ctn-start-left .ctn-tips {
+  margin: 0px;
+}
+
+.ctn-start-left li + li {
+  margin-top: 10px;
+}
+
+.ctn-start-right {
+  width: 40%;
+  float: right;
+  text-align: center;
+}
+
+.ctn-start-right img {
+  height: 104px; /* height of the ul to the left */
+}
+
+.ctn-start-mid {
+  margin: 30px 0px;
+}
+
+.ctn-start-buttons {
+  text-align: center;
 }
 
 #btn-first-step {
-  margin-top: -30px;
+  padding: 10px 26px 6px;
 }
 
 .shadow-hover {
@@ -82,11 +116,4 @@
   position: absolute;
   top: -25px;
   right: 0px;
-}
-
-#alert-start {
-  position: absolute;
-  display: none; /* to be modified with .fadeIn() */
-  border: 5px solid #F69526;
-  opacity: .95;
 }

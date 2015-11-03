@@ -1,4 +1,6 @@
 #div-finish {
+  border: 3px solid #1CA5C9;
+  border-top: 0px;
   padding: 20px;
 }
 
