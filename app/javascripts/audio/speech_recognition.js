@@ -1,5 +1,5 @@
-function SpeechRecognition(startTime) {
-  this.startTime = startTime;
+function SpeechRecognition(studyStart) {
+  this.studyStart = studyStart;
   this.init();
 }
 
@@ -35,7 +35,7 @@ SpeechRecognition.prototype.debug = function() {
 }
 
 SpeechRecognition.prototype.onspeechstart = function() {
-  this.offset = Date.now() - this.startTime;
+  this.offset = Date.now() - this.studyStart;
 }
 
 SpeechRecognition.prototype.onresult = function() {

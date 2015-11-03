@@ -14,7 +14,7 @@ ResultStep.prototype.start = function(studyStart) {
   this.start = Date.now();
   this.offset = this.start - studyStart;
 
-  this.speechRecognition = new SpeechRecognition(this.start);
+  this.speechRecognition = new SpeechRecognition(studyStart);
   this.speechRecognition.start();
 }
 
