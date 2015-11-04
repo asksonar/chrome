@@ -1,37 +1,36 @@
 $(function(){
-  window.eventBus = new PopupEventBus();
-  window.model = new PopupModel(eventBus);
+  var eventBus = new PopupEventBus();
+  var model = new PopupModel(eventBus);
 
-  window.microphoneCheck = new MicrophoneCheck({
+  var microphoneCheck = new MicrophoneCheck({
     'micCheck':     $('.mic-check'),
     'micCheckBars': $('.mic-check div'),
     'micCheckText': $('#div-mic-check-text')
   });
-  window.instructions = new InstructionsView({
+  var instructions = new InstructionsView({
     'section':  $('#div-instructions'),
     'width':    500,
     'height':   310,
     'btnStart': $('#btn-start')
   }, microphoneCheck);
 
-  window.selectScreen = new SelectScreenView({
+  var selectScreen = new SelectScreenView({
     'section':  $('#div-select-screen'),
     'width':    400,
     'height':   135
   }, eventBus, model);
 
-  window.start = new StartView({
+  var start = new StartView({
     'section':      $('#div-start'),
     'btnFirstStep': $('#btn-first-step'),
     'width':        500,
     'height':       310
   }, model);
 
-
-  window.speechReminder = new SpeechReminder({
+  var speechReminder = new SpeechReminder({
     'speechReminder': $('#ctn-speech-reminder'),
   });
-  window.step = new StepView({
+  var step = new StepView({
     'section':            $('#div-step'),
 
     'btnNext':            $('#btn-next'),
@@ -50,7 +49,7 @@ $(function(){
     'minHeight':          86
   }, speechReminder, model);
 
-  window.finish = new FinishView({
+  var finish = new FinishView({
     'section':  $('#div-finish'),
     'progressBar':    $('.progress-bar'),
     'btnProgressPause':  $('#btn-progress-pause'),
@@ -59,11 +58,11 @@ $(function(){
     'height':   135
   }, eventBus);
 
-  window.alert = new AlertView({
+  var alert = new AlertView({
     'divAlert': $('#div-alert')
   }, eventBus);
 
-  window.abort = new AbortView({
+  var abort = new AbortView({
     'divAbort':       $('#div-abort'),
     'divAborted':     $('#div-aborted'),
 
@@ -73,13 +72,13 @@ $(function(){
     'btnAbortConfirm': $('#btn-abort-confirm'),
   }, eventBus, model);
 
-  window.microphoneStatus = new MicrophoneStatus({
+  var microphoneStatus = new MicrophoneStatus({
     'micLevelBars': $('.titlebar-recording-level div'),
     'divRecording':   $('.titlebar-recording'),
     'recordingTextTime': $('#titlebar-recording-text-time')
   }, eventBus);
 
-  window.easyFlow = new EasyFlow({
+  var easyFlow = new EasyFlow({
     'instructions': instructions,
     'selectScreen': selectScreen,
     'start': start,
