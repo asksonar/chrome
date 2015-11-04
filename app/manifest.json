@@ -16,12 +16,10 @@
     "unlimitedStorage",
     "alwaysOnTopWindows",
     "storage",
-    "*://*.asksonar.com/*",
-    "*://localhost/*",
-    "*://dockerhost/*"
+    "*://*.asksonar.com/*"
   ],
   "externally_connectable": {
-    "matches": ["*://*.asksonar.com/*", "*://*.engsonar.com/*", "*://localhost/*", "*://dockerhost/*"]
+    "matches": ["*://*.asksonar.com/*"]
   },
   "platforms": [
     {
