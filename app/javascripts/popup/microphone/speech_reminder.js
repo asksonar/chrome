@@ -3,7 +3,7 @@ function SpeechReminder(config) {
 }
 
 SpeechReminder.prototype = Object.create(MicrophoneView.prototype);
-SpeechReminder.prototype.constructor = MicrophoneView;
+SpeechReminder.prototype.constructor = SpeechReminder;
 
 SpeechReminder.prototype.start = function() {
   this.startMicrophoneResponse();

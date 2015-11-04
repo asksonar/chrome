@@ -9,7 +9,7 @@ function InstructionsView(config, microphoneCheck) {
 }
 
 InstructionsView.prototype = Object.create(SectionView.prototype);
-InstructionsView.prototype.constructor = SectionView;
+InstructionsView.prototype.constructor = InstructionsView;
 
 InstructionsView.prototype.initHandlers = function() {
   this.$btnStart.on('click', $.proxy(this.onStart, this));

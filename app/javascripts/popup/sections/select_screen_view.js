@@ -11,7 +11,7 @@ function SelectScreenView(config, eventBus, model) {
 }
 
 SelectScreenView.prototype = Object.create(SectionView.prototype);
-SelectScreenView.prototype.constructor = SectionView;
+SelectScreenView.prototype.constructor = SelectScreenView;
 
 SelectScreenView.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);

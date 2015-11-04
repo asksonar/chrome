@@ -9,7 +9,7 @@ function MicrophoneStatus(config, eventBus) {
 }
 
 MicrophoneStatus.prototype = Object.create(MicrophoneView.prototype);
-MicrophoneStatus.prototype.constructor = MicrophoneView;
+MicrophoneStatus.prototype.constructor = MicrophoneStatus;
 
 MicrophoneStatus.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);

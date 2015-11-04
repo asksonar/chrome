@@ -24,7 +24,7 @@ function StepView(config, speechReminder, model) {
 }
 
 StepView.prototype = Object.create(SectionView.prototype);
-StepView.prototype.constructor = SectionView;
+StepView.prototype.constructor = StepView;
 
 StepView.prototype.initHandlers = function() {
   this.$btnNext.on('click', $.proxy(this.onNextStep, this));

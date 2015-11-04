@@ -11,7 +11,7 @@ function StartView(config, model) {
 }
 
 StartView.prototype = Object.create(SectionView.prototype);
-StartView.prototype.constructor = SectionView;
+StartView.prototype.constructor = StartView;
 
 StartView.prototype.initHandlers = function() {
   this.$btnFirstStep.on('click', $.proxy(this.onFirstStep, this));

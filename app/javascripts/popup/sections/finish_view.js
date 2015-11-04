@@ -14,7 +14,7 @@ function FinishView(config, eventBus) {
 }
 
 FinishView.prototype = Object.create(SectionView.prototype);
-FinishView.prototype.constructor = SectionView;
+FinishView.prototype.constructor = FinishView;
 
 FinishView.prototype.initHandlers = function() {
   this.$btnProgressPause.on('click', $.proxy(this.pauseUpload, this));

@@ -7,7 +7,7 @@ function MicrophoneCheck(config) {
 }
 
 MicrophoneCheck.prototype = Object.create(MicrophoneView.prototype);
-MicrophoneCheck.prototype.constructor = MicrophoneView;
+MicrophoneCheck.prototype.constructor = MicrophoneCheck;
 
 MicrophoneCheck.prototype.init = function() {
   this.privateEventBus = $({});
