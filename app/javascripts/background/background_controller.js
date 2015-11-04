@@ -79,14 +79,26 @@ BackgroundController.prototype.onLaunched = function(launchApp) {
 
 BackgroundController.prototype.onCreatedWindow = function(launchApp, createdWindow) {
   this.eventBus.trigger('scenarioLoad', {
-    'flowType': 'easyFlow',
+    'flowType': launchApp.flowType || 'easyFlow',
     'scenario': launchApp.scenario,
     'scenarioResultHashId': launchApp.scenarioResultHashId
   });
-}
+};
 
-BackgroundController.prototype.testLaunch = function() {
-  var testData = {
+BackgroundController.prototype.testLaunchEasy = function() {
+  var testData = this.testData();
+  testData.flowType = 'easyFlow';
+  this.onLaunched(testData);
+};
+
+BackgroundController.prototype.testLaunchExpert = function() {
+  var testData = this.testData();
+  testData.flowType = 'expertFlow';
+  this.onLaunched(testData);
+};
+
+BackgroundController.prototype.testData = function() {
+  return {
     scenario: {
       "hashid":"2mP50myq",
       "description":"This a test of urls",
@@ -121,8 +133,6 @@ BackgroundController.prototype.testLaunch = function() {
       availWidth: 1440
     }
   };
-
-  this.onLaunched(testData);
 };
 
 BackgroundController.prototype.onStarted = function(event, eventData) {

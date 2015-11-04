@@ -86,4 +86,26 @@ $(function(){
     'finish': finish
   }, eventBus);
 
+  var control = new ControlView({
+    'section': $('#div-control'),
+    'titleBar': $('.titlebar'),
+    'width':    400,
+    'minHeight': 86,
+    'divBtns': $('.ctn-control-btns'),
+    'divNote': $('.ctn-note'),
+    'btnShowNote': $('#btn-show-note'),
+    'btnHideNote': $('#btn-hide-note'),
+    'inputNote': $('#input-note'),
+    'btnSaveNote': $('#btn-save-note'),
+    'btnFinish': $('#btn-finish')
+  }, model);
+
+
+  var expertFlow = new ExpertFlow({
+    'selectScreen': selectScreen,
+    'control': control,
+    'finishWithTitle': finishWithTitle
+  }, eventBus);
+  window.expertFlow = expertFlow;
+
 });

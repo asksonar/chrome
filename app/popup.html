@@ -17,9 +17,11 @@
     <script src="javascripts/popup/sections/select_screen_view.js"></script>
     <script src="javascripts/popup/sections/start_view.js"></script>
     <script src="javascripts/popup/sections/step_view.js"></script>
+    <script src="javascripts/popup/sections/control_view.js"></script>
     <script src="javascripts/popup/abort_view.js"></script>
     <script src="javascripts/popup/alert_view.js"></script>
     <script src="javascripts/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"></link>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
     <link rel="stylesheet" type="text/css" href="css/base.css"></link>
     <link rel="stylesheet" type="text/css" href="css/popup.css"></link>
@@ -30,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="css/sections/div_step.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_finish.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_abort.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_control.css"></link>
   </head>
   <body>
     <section class="titlebar">
@@ -168,7 +171,20 @@
             Remember to share your thoughts out loud.
           </h1>
         </div>
+      </section>
 
+      <section id='div-control' class='section'>
+        <div class='ctn-control-btns'>
+          <a id='btn-show-note' class='btn btn-green'><span><i class='fa fa-comment'></i> Add a note</span></a>
+          <a id='btn-finish' class='btn btn-blue'><span>Finish</span></a>
+        </div>
+        <div class='ctn-note clearfix'>
+          <textarea id='input-note' rows='3' class='form-control'></textarea>
+          <div class='ctn-note-btns'>
+            <a id='btn-hide-note' href='#'>Cancel</a>
+            <a id='btn-save-note' class='btn btn-green'><span>Save Note</span></a>
+          </div>
+        </div>
       </section>
 
       <section id='div-finish' class='section'>

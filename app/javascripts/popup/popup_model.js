@@ -91,3 +91,8 @@ PopupModel.prototype.delighted = function() {
 PopupModel.prototype.confused = function() {
   this.eventBus.trigger('confused');
 };
+
+PopupModel.prototype.saveNote = function(note) {
+  this.eventBus.trigger('saveNote', note);
+};
+
