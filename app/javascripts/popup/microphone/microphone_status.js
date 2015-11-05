@@ -1,15 +1,19 @@
-function MicrophoneStatus(config, eventBus) {
-  this.$micLevelBars = config.micLevelBars;
-  this.$divRecording = config.divRecording;
-  this.$recordingTextTime = config.recordingTextTime;
-
-  this.eventBus = eventBus;
-
-  this.initHandlers();
+function MicrophoneStatus(config) {
+  this.config = config;
 }
 
 MicrophoneStatus.prototype = Object.create(MicrophoneView.prototype);
 MicrophoneStatus.prototype.constructor = MicrophoneStatus;
+
+MicrophoneStatus.prototype.init = function(eventBus) {
+  this.$micLevelBars = this.config.micLevelBars;
+  this.$divRecording = this.config.divRecording;
+  this.$recordingTextTime = this.config.recordingTextTime;
+
+  this.eventBus = eventBus;
+
+  this.initHandlers();
+};
 
 MicrophoneStatus.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);

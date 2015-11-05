@@ -1,19 +1,22 @@
-function ExpertFlow(config, eventBus) {
-  this.selectScreenSection = config.selectScreen;
-  this.controlSection = config.control;
-  this.finishSection = config.finishWithTitle;
-
+function ExpertFlow(config, eventBus, model) {
+  this.config = config;
   this.eventBus = eventBus;
-
-  this.initHandlers();
+  this.model = model;
 }
 
-ExpertFlow.prototype.initHandlers = function() {
-  this.eventBus.on('scenarioLoad', $.proxy(this.onScenarioLoad, this));
+ExpertFlow.prototype.init = function() {
+  this.selectScreenSection = this.config.selectScreen;
+  this.controlSection = this.config.control;
+  this.finishSection = this.config.finishWithTitle;
+
+  this.selectScreenSection.init(this);
+  this.controlSection.init(this);
+  this.finishSection.init(this);
 };
 
 ExpertFlow.prototype.onScenarioLoad = function(event, eventData) {
   if (eventData.flowType === 'expertFlow') {
+    this.init();
     this.start();
   }
 };

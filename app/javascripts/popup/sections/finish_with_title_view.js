@@ -1,29 +1,24 @@
-function FinishWithTitleView(config, eventBus, model) {
-  this.$section = config.section;
-  this.$titleBar = config.titleBar;
-
-  this.$progressBar = config.progressBar;
-  this.$btnProgressPause = config.btnProgressPause;
-  this.$btnProgressPlay = config.btnProgressPlay;
-  this.$divUploading = config.divUploading;
-  this.$divUploaded = config.divUploaded;
-
-  this.$inputTitle = config.inputTitle;
-  this.$btnSaveTitle = config.btnSaveTitle;
-
-  this.$divTitling = config.divTitling;
-
-  this.width = config.width;
-  this.height = config.height;
-
-  this.eventBus = eventBus;
-  this.model = model;
-
-  this.initHandlers();
+function FinishWithTitleView(config) {
+  this.config = config;
 }
 
 FinishWithTitleView.prototype = Object.create(FinishView.prototype);
 FinishWithTitleView.prototype.constructor = FinishWithTitleView;
+
+FinishWithTitleView.prototype.init = function(flow) {
+  FinishView.prototype.init.call(this, flow);
+
+  this.$titleBar = this.config.titleBar;
+  this.$inputTitle = this.config.inputTitle;
+  this.$btnSaveTitle = this.config.btnSaveTitle;
+  this.$divTitling = this.config.divTitling;
+
+  this.model = flow.model;
+
+  this.$divTitling.show();
+
+  this.initHandlers();
+};
 
 FinishWithTitleView.prototype.initHandlers = function() {
   FinishView.prototype.initHandlers.call(this);

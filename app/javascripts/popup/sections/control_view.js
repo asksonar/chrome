@@ -1,26 +1,30 @@
-function ControlView(config, model) {
-  this.$section = config.section;
-  this.$titleBar = config.titleBar;
-
-  this.width = config.width;
-  this.minHeight = config.minHeight;
-
-  this.$divBtns = config.divBtns;
-  this.$divNote = config.divNote;
-  this.$btnShowNote = config.btnShowNote;
-  this.$btnHideNote = config.btnHideNote;
-  this.$inputNote = config.inputNote;
-  this.$btnSaveNote = config.btnSaveNote;
-
-  this.$btnFinish = config.btnFinish;
-
-  this.model = model;
-
-  this.initHandlers();
+function ControlView(config) {
+  this.config = config;
 }
 
 ControlView.prototype = Object.create(SectionView.prototype);
 ControlView.prototype.constructor = ControlView;
+
+ControlView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+  this.$titleBar = this.config.titleBar;
+
+  this.width = this.config.width;
+  this.minHeight = this.config.minHeight;
+
+  this.$divBtns = this.config.divBtns;
+  this.$divNote = this.config.divNote;
+  this.$btnShowNote = this.config.btnShowNote;
+  this.$btnHideNote = this.config.btnHideNote;
+  this.$inputNote = this.config.inputNote;
+  this.$btnSaveNote = this.config.btnSaveNote;
+
+  this.$btnFinish = this.config.btnFinish;
+
+  this.model = flow.model;
+
+  this.initHandlers();
+};
 
 ControlView.prototype.initHandlers = function() {
   this.$btnShowNote.on('click', $.proxy(this.showNote, this));

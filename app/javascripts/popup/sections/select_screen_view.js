@@ -1,17 +1,21 @@
-function SelectScreenView(config, eventBus, model) {
-  this.$section = config.section;
-
-  this.width = config.width;
-  this.height = config.height;
-
-  this.eventBus = eventBus;
-  this.model = model;
-
-  this.initHandlers();
+function SelectScreenView(config) {
+  this.config = config;
 }
 
 SelectScreenView.prototype = Object.create(SectionView.prototype);
 SelectScreenView.prototype.constructor = SelectScreenView;
+
+SelectScreenView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+
+  this.width = this.config.width;
+  this.height = this.config.height;
+
+  this.eventBus = flow.eventBus;
+  this.model = flow.model;
+
+  this.initHandlers();
+}
 
 SelectScreenView.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);

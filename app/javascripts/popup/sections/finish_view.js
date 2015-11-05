@@ -1,23 +1,27 @@
-function FinishView(config, eventBus) {
-  this.$section = config.section;
-
-  this.$progressBar = config.progressBar;
-  this.$btnProgressPause = config.btnProgressPause;
-  this.$btnProgressPlay = config.btnProgressPlay;
-
-  this.$divUpload = config.divUpload;
-  this.$divUploadFinish = config.divUploadFinished;
-
-  this.width = config.width;
-  this.height = config.height;
-
-  this.eventBus = eventBus;
-
-  this.initHandlers();
+function FinishView(config) {
+  this.config = config;
 }
 
 FinishView.prototype = Object.create(SectionView.prototype);
 FinishView.prototype.constructor = FinishView;
+
+FinishView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+
+  this.$progressBar = this.config.progressBar;
+  this.$btnProgressPause = this.config.btnProgressPause;
+  this.$btnProgressPlay = this.config.btnProgressPlay;
+
+  this.$divUploading = this.config.divUploading;
+  this.$divUploaded = this.config.divUploaded;
+
+  this.width = this.config.width;
+  this.height = this.config.height;
+
+  this.eventBus = flow.eventBus;
+
+  this.initHandlers();
+};
 
 FinishView.prototype.initHandlers = function() {
   this.$btnProgressPause.on('click', $.proxy(this.pauseUpload, this));

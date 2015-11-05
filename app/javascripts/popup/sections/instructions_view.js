@@ -1,15 +1,21 @@
 function InstructionsView(config, microphoneCheck) {
-  this.$section = config.section;
-  this.width = config.width;
-  this.height = config.height;
-  this.$btnStart = config.btnStart;
+  this.config = config;
   this.microphoneCheck = microphoneCheck;
-
-  this.initHandlers();
 }
 
 InstructionsView.prototype = Object.create(SectionView.prototype);
 InstructionsView.prototype.constructor = InstructionsView;
+
+InstructionsView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+  this.width = this.config.width;
+  this.height = this.config.height;
+  this.$btnStart = this.config.btnStart;
+
+  this.microphoneCheck.init();
+
+  this.initHandlers();
+};
 
 InstructionsView.prototype.initHandlers = function() {
   this.$btnStart.on('click', $.proxy(this.onStart, this));

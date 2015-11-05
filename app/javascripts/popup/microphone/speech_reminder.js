@@ -1,9 +1,13 @@
 function SpeechReminder(config) {
-  this.$speechReminder = config.speechReminder;
+  this.config = config;
 }
 
 SpeechReminder.prototype = Object.create(MicrophoneView.prototype);
 SpeechReminder.prototype.constructor = SpeechReminder;
+
+SpeechReminder.prototype.init = function() {
+  this.$speechReminder = this.config.speechReminder;
+};
 
 SpeechReminder.prototype.start = function() {
   this.startMicrophoneResponse();

@@ -18,14 +18,14 @@ $(function(){
     'section':  $('#div-select-screen'),
     'width':    400,
     'height':   135
-  }, eventBus, model);
+  });
 
   var start = new StartView({
     'section':      $('#div-start'),
     'btnFirstStep': $('#btn-first-step'),
     'width':        500,
     'height':       310
-  }, model);
+  });
 
   var speechReminder = new SpeechReminder({
     'speechReminder': $('#ctn-speech-reminder'),
@@ -47,20 +47,23 @@ $(function(){
 
     'width':              400,
     'minHeight':          86
-  }, speechReminder, model);
+  }, speechReminder);
 
   var finish = new FinishView({
     'section':  $('#div-finish'),
     'progressBar':    $('.progress-bar'),
     'btnProgressPause':  $('#btn-progress-pause'),
     'btnProgressPlay':   $('#btn-progress-play'),
+    'divUploading': $('#div-uploading'),
+    'divUploaded': $('#div-uploaded'),
     'width':    400,
     'height':   135
-  }, eventBus);
+  });
 
   var alert = new AlertView({
     'divAlert': $('#div-alert')
-  }, eventBus);
+  });
+  alert.init(eventBus);
 
   var abort = new AbortView({
     'divAbort':       $('#div-abort'),
@@ -70,13 +73,15 @@ $(function(){
     'btnAbortYes':    $('#btn-abort-yes'),
     'btnAbortNo':     $('#btn-abort-no'),
     'btnAbortConfirm': $('#btn-abort-confirm'),
-  }, eventBus, model);
+  });
+  abort.init(eventBus, model);
 
   var microphoneStatus = new MicrophoneStatus({
     'micLevelBars': $('.titlebar-recording-level div'),
     'divRecording':   $('.titlebar-recording'),
     'recordingTextTime': $('#titlebar-recording-text-time')
-  }, eventBus);
+  });
+  microphoneStatus.init(eventBus);
 
   var easyFlow = new EasyFlow({
     'instructions': instructions,
@@ -84,7 +89,8 @@ $(function(){
     'start': start,
     'step': step,
     'finish': finish
-  }, eventBus);
+  }, eventBus, model);
+  eventBus.on('scenarioLoad', easyFlow.onScenarioLoad, easyFlow);
 
   var control = new ControlView({
     'section': $('#div-control'),
@@ -98,7 +104,7 @@ $(function(){
     'inputNote': $('#input-note'),
     'btnSaveNote': $('#btn-save-note'),
     'btnFinish': $('#btn-finish')
-  }, model);
+  });
 
   var finishWithTitle = new FinishWithTitleView({
     'section':  $('#div-finish'),
@@ -113,13 +119,14 @@ $(function(){
     'divUploading': $('#div-uploading'),
     'divUploaded': $('#div-uploaded'),
     'divTitling': $('#div-titling')
-  }, eventBus, model);
+  });
 
   var expertFlow = new ExpertFlow({
     'selectScreen': selectScreen,
     'control': control,
     'finishWithTitle': finishWithTitle
-  }, eventBus);
+  }, eventBus, model);
+  eventBus.on('scenarioLoad', expertFlow.onScenarioLoad, expertFlow);
   window.expertFlow = expertFlow;
 
 });

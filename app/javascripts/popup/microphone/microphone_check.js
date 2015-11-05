@@ -1,15 +1,15 @@
 function MicrophoneCheck(config) {
-  this.$micCheck = config.micCheck
-  this.$micCheckBars = config.micCheckBars;
-  this.$micCheckText = config.micCheckText;
-
-  this.init();
+  this.config = config;
 }
 
 MicrophoneCheck.prototype = Object.create(MicrophoneView.prototype);
 MicrophoneCheck.prototype.constructor = MicrophoneCheck;
 
 MicrophoneCheck.prototype.init = function() {
+  this.$micCheck = this.config.micCheck
+  this.$micCheckBars = this.config.micCheckBars;
+  this.$micCheckText = this.config.micCheckText;
+
   this.privateEventBus = $({});
 };
 

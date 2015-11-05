@@ -1,21 +1,26 @@
-function EasyFlow(config, eventBus) {
-  this.instructionsSection = config.instructions;
-  this.selectScreenSection = config.selectScreen;
-  this.startSection = config.start;
-  this.stepSection = config.step;
-  this.finishSection = config.finish;
-
+function EasyFlow(config, eventBus, model) {
+  this.config = config;
   this.eventBus = eventBus;
-
-  this.initHandlers();
+  this.model = model;
 }
 
-EasyFlow.prototype.initHandlers = function() {
-  this.eventBus.on('scenarioLoad', this.onScenarioLoad, this);
+EasyFlow.prototype.init = function() {
+  this.instructionsSection = this.config.instructions;
+  this.selectScreenSection = this.config.selectScreen;
+  this.startSection = this.config.start;
+  this.stepSection = this.config.step;
+  this.finishSection = this.config.finish;
+
+  this.instructionsSection.init(this);
+  this.selectScreenSection.init(this);
+  this.startSection.init(this);
+  this.stepSection.init(this);
+  this.finishSection.init(this);
 };
 
 EasyFlow.prototype.onScenarioLoad = function(event, eventData) {
   if (eventData.flowType === 'easyFlow') {
+    this.init();
     this.start();
   }
 };

@@ -1,30 +1,35 @@
-function StepView(config, speechReminder, model) {
-  this.$section = config.section;
-
-  this.$btnNext = config.btnNext;
-  this.$btnDelighted = config.btnDelighted;
-  this.$btnConfused = config.btnConfused;
-  this.$btnShowLess = config.btnShowLess;
-  this.$btnShowMore = config.btnShowMore;
-
-  this.$divDescription = config.divDescription;
-  this.$divStepOfText = config.divStepOfText;
-  this.$divCtnDescription = config.divCtnDescription;
-  this.$ahrefUrl = config.ahrefUrl;
-  this.$titleBar = config.titleBar;
-
+function StepView(config, speechReminder) {
+  this.config = config;
   this.speechReminder = speechReminder;
-
-  this.width = config.width;
-  this.minHeight = config.minHeight;
-
-  this.model = model;
-
-  this.initHandlers();
 }
 
 StepView.prototype = Object.create(SectionView.prototype);
 StepView.prototype.constructor = StepView;
+
+StepView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+
+  this.$btnNext = this.config.btnNext;
+  this.$btnDelighted = this.config.btnDelighted;
+  this.$btnConfused = this.config.btnConfused;
+  this.$btnShowLess = this.config.btnShowLess;
+  this.$btnShowMore = this.config.btnShowMore;
+
+  this.$divDescription = this.config.divDescription;
+  this.$divStepOfText = this.config.divStepOfText;
+  this.$divCtnDescription = this.config.divCtnDescription;
+  this.$ahrefUrl = this.config.ahrefUrl;
+  this.$titleBar = this.config.titleBar;
+
+  this.width = this.config.width;
+  this.minHeight = this.config.minHeight;
+
+  this.model = flow.model;
+
+  this.speechReminder.init();
+
+  this.initHandlers();
+};
 
 StepView.prototype.initHandlers = function() {
   this.$btnNext.on('click', $.proxy(this.onNextStep, this));
