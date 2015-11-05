@@ -21,12 +21,14 @@ EasyFlow.prototype.onScenarioLoad = function(event, eventData) {
 };
 
 EasyFlow.prototype.start = function() {
+  var close = { show: function() { window.close(); } };
+
   this.instructionsSection.onNext(this.selectScreenSection);
   this.selectScreenSection.onNext(this.startSection);
   this.selectScreenSection.onPrev(this.instructionsSection);
   this.startSection.onNext(this.stepSection);
   this.stepSection.onNext(this.finishSection);
-  this.finishSection.onNext(this.close);
+  this.finishSection.onNext(close);
 
   this.selectScreenSection.hide();
   this.startSection.hide();

@@ -5,6 +5,9 @@ function FinishView(config, eventBus) {
   this.$btnProgressPause = config.btnProgressPause;
   this.$btnProgressPlay = config.btnProgressPlay;
 
+  this.$divUpload = config.divUpload;
+  this.$divUploadFinish = config.divUploadFinished;
+
   this.width = config.width;
   this.height = config.height;
 
@@ -37,9 +40,23 @@ FinishView.prototype.onUploadProgress = function(event, eventData) {
 
 FinishView.prototype.onUploadFinish = function() {
   this.$progressBar.width('100%');
-  this.$section.delay(1000).fadeOut(1000, function(){
-    window.close();
-  });
+  $({})
+    .queue($.proxy(function(next) {
+      this.$divUploading.fadeOut('normal', next);
+    }, this))
+    .queue($.proxy(function(next) {
+      this.$divUploaded.fadeIn('normal', next);
+      this.resizeToFit();
+    }, this))
+    .queue($.proxy(function() {
+      this.next();
+    }, this));
+};
+
+FinishView.prototype.next = function() {
+  this.$section.delay(1000).fadeOut(1000, $.proxy(function() {
+    SectionView.prototype.next.call(this);
+  }, this));
 };
 
 FinishView.prototype.pauseUpload = function() {

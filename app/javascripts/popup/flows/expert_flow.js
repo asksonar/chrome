@@ -19,10 +19,12 @@ ExpertFlow.prototype.onScenarioLoad = function(event, eventData) {
 };
 
 ExpertFlow.prototype.start = function() {
+  var close = { show: function() { window.close(); } };
+
   this.selectScreenSection.onNext(this.controlSection);
-  this.selectScreenSection.onPrev(this.close);
+  this.selectScreenSection.onPrev(close);
   this.controlSection.onNext(this.finishSection);
-  this.finishSection.onNext(this.close);
+  this.finishSection.onNext(close);
 
   this.controlSection.hide();
   this.finishSection.hide();

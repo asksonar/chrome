@@ -100,6 +100,20 @@ $(function(){
     'btnFinish': $('#btn-finish')
   }, model);
 
+  var finishWithTitle = new FinishWithTitleView({
+    'section':  $('#div-finish'),
+    'titleBar': $('.titlebar'),
+    'progressBar':    $('.progress-bar'),
+    'btnProgressPause':  $('#btn-progress-pause'),
+    'btnProgressPlay':   $('#btn-progress-play'),
+    'width':    400,
+    'height':   135,
+    'inputTitle': $('#input-title'),
+    'btnSaveTitle': $('#btn-save-title'),
+    'divUploading': $('#div-uploading'),
+    'divUploaded': $('#div-uploaded'),
+    'divTitling': $('#div-titling')
+  }, eventBus, model);
 
   var expertFlow = new ExpertFlow({
     'selectScreen': selectScreen,
