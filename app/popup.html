@@ -17,9 +17,12 @@
     <script src="javascripts/popup/sections/select_screen_view.js"></script>
     <script src="javascripts/popup/sections/start_view.js"></script>
     <script src="javascripts/popup/sections/step_view.js"></script>
+    <script src="javascripts/popup/sections/control_view.js"></script>
+    <script src="javascripts/popup/sections/finish_with_title_view.js"></script>
     <script src="javascripts/popup/abort_view.js"></script>
     <script src="javascripts/popup/alert_view.js"></script>
     <script src="javascripts/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"></link>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
     <link rel="stylesheet" type="text/css" href="css/base.css"></link>
     <link rel="stylesheet" type="text/css" href="css/popup.css"></link>
@@ -30,6 +33,7 @@
     <link rel="stylesheet" type="text/css" href="css/sections/div_step.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_finish.css"></link>
     <link rel="stylesheet" type="text/css" href="css/sections/div_abort.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/sections/div_control.css"></link>
   </head>
   <body>
     <section class="titlebar">
@@ -56,7 +60,7 @@
     </section>
 
     <section class='content clearfix'>
-      <section id='div-instructions'>
+      <section id='div-instructions' class='section'>
         <h1>Some tips for giving good feedback:</h1>
 
         <ul class='ctn-tips'>
@@ -91,7 +95,7 @@
         </div>
       </section>
 
-      <section id='div-select-screen'>
+      <section id='div-select-screen' class='section'>
         <h1>Click Share to begin giving feedback by recording your screen and voice.</h1>
         <svg width="200px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <marker id="markerArrow" markerWidth="16" markerHeight="16" refX="0" refY="8" orient="auto" markerUnits="userSpaceOnUse">
@@ -102,7 +106,7 @@
         </svg>
       </section>
 
-      <section id='div-start'>
+      <section id='div-start' class='section'>
         <h1 class='ctn-now-recording'>
           <i class='fa fa-video-camera'></i>
           Now recording your screen and voice
@@ -134,7 +138,7 @@
         <div class='shadow'></div>
       </section>
 
-      <section id='div-step' class='expanded'>
+      <section id='div-step' class='expanded section'>
         <div class='ctn-description'>
           <div class='ctn-step-top'>
             <div class='ctn-title'>
@@ -168,20 +172,44 @@
             Remember to share your thoughts out loud.
           </h1>
         </div>
-
       </section>
 
-      <section id='div-finish'>
-        <h2>Your feedback is being uploaded.</h2>
-        <p class='sub'>This window will close when the upload finishes.</p>
-        <div class='progress'>
-          <div class='progress-bar'></div>
+      <section id='div-control' class='section'>
+        <div class='ctn-control-btns'>
+          <a id='btn-show-note' class='btn btn-green'><span><i class='fa fa-comment'></i> Add a note</span></a>
+          <a id='btn-finish' class='btn btn-blue'><span>Finish</span></a>
         </div>
-        <div id='btn-progress-pause' class='btn btn-progress'>
-          <i class='fa fa-pause'></i>
+        <div class='ctn-note clearfix'>
+          <textarea id='input-note' rows='3' class='form-control'></textarea>
+          <div class='ctn-note-btns'>
+            <a id='btn-hide-note' href='#'>Cancel</a>
+            <a id='btn-save-note' class='btn btn-green'><span>Save Note</span></a>
+          </div>
         </div>
-        <div id='btn-progress-play' class='btn btn-progress'>
-          <i class='fa fa-play'></i>
+      </section>
+
+      <section id='div-finish' class='section'>
+        <div id='div-uploading' class='clearfix'>
+          <h2>Your feedback is being uploaded.</h2>
+          <p class='sub'>This window will close when the upload finishes.</p>
+          <div class='progress'>
+            <div class='progress-bar'></div>
+          </div>
+          <div id='btn-progress-pause' class='btn btn-progress'>
+            <i class='fa fa-pause'></i>
+          </div>
+          <div id='btn-progress-play' class='btn btn-progress'>
+            <i class='fa fa-play'></i>
+          </div>
+        </div>
+        <div id='div-uploaded'>
+          <h2>Thanks! Your feedback is now being processed.</h2>
+        </div>
+
+        <div id='div-titling' class='clearfix'>
+          <h1>Want to title your feedback?</h1>
+          <input id='input-title' class='form-control' placeholder='My untitled feedback'></input>
+          <a id='btn-save-title' class='btn btn-green'><span>Save</span></a>
         </div>
       </section>
 

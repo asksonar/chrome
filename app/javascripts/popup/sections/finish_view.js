@@ -1,20 +1,27 @@
-function FinishView(config, eventBus) {
-  this.$section = config.section;
-
-  this.$progressBar = config.progressBar;
-  this.$btnProgressPause = config.btnProgressPause;
-  this.$btnProgressPlay = config.btnProgressPlay;
-
-  this.width = config.width;
-  this.height = config.height;
-
-  this.eventBus = eventBus;
-
-  this.initHandlers();
+function FinishView(config) {
+  this.config = config;
 }
 
 FinishView.prototype = Object.create(SectionView.prototype);
-FinishView.prototype.constructor = SectionView;
+FinishView.prototype.constructor = FinishView;
+
+FinishView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+
+  this.$progressBar = this.config.progressBar;
+  this.$btnProgressPause = this.config.btnProgressPause;
+  this.$btnProgressPlay = this.config.btnProgressPlay;
+
+  this.$divUploading = this.config.divUploading;
+  this.$divUploaded = this.config.divUploaded;
+
+  this.width = this.config.width;
+  this.height = this.config.height;
+
+  this.eventBus = flow.eventBus;
+
+  this.initHandlers();
+};
 
 FinishView.prototype.initHandlers = function() {
   this.$btnProgressPause.on('click', $.proxy(this.pauseUpload, this));
@@ -37,9 +44,23 @@ FinishView.prototype.onUploadProgress = function(event, eventData) {
 
 FinishView.prototype.onUploadFinish = function() {
   this.$progressBar.width('100%');
-  this.$section.delay(1000).fadeOut(1000, function(){
-    window.close();
-  });
+  $({})
+    .queue($.proxy(function(next) {
+      this.$divUploading.fadeOut('normal', next);
+    }, this))
+    .queue($.proxy(function(next) {
+      this.$divUploaded.fadeIn('normal', next);
+      this.resizeToFit();
+    }, this))
+    .queue($.proxy(function() {
+      this.next();
+    }, this));
+};
+
+FinishView.prototype.next = function() {
+  this.$section.delay(1000).fadeOut(1000, $.proxy(function() {
+    SectionView.prototype.next.call(this);
+  }, this));
 };
 
 FinishView.prototype.pauseUpload = function() {

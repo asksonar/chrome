@@ -1,17 +1,21 @@
-function AbortView(config, eventBus, model) {
-  this.$divAbort = config.divAbort;
-  this.$divAborted = config.divAborted;
+function AbortView(config) {
+  this.config = config;
+}
 
-  this.$btnAbort = config.btnAbort;
-  this.$btnAbortYes = config.btnAbortYes;
-  this.$btnAbortNo = config.btnAbortNo;
-  this.$btnAbortConfirm = config.btnAbortConfirm;
+AbortView.prototype.init = function(eventBus, model) {
+  this.$divAbort = this.config.divAbort;
+  this.$divAborted = this.config.divAborted;
+
+  this.$btnAbort = this.config.btnAbort;
+  this.$btnAbortYes = this.config.btnAbortYes;
+  this.$btnAbortNo = this.config.btnAbortNo;
+  this.$btnAbortConfirm = this.config.btnAbortConfirm;
 
   this.eventBus = eventBus;
   this.model = model;
 
   this.initHandlers();
-}
+};
 
 AbortView.prototype.initHandlers = function() {
   this.$btnAbort.on('click', $.proxy(this.showAbort, this));

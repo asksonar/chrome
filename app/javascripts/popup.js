@@ -1,37 +1,36 @@
 $(function(){
-  window.eventBus = new PopupEventBus();
-  window.model = new PopupModel(eventBus);
+  var eventBus = new PopupEventBus();
+  var model = new PopupModel(eventBus);
 
-  window.microphoneCheck = new MicrophoneCheck({
+  var microphoneCheck = new MicrophoneCheck({
     'micCheck':     $('.mic-check'),
     'micCheckBars': $('.mic-check div'),
     'micCheckText': $('#div-mic-check-text')
   });
-  window.instructions = new InstructionsView({
+  var instructions = new InstructionsView({
     'section':  $('#div-instructions'),
     'width':    500,
     'height':   310,
     'btnStart': $('#btn-start')
   }, microphoneCheck);
 
-  window.selectScreen = new SelectScreenView({
+  var selectScreen = new SelectScreenView({
     'section':  $('#div-select-screen'),
     'width':    400,
     'height':   135
-  }, eventBus, model);
+  });
 
-  window.start = new StartView({
+  var start = new StartView({
     'section':      $('#div-start'),
     'btnFirstStep': $('#btn-first-step'),
     'width':        500,
     'height':       310
-  }, model);
+  });
 
-
-  window.speechReminder = new SpeechReminder({
+  var speechReminder = new SpeechReminder({
     'speechReminder': $('#ctn-speech-reminder'),
   });
-  window.step = new StepView({
+  var step = new StepView({
     'section':            $('#div-step'),
 
     'btnNext':            $('#btn-next'),
@@ -48,22 +47,25 @@ $(function(){
 
     'width':              400,
     'minHeight':          86
-  }, speechReminder, model);
+  }, speechReminder);
 
-  window.finish = new FinishView({
+  var finish = new FinishView({
     'section':  $('#div-finish'),
     'progressBar':    $('.progress-bar'),
     'btnProgressPause':  $('#btn-progress-pause'),
     'btnProgressPlay':   $('#btn-progress-play'),
+    'divUploading': $('#div-uploading'),
+    'divUploaded': $('#div-uploaded'),
     'width':    400,
     'height':   135
-  }, eventBus);
+  });
 
-  window.alert = new AlertView({
+  var alert = new AlertView({
     'divAlert': $('#div-alert')
-  }, eventBus);
+  });
+  alert.init(eventBus);
 
-  window.abort = new AbortView({
+  var abort = new AbortView({
     'divAbort':       $('#div-abort'),
     'divAborted':     $('#div-aborted'),
 
@@ -71,20 +73,60 @@ $(function(){
     'btnAbortYes':    $('#btn-abort-yes'),
     'btnAbortNo':     $('#btn-abort-no'),
     'btnAbortConfirm': $('#btn-abort-confirm'),
-  }, eventBus, model);
+  });
+  abort.init(eventBus, model);
 
-  window.microphoneStatus = new MicrophoneStatus({
+  var microphoneStatus = new MicrophoneStatus({
     'micLevelBars': $('.titlebar-recording-level div'),
     'divRecording':   $('.titlebar-recording'),
     'recordingTextTime': $('#titlebar-recording-text-time')
-  }, eventBus);
+  });
+  microphoneStatus.init(eventBus);
 
-  window.easyFlow = new EasyFlow({
+  var easyFlow = new EasyFlow({
     'instructions': instructions,
     'selectScreen': selectScreen,
     'start': start,
     'step': step,
     'finish': finish
-  }, eventBus);
+  }, eventBus, model);
+  eventBus.on('scenarioLoad', easyFlow.onScenarioLoad, easyFlow);
+
+  var control = new ControlView({
+    'section': $('#div-control'),
+    'titleBar': $('.titlebar'),
+    'width':    400,
+    'minHeight': 86,
+    'divBtns': $('.ctn-control-btns'),
+    'divNote': $('.ctn-note'),
+    'btnShowNote': $('#btn-show-note'),
+    'btnHideNote': $('#btn-hide-note'),
+    'inputNote': $('#input-note'),
+    'btnSaveNote': $('#btn-save-note'),
+    'btnFinish': $('#btn-finish')
+  });
+
+  var finishWithTitle = new FinishWithTitleView({
+    'section':  $('#div-finish'),
+    'titleBar': $('.titlebar'),
+    'progressBar':    $('.progress-bar'),
+    'btnProgressPause':  $('#btn-progress-pause'),
+    'btnProgressPlay':   $('#btn-progress-play'),
+    'width':    400,
+    'height':   135,
+    'inputTitle': $('#input-title'),
+    'btnSaveTitle': $('#btn-save-title'),
+    'divUploading': $('#div-uploading'),
+    'divUploaded': $('#div-uploaded'),
+    'divTitling': $('#div-titling')
+  });
+
+  var expertFlow = new ExpertFlow({
+    'selectScreen': selectScreen,
+    'control': control,
+    'finishWithTitle': finishWithTitle
+  }, eventBus, model);
+  eventBus.on('scenarioLoad', expertFlow.onScenarioLoad, expertFlow);
+  window.expertFlow = expertFlow;
 
 });

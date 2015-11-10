@@ -113,6 +113,10 @@ section {
   margin-top: 32px;
 }
 
+.section {
+  display: none;
+}
+
 .btn-delighted,
 .btn-confused {
   display: inline-block;

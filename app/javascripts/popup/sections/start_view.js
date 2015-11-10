@@ -1,17 +1,21 @@
-function StartView(config, model) {
-  this.$section = config.section;
-  this.$btnFirstStep = config.btnFirstStep;
-
-  this.width = config.width;
-  this.height = config.height;
-
-  this.model = model;
-
-  this.initHandlers();
+function StartView(config) {
+  this.config = config;
 }
 
 StartView.prototype = Object.create(SectionView.prototype);
-StartView.prototype.constructor = SectionView;
+StartView.prototype.constructor = StartView;
+
+StartView.prototype.init = function(flow) {
+  this.$section = this.config.section;
+  this.$btnFirstStep = this.config.btnFirstStep;
+
+  this.width = this.config.width;
+  this.height = this.config.height;
+
+  this.model = flow.model;
+
+  this.initHandlers();
+};
 
 StartView.prototype.initHandlers = function() {
   this.$btnFirstStep.on('click', $.proxy(this.onFirstStep, this));

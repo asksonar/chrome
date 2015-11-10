@@ -26,12 +26,6 @@ SectionView.prototype.hide = function() {
   this.$section.hide();
 };
 
-SectionView.prototype.close = function() {
-  return {
-    show: function() { window.close(); }
-  };
-};
-
 SectionView.prototype.resize = function(width, height) {
   if (parseInt(width)) {
     $('.content').width(width); // TODO: abstract this more neatly
