@@ -22,8 +22,8 @@
 .expanded .ctn-btn-next {
   position: absolute;
   right: 0;
-  top: 15px;
-  bottom: 15px;
+  top: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,11 +39,11 @@
 }
 
 .expanded #btn-next {
-  padding: 10px 26px 6px;
+  padding-left: 26px;
+  padding-right: 26px;
 }
 
 .collapsed #btn-next {
-  padding: 10px 10px 6px;
 }
 
 .ctn-step-top {

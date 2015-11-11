@@ -140,7 +140,7 @@ section {
 .btn-blue {
   background-color: #05647C;
   display: inline-block;
-  padding: 8px 12px 4px 12px;
+  padding: 6px 12px 2px 12px;
   color: #013E4C; /* for the box shadow: saturate 5%, darken 10% */
 }
 
@@ -153,7 +153,7 @@ section {
 .btn-green {
   background-color: #31B6AE;
   display: inline-block;
-  padding: 8px 12px 4px 12px;
+  padding: 6px 12px 2px 12px;
   color: #219288;
 }
 
