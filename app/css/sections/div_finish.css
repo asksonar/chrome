@@ -77,4 +77,5 @@
 
 #div-titling {
   margin-top: 10px;
+  display: none; /* needs to be explicitly shown */
 }
