@@ -20,6 +20,12 @@ RecorderController.prototype.initHandlers = function() {
   this.eventBus.on('requestRecording', this.startRecording, this);
   this.eventBus.on('finish', this.finishRecording, this);
   this.eventBus.on('abort', this.abortRecording, this);
+
+  this.eventBus.on('pauseRecording', this.onPauseRecording, this);
+  this.eventBus.on('resumeRecording', this.onResumeRecording, this);
+
+  this.eventBus.on('muteRecording', this.onMuteRecording, this);
+  this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
 }
 
 RecorderController.prototype.initEncoder = function() {
@@ -29,6 +35,22 @@ RecorderController.prototype.initEncoder = function() {
   // Handler for error while recording (out of disk space, ...)
   this.encoder.onError = $.proxy(this.onError, this);
 }
+
+RecorderController.prototype.onPauseRecording = function() {
+  this.encoder.pause();
+};
+
+RecorderController.prototype.onResumeRecording = function() {
+  this.encoder.resume();
+};
+
+RecorderController.prototype.onMuteRecording = function() {
+  this.audioStream.getAudioTracks()[0].enabled = false;
+};
+
+RecorderController.prototype.onUnmuteRecording = function() {
+  this.audioStream.getAudioTracks()[0].enabled = true;
+};
 
 RecorderController.prototype.stopStreams = function() {
   if (this.videoStream) {

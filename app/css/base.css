@@ -68,7 +68,7 @@ a[href]:hover {
   box-shadow: 0px 3px 2px 0px;
 }
 
-.btn:active {
+.btn:active, .btn.active {
   top: 2px;
   box-shadow: 0px 1px 0px 0px;
 }

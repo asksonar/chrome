@@ -30,6 +30,12 @@ SectionView.prototype.resize = function(width, height) {
   if (parseInt(width)) {
     $('.content').width(width); // TODO: abstract this more neatly
     chrome.app.window.current().outerBounds.width = width;
+
+    // since resizing will expand it to the right, move it away from the right edge if it goes over
+    if (screen.availLeft + screen.availWidth <
+      chrome.app.window.current().outerBounds.left + width) {
+      chrome.app.window.current().outerBounds.left = screen.availLeft + screen.availWidth - width;
+    }
   }
   if (parseInt(height)) {
     chrome.app.window.current().outerBounds.height = height;

@@ -19,6 +19,31 @@ MicrophoneStatus.prototype.initHandlers = function() {
   this.eventBus.on('recordingStarted', this.onRecordingStarted, this);
   this.eventBus.on('recordingStopped', this.onRecordingStopped, this);
   this.eventBus.on('recordingFailure', this.onRecordingFailure, this);
+
+  this.eventBus.on('pauseRecording', this.onPauseRecording, this);
+  this.eventBus.on('resumeRecording', this.onResumeRecording, this);
+  this.eventBus.on('muteRecording', this.onMuteRecording, this);
+  this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
+};
+
+MicrophoneStatus.prototype.onPauseRecording = function() {
+  this.stopRecordingTextTime();
+  this.$divRecording.removeClass('on').addClass('off');
+};
+
+MicrophoneStatus.prototype.onResumeRecording = function() {
+  this.startRecordingTextTime();
+  this.$divRecording.removeClass('off').addClass('on');
+};
+
+MicrophoneStatus.prototype.onMuteRecording = function() {
+  this.stopMicrophoneResponse();
+  this.$divRecording.addClass('muted');
+};
+
+MicrophoneStatus.prototype.onUnmuteRecording = function() {
+  this.startMicrophoneResponse(this.$micLevelBars);
+  this.$divRecording.removeClass('muted');
 };
 
 MicrophoneStatus.prototype.onRecordingStarted = function(event, eventData) {
@@ -35,6 +60,7 @@ MicrophoneStatus.prototype.onRecordingFailure = function(event, eventData) {
 
 MicrophoneStatus.prototype.start = function() {
   this.startMicrophoneResponse(this.$micLevelBars);
+  this.$recordingTextTime.html('00:00');
   this.startRecordingTextTime();
   this.$divRecording.removeClass('off').addClass('on');
 };
@@ -47,8 +73,6 @@ MicrophoneStatus.prototype.stop = function() {
 
 MicrophoneStatus.prototype.startRecordingTextTime = function() {
   this.stopRecordingTextTime();
-
-  this.$recordingTextTime.html('00:00');
 
   var timeUpdateFunction = function() {
     var timeText = this.$recordingTextTime.html();

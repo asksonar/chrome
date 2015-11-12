@@ -46,11 +46,27 @@
   font-size: 16px;
 }
 
+.titlebar-recording-muted {
+  color: #999;
+  float: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  display: none;
+}
+
+.muted .titlebar-recording-muted {
+  display: block;
+}
+
 .titlebar-recording-level {
   float: left;
   margin-left: 5px;
   margin-top: 2px;
   transform: rotate(180deg); /* so we can jQuery select in natural order */
+}
+
+.muted .titlebar-recording-level {
+  display: none;
 }
 
 .titlebar-recording-level div {
@@ -160,5 +176,23 @@ section {
 .btn-green span {
   font-family: BrandonGrotesque-Medium;
   font-size: 18px;
+  color: #FFF;
+}
+
+.btn-grey {
+  background-color: #7F8C8D;
+  display: inline-block;
+  color: #657071;
+}
+
+.btn-grey.active {
+  background-color: #657071;
+}
+
+.btn-grey span {
+  color: #FFF;
+}
+
+.btn-grey i {
   color: #FFF;
 }

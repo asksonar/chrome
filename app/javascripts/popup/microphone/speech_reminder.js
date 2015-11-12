@@ -39,4 +39,5 @@ SpeechReminder.prototype.startSpeechReminder = function() {
 
 SpeechReminder.prototype.stopSpeechReminder = function() {
   clearInterval(this.speechReminderLoop);
+  this.$speechReminder.css({display:'none'});
 };

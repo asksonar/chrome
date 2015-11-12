@@ -43,6 +43,9 @@
         <div class='titlebar-recording-icon on'>
           <i class='fa fa-video-camera'></i>
         </div>
+        <div class='titlebar-recording-muted'>
+          <i class='fa fa-microphone-slash'></i>
+        </div>
         <div class='titlebar-recording-level on'>
           <div></div>
           <div></div>
@@ -176,8 +179,30 @@
 
       <section id='div-control' class='section'>
         <div class='ctn-control-btns'>
-          <a id='btn-show-note' class='btn btn-green'><span><i class='fa fa-comment'></i> Add a note</span></a>
-          <a id='btn-finish' class='btn btn-blue'><span>Finish</span></a>
+
+          <div class="btn-group" role="group" aria-label="...">
+            <a class="btn btn-grey active" id='btn-recording'>
+              <i class="fa fa-circle" style="color: #FF625D;"></i>
+              <span class="sub btn-sub-text">recording</span>
+            </a>
+            <a class="btn btn-grey" id='btn-pause'>
+              <i class="fa fa-pause"></i>
+              <span class="sub btn-sub-text">pause</span>
+            </>
+            <a class="btn btn-grey" id='btn-finish'>
+              <i class="fa fa-stop"></i>
+              <span class="sub btn-sub-text">finish</span>
+            </a>
+          </div>
+          <a id="btn-mute" class="btn btn-blue">
+            <span><i class="fa fa-microphone-slash"></i></span>
+            <span class="sub btn-sub-text">mute</span>
+          </a>
+          <a id="btn-show-note" class="btn btn-green">
+            <span><i class="fa fa-comment"></i></span>
+            <span class="sub btn-sub-text">add a note</span>
+          </a>
+
         </div>
         <div class='ctn-note clearfix'>
           <textarea id='input-note' rows='3' class='form-control'></textarea>
