@@ -1,12 +1,11 @@
 function BackgroundModel(eventBus, ajaxer) {
   this.eventBus = eventBus;
   this.ajaxer = ajaxer;
-
-  this.init();
 }
 
-BackgroundModel.prototype.init = function() {
+BackgroundModel.prototype.init = function(scenarioResultHashId) {
   this.resultSteps = [];
+  this.scenarioResultHashId = scenarioResultHashId;
 }
 
 BackgroundModel.prototype.getCurrentResultStep = function() {
@@ -37,4 +36,8 @@ BackgroundModel.prototype.addDelighted = function() {
 
 BackgroundModel.prototype.addConfused = function() {
   this.getCurrentResultStep().addConfused();
+}
+
+BackgroundModel.prototype.addNote = function(note) {
+  this.getCurrentResultStep().addNote(note);
 }

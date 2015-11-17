@@ -8,6 +8,7 @@ function ResultStep(ajaxer, scenarioResultHashId, scenarioStepHashId) {
 
 ResultStep.prototype.init = function() {
   this.feelings = [];
+  this.notes = [];
 }
 
 ResultStep.prototype.start = function(studyStart) {
@@ -42,3 +43,11 @@ ResultStep.prototype.addConfused = function() {
     offset: Date.now() - this.start
   })
 }
+
+ResultStep.prototype.addNote = function(note) {
+  this.notes.push({
+    time: Date.now(),
+    offset: Date.now() - this.start,
+    text: note
+  });
+};

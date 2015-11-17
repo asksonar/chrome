@@ -17,6 +17,7 @@ BackgroundController.prototype.initHandlers = function() {
   this.eventBus.on('abort', this.onAborted, this);
   this.eventBus.on('delighted', this.onDelighted, this);
   this.eventBus.on('confused', this.onConfused, this);
+  this.eventBus.on('noted', this.onNoted, this);
 
   chrome.runtime.onMessageExternal.addListener($.proxy(this.onMessaged, this));
   chrome.app.runtime.onLaunched.addListener($.proxy(this.onLaunched, this));
@@ -58,13 +59,12 @@ BackgroundController.prototype.update = function(sendResponse) {
 
 BackgroundController.prototype.onLaunched = function(launchApp) {
   if (!launchApp
-    || !launchApp.scenario
     || !launchApp.scenarioResultHashId
     || !launchApp.screen) {
     return;
   }
 
-  this.model.init();
+  this.model.init(launchApp.scenarioResultHashId);
 
   currentWindow = chrome.app.window.create('popup.html', {
     id: "sonarDesktopCapture",
@@ -93,6 +93,7 @@ BackgroundController.prototype.testLaunchEasy = function() {
 
 BackgroundController.prototype.testLaunchExpert = function() {
   var testData = this.testData();
+  testData.scenario = null;
   testData.flowType = 'expertFlow';
   this.onLaunched(testData);
 };
@@ -169,3 +170,8 @@ BackgroundController.prototype.onDelighted = function() {
 BackgroundController.prototype.onConfused = function() {
   this.model.addConfused();
 }
+
+BackgroundController.prototype.onNoted = function(event, eventData) {
+  this.model.addNote(eventData.note);
+};
+

@@ -143,13 +143,13 @@ RecorderController.prototype.finishRecording = function(event, params) {
     console.log('recording finished');
 
     if (this.model.getResultSteps().length > 0) {
-      this.ajaxer.finishVideo(params.scenarioResultHashId, this.model.getResultSteps(),
+      this.ajaxer.finishVideo(this.model.scenarioResultHashId, this.model.getResultSteps(),
         $.proxy(
           function(uuid) {
             this.fs.getFile('/recording.webm', $.proxy(
               this.ajaxer.uploadVideo,
               this.ajaxer,
-              params.scenarioResultHashId,
+              this.model.scenarioResultHashId,
               uuid)
             );
           }
