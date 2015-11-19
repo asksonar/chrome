@@ -140,7 +140,7 @@ RecorderController.prototype.finishRecording = function(event, params) {
               this.ajaxer,
               this.model.scenarioResultHashId,
               uuid,
-              this.model.getMuteSections()
+              this.model.getResultSteps()
             ));
           }
         , this)

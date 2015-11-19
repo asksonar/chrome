@@ -43,14 +43,18 @@ BackgroundModel.prototype.addNote = function(note) {
   this.getCurrentResultStep().addNote(note);
 }
 
-BackgroundModel.prototype.getMuteSections = function() {
-  return this.muteSections;
-}
-
 BackgroundModel.prototype.startMute = function() {
-  this.muteSections.push({start: Date.now() - this.studyStart});
+  this.getCurrentResultStep().startMute();
 }
 
 BackgroundModel.prototype.endMute = function() {
-  this.muteSections[this.muteSections.length - 1].end = Date.now() - this.studyStart;
+  this.getCurrentResultStep().endMute();
+}
+
+BackgroundModel.prototype.pause = function() {
+  this.getCurrentResultStep().pause();
+}
+
+BackgroundModel.prototype.resume = function() {
+  this.getCurrentResultStep().resume();
 }

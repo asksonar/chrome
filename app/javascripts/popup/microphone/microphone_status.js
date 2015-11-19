@@ -27,11 +27,13 @@ MicrophoneStatus.prototype.initHandlers = function() {
 };
 
 MicrophoneStatus.prototype.onPauseRecording = function() {
+  this.timeLength += Date.now() - this.startTime;
   this.stopRecordingTextTime();
   this.$divRecording.removeClass('on').addClass('off');
 };
 
 MicrophoneStatus.prototype.onResumeRecording = function() {
+  this.startTime = Date.now();
   this.startRecordingTextTime();
   this.$divRecording.removeClass('off').addClass('on');
 };
@@ -59,6 +61,8 @@ MicrophoneStatus.prototype.onRecordingFailure = function(event, eventData) {
 };
 
 MicrophoneStatus.prototype.start = function() {
+  this.startTime = Date.now();
+  this.timeLength = 0;
   this.startMicrophoneResponse(this.$micLevelBars);
   this.$recordingTextTime.html('00:00');
   this.startRecordingTextTime();
@@ -75,21 +79,17 @@ MicrophoneStatus.prototype.startRecordingTextTime = function() {
   this.stopRecordingTextTime();
 
   var timeUpdateFunction = function() {
-    var timeText = this.$recordingTextTime.html();
-    var minsText = parseInt(timeText.split(":")[0]);
-    var secsText = parseInt(timeText.split(":")[1]);
+    var timeSeconds = (Date.now() - this.startTime + this.timeLength) / 1000.0;
+    var minsText = parseInt(timeSeconds / 60);
+    var secsText = parseInt(timeSeconds % 60);
 
-    secsText += 1;
-    if (secsText == 60) {
-      minsText += 1;
-      secsText = 0;
-    }
     this.$recordingTextTime.html(
       ('00' + minsText).slice(-2) + ':' + ('00' + secsText).slice(-2)
     );
   };
+  timeUpdateFunction.call(this);
 
-  this.recordingTextTimeUpdate = setInterval($.proxy(timeUpdateFunction, this), 1000);
+  this.recordingTextTimeUpdate = setInterval(timeUpdateFunction.bind(this), 1000);
 };
 
 MicrophoneStatus.prototype.stopRecordingTextTime = function() {

@@ -91,7 +91,7 @@ Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
   }, null, callback);
 }
 
-Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, muteSections, file) {
+Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, steps, file) {
   var s3 = new AWS.S3({
     'accessKeyId': this.accessKeyId,
     'secretAccessKey': this.secretAccessKey,
@@ -104,7 +104,7 @@ Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, muteSections
     key: uuid,
     file: file,
     onProgress: $.proxy(this.uploadProgress, this),
-    onFinish: $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid, muteSections),
+    onFinish: $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid, steps),
     onError: function(error) {
       console.log(error);
     }
@@ -129,10 +129,10 @@ Ajaxer.prototype.uploadProgress = function (event) {
   }
 }
 
-Ajaxer.prototype.uploadFinish = function(scenarioResultHashId, uuid, muteSections) {
+Ajaxer.prototype.uploadFinish = function(scenarioResultHashId, uuid, steps) {
   this.send('/studies/' + scenarioResultHashId + '/video/' + uuid, {
     '_method': 'PATCH',
-    'mute': JSON.stringify(muteSections)
+    'steps_json': JSON.stringify(steps)
   });
   this.eventBus.trigger('uploadFinish');
 }

@@ -23,6 +23,9 @@ BackgroundController.prototype.initHandlers = function() {
   this.eventBus.on('muteRecording', this.onMuteRecording, this);
   this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
 
+  this.eventBus.on('pauseRecording', this.onPauseRecording, this);
+  this.eventBus.on('resumeRecording', this.onResumeRecording, this);
+
   chrome.runtime.onMessageExternal.addListener($.proxy(this.onMessaged, this));
   chrome.app.runtime.onLaunched.addListener($.proxy(this.onLaunched, this));
 }
@@ -189,4 +192,12 @@ BackgroundController.prototype.onMuteRecording = function() {
 
 BackgroundController.prototype.onUnmuteRecording = function() {
   this.model.endMute();
+};
+
+BackgroundController.prototype.onPauseRecording = function() {
+  this.model.pause();
+};
+
+BackgroundController.prototype.onResumeRecording = function() {
+  this.model.resume();
 };
