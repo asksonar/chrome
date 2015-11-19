@@ -39,6 +39,8 @@
 }
 
 .expanded #btn-next {
+  /* basically btn-med */
+  font-size: 18px;
   padding-left: 26px;
   padding-right: 26px;
 }
@@ -78,7 +80,7 @@
   border-radius: 4px 4px 0px 0px;
   font-size: 14px;
   cursor: pointer;
-  color: #FFF;
+  color: #FFF !important;
   margin-bottom: -6px;
 }
 

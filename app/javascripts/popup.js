@@ -24,7 +24,7 @@ $(function(){
     'section':      $('#div-start'),
     'btnFirstStep': $('#btn-first-step'),
     'width':        500,
-    'height':       300
+    'height':       290
   });
 
   var speechReminder = new SpeechReminder({

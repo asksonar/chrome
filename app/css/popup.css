@@ -155,33 +155,24 @@ section {
 
 .btn-blue {
   background-color: #05647C;
-  display: inline-block;
-  padding: 6px 12px 2px 12px;
   color: #013E4C; /* for the box shadow: saturate 5%, darken 10% */
 }
 
 .btn-blue span {
-  font-family: BrandonGrotesque-Medium;
-  font-size: 18px;
   color: #FFF; /* for the text */
 }
 
 .btn-green {
   background-color: #31B6AE;
-  display: inline-block;
-  padding: 6px 12px 2px 12px;
   color: #219288;
 }
 
 .btn-green span {
-  font-family: BrandonGrotesque-Medium;
-  font-size: 18px;
   color: #FFF;
 }
 
 .btn-grey {
   background-color: #7F8C8D;
-  display: inline-block;
   color: #657071;
 }
 
@@ -190,9 +181,5 @@ section {
 }
 
 .btn-grey span {
-  color: #FFF;
-}
-
-.btn-grey i {
   color: #FFF;
 }
