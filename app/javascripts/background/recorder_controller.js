@@ -23,9 +23,6 @@ RecorderController.prototype.initHandlers = function() {
 
   this.eventBus.on('pauseRecording', this.onPauseRecording, this);
   this.eventBus.on('resumeRecording', this.onResumeRecording, this);
-
-  this.eventBus.on('muteRecording', this.onMuteRecording, this);
-  this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
 }
 
 RecorderController.prototype.initEncoder = function() {
@@ -42,14 +39,6 @@ RecorderController.prototype.onPauseRecording = function() {
 
 RecorderController.prototype.onResumeRecording = function() {
   this.encoder.resume();
-};
-
-RecorderController.prototype.onMuteRecording = function() {
-  this.audioStream.getAudioTracks()[0].enabled = false;
-};
-
-RecorderController.prototype.onUnmuteRecording = function() {
-  this.audioStream.getAudioTracks()[0].enabled = true;
 };
 
 RecorderController.prototype.stopStreams = function() {
@@ -150,8 +139,9 @@ RecorderController.prototype.finishRecording = function(event, params) {
               this.ajaxer.uploadVideo,
               this.ajaxer,
               this.model.scenarioResultHashId,
-              uuid)
-            );
+              uuid,
+              this.model.getMuteSections()
+            ));
           }
         , this)
       );

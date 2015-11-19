@@ -19,6 +19,9 @@ BackgroundController.prototype.initHandlers = function() {
   this.eventBus.on('confused', this.onConfused, this);
   this.eventBus.on('noted', this.onNoted, this);
 
+  this.eventBus.on('muteRecording', this.onMuteRecording, this);
+  this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
+
   chrome.runtime.onMessageExternal.addListener($.proxy(this.onMessaged, this));
   chrome.app.runtime.onLaunched.addListener($.proxy(this.onLaunched, this));
 }
@@ -175,3 +178,10 @@ BackgroundController.prototype.onNoted = function(event, eventData) {
   this.model.addNote(eventData.note);
 };
 
+BackgroundController.prototype.onMuteRecording = function() {
+  this.model.startMute();
+};
+
+BackgroundController.prototype.onUnmuteRecording = function() {
+  this.model.endMute();
+};

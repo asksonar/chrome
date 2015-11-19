@@ -6,6 +6,7 @@ function BackgroundModel(eventBus, ajaxer) {
 BackgroundModel.prototype.init = function(scenarioResultHashId) {
   this.resultSteps = [];
   this.scenarioResultHashId = scenarioResultHashId;
+  this.muteSections = [];
 }
 
 BackgroundModel.prototype.getCurrentResultStep = function() {
@@ -40,4 +41,16 @@ BackgroundModel.prototype.addConfused = function() {
 
 BackgroundModel.prototype.addNote = function(note) {
   this.getCurrentResultStep().addNote(note);
+}
+
+BackgroundModel.prototype.getMuteSections = function() {
+  return this.muteSections;
+}
+
+BackgroundModel.prototype.startMute = function() {
+  this.muteSections.push({start: Date.now() - this.studyStart});
+}
+
+BackgroundModel.prototype.endMute = function() {
+  this.muteSections[this.muteSections.length - 1].end = Date.now() - this.studyStart;
 }
