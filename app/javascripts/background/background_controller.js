@@ -18,6 +18,7 @@ BackgroundController.prototype.initHandlers = function() {
   this.eventBus.on('delighted', this.onDelighted, this);
   this.eventBus.on('confused', this.onConfused, this);
   this.eventBus.on('noted', this.onNoted, this);
+  this.eventBus.on('titled', this.onTitled, this);
 
   this.eventBus.on('muteRecording', this.onMuteRecording, this);
   this.eventBus.on('unmuteRecording', this.onUnmuteRecording, this);
@@ -176,6 +177,10 @@ BackgroundController.prototype.onConfused = function() {
 
 BackgroundController.prototype.onNoted = function(event, eventData) {
   this.model.addNote(eventData.note);
+};
+
+BackgroundController.prototype.onTitled = function(event, eventData) {
+  this.ajaxer.saveTitle(eventData.title, eventData.scenarioResultHashId);
 };
 
 BackgroundController.prototype.onMuteRecording = function() {

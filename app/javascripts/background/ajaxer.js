@@ -77,6 +77,13 @@ Ajaxer.prototype.notifyStep = function(resultStep) {
   });
 }
 
+Ajaxer.prototype.saveTitle = function(title, scenarioResultHashId) {
+  this.send('/studies/' + scenarioResultHashId, {
+    '_method': 'PATCH',
+    'title': title
+  });
+}
+
 Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
   this.send('/studies/' + scenarioResultHashId + '/video', {
     '_method': 'POST',
