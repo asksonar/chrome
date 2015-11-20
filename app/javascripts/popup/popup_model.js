@@ -15,7 +15,8 @@ PopupModel.prototype.initHandlers = function() {
 };
 
 PopupModel.prototype.onScenarioLoaded = function(event, eventData) {
-  this.userScenario = eventData.scenario;
+  // if no userScenario, create 1 step that properly returns undefined for all functions below
+  this.userScenario = eventData.scenario || ({steps: [{}]});
   this.scenarioResultHashId = eventData.scenarioResultHashId;
 };
 
@@ -37,6 +38,19 @@ PopupModel.prototype.nextStep = function() {
 
 PopupModel.prototype.finishStep = function() {
   // this.currentIndex should equal this.userScenario.steps.length - 1
+  this.eventBus.trigger('finish', {
+    'scenarioResultHashId': this.getScenarioResultHashId()
+  });
+};
+
+// for when there are no steps, such as in a self-study
+PopupModel.prototype.start = function() {
+  this.eventBus.trigger('start', {
+    'scenarioResultHashId': this.getScenarioResultHashId()
+  });
+};
+
+PopupModel.prototype.finish = function() {
   this.eventBus.trigger('finish', {
     'scenarioResultHashId': this.getScenarioResultHashId()
   });
@@ -93,13 +107,13 @@ PopupModel.prototype.confused = function() {
 };
 
 PopupModel.prototype.saveNote = function(note) {
-  this.eventBus.trigger('saveNote', {
+  this.eventBus.trigger('noted', {
     'note': note
   });
 };
 
 PopupModel.prototype.saveTitle = function(title) {
-  this.eventBus.trigger('saveTitle', {
+  this.eventBus.trigger('titled', {
     'title': title,
     'scenarioResultHashId': this.getScenarioResultHashId()
   });

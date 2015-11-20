@@ -50,7 +50,6 @@ FinishView.prototype.onUploadFinish = function() {
     }, this))
     .queue($.proxy(function(next) {
       this.$divUploaded.fadeIn('normal', next);
-      this.resizeToFit();
     }, this))
     .queue($.proxy(function() {
       this.next();

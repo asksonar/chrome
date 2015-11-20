@@ -73,15 +73,11 @@
 }
 
 .ctn-start-mid {
-  margin: 30px 0px 20px 0px;
+  margin: 25px 0px 20px 0px;
 }
 
 .ctn-start-buttons {
   text-align: center;
-}
-
-#btn-first-step {
-  padding: 10px 26px 6px;
 }
 
 .shadow-hover {

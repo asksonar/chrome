@@ -20,6 +20,9 @@ RecorderController.prototype.initHandlers = function() {
   this.eventBus.on('requestRecording', this.startRecording, this);
   this.eventBus.on('finish', this.finishRecording, this);
   this.eventBus.on('abort', this.abortRecording, this);
+
+  this.eventBus.on('pauseRecording', this.onPauseRecording, this);
+  this.eventBus.on('resumeRecording', this.onResumeRecording, this);
 }
 
 RecorderController.prototype.initEncoder = function() {
@@ -29,6 +32,14 @@ RecorderController.prototype.initEncoder = function() {
   // Handler for error while recording (out of disk space, ...)
   this.encoder.onError = $.proxy(this.onError, this);
 }
+
+RecorderController.prototype.onPauseRecording = function() {
+  this.encoder.pause();
+};
+
+RecorderController.prototype.onResumeRecording = function() {
+  this.encoder.resume();
+};
 
 RecorderController.prototype.stopStreams = function() {
   if (this.videoStream) {
@@ -121,15 +132,16 @@ RecorderController.prototype.finishRecording = function(event, params) {
     console.log('recording finished');
 
     if (this.model.getResultSteps().length > 0) {
-      this.ajaxer.finishVideo(params.scenarioResultHashId, this.model.getResultSteps(),
+      this.ajaxer.finishVideo(this.model.scenarioResultHashId, this.model.getResultSteps(),
         $.proxy(
           function(uuid) {
             this.fs.getFile('/recording.webm', $.proxy(
               this.ajaxer.uploadVideo,
               this.ajaxer,
-              params.scenarioResultHashId,
-              uuid)
-            );
+              this.model.scenarioResultHashId,
+              uuid,
+              this.model.getResultSteps()
+            ));
           }
         , this)
       );

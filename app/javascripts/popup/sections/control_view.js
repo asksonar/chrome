@@ -19,9 +19,14 @@ ControlView.prototype.init = function(flow) {
   this.$inputNote = this.config.inputNote;
   this.$btnSaveNote = this.config.btnSaveNote;
 
+  this.$btnResume = this.config.btnResume;
+  this.$btnPause = this.config.btnPause;
   this.$btnFinish = this.config.btnFinish;
 
+  this.$btnMute = this.config.btnMute;
+
   this.model = flow.model;
+  this.eventBus = flow.eventBus;
 
   this.initHandlers();
 };
@@ -30,12 +35,20 @@ ControlView.prototype.initHandlers = function() {
   this.$btnShowNote.on('click', $.proxy(this.showNote, this));
   this.$btnHideNote.on('click', $.proxy(this.hideNote, this));
 
+  this.$btnResume.on('click', $.proxy(this.resume, this));
+  this.$btnPause.on('click', $.proxy(this.pause, this));
+  this.$btnFinish.on('click', $.proxy(this.finish, this));
+
+  this.$btnMute.on('click', $.proxy(this.toggleMute, this));
+
   this.$btnSaveNote.on('click', $.proxy(this.saveNote, this));
-  this.$btnFinish.on('click', $.proxy(this.onFinish, this));
+
 };
 
 ControlView.prototype.show = function() {
   this.resize(this.width, this.height);
+  this.moveRightTop(this.width);
+
   this.hideNote();
   this.$section.show();
 
@@ -78,7 +91,44 @@ ControlView.prototype.saveNote = function(event, eventData) {
   this.hideNote();
 };
 
-ControlView.prototype.onFinish = function() {
+ControlView.prototype.resume = function() {
+  if (this.$btnResume.hasClass('active')) {
+    return;
+  }
+
+  this.eventBus.trigger('resumeRecording');
+
+  this.$btnResume.addClass('active');
+  this.$btnResume.find('.btn-sub-text').text('recording');
+  this.$btnPause.removeClass('active');
+  this.$btnPause.find('.btn-sub-text').text('pause');
+};
+
+ControlView.prototype.pause = function() {
+  if (this.$btnPause.hasClass('active')) {
+    return;
+  }
+  this.eventBus.trigger('pauseRecording');
+
+  this.$btnResume.removeClass('active');
+  this.$btnResume.find('.btn-sub-text').text('record');
+  this.$btnPause.addClass('active');
+  this.$btnPause.find('.btn-sub-text').text('paused');
+};
+
+ControlView.prototype.finish = function() {
   this.model.finishStep();
   this.next();
+};
+
+ControlView.prototype.toggleMute = function() {
+  if (this.$btnMute.hasClass('active')) { // unmuting
+    this.eventBus.trigger('unmuteRecording');
+    this.$btnMute.removeClass('active');
+    this.$btnMute.find('.btn-sub-text').text('mute');
+  } else { // muting
+    this.eventBus.trigger('muteRecording');
+    this.$btnMute.addClass('active');
+    this.$btnMute.find('.btn-sub-text').text('muted');
+  }
 };

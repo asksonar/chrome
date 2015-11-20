@@ -43,6 +43,9 @@
         <div class='titlebar-recording-icon on'>
           <i class='fa fa-video-camera'></i>
         </div>
+        <div class='titlebar-recording-muted on'>
+          <i class='fa fa-microphone-slash'></i>
+        </div>
         <div class='titlebar-recording-level on'>
           <div></div>
           <div></div>
@@ -132,7 +135,7 @@
           </div>
         </div>
         <div class='ctn-start-buttons'>
-          <a id='btn-first-step' class='btn btn-blue'><span>Let's get started!</span></a>
+          <a id='btn-first-step' class='btn btn-blue btn-med'><span>Let's get started!</span></a>
         </div>
 
         <div class='shadow'></div>
@@ -157,10 +160,10 @@
         </div>
 
         <div class='ctn-expand'>
-          <div class='btn-green btn-show-less'>
+          <div class='btn btn-green btn-show-less'>
             <i class='fa fa-caret-up'></i><div>show less</div><i class='fa fa-caret-up'></i>
           </div>
-          <div class='btn-green btn-show-more'>
+          <div class='btn btn-green btn-show-more'>
             <i class='fa fa-caret-down'></i><div>show more</div><i class='fa fa-caret-down'></i>
           </div>
         </div>
@@ -176,8 +179,30 @@
 
       <section id='div-control' class='section'>
         <div class='ctn-control-btns'>
-          <a id='btn-show-note' class='btn btn-green'><span><i class='fa fa-comment'></i> Add a note</span></a>
-          <a id='btn-finish' class='btn btn-blue'><span>Finish</span></a>
+
+          <div class="btn-group" role="group" aria-label="...">
+            <a class="btn btn-grey active" id='btn-recording'>
+              <span><i class="fa fa-circle" style="color: #FF625D;"></i></span>
+              <span class="sub btn-sub-text">recording</span>
+            </a>
+            <a class="btn btn-grey" id='btn-pause'>
+              <span><i class="fa fa-pause"></i></span>
+              <span class="sub btn-sub-text">pause</span>
+            </>
+            <a class="btn btn-grey" id='btn-finish'>
+              <span><i class="fa fa-stop"></i></span>
+              <span class="sub btn-sub-text">finish</span>
+            </a>
+          </div>
+          <a id="btn-mute" class="btn btn-blue">
+            <span><i class="fa fa-microphone-slash"></i></span>
+            <span class="sub btn-sub-text">mute</span>
+          </a>
+          <a id="btn-show-note" class="btn btn-green">
+            <span><i class="fa fa-comment"></i></span>
+            <span class="sub btn-sub-text">add a note</span>
+          </a>
+
         </div>
         <div class='ctn-note clearfix'>
           <textarea id='input-note' rows='3' class='form-control'></textarea>
@@ -215,9 +240,9 @@
 
       <section id='div-abort'>
         <div>
-          <h1>Are you sure you want to abandon this study?</h1>
-          <a id='btn-abort-yes' class='btn btn-green'><span>Yes, stop the study.</span></a>
-          <a id='btn-abort-no' class='btn btn-blue'><span>No, I'll continue on.</span></a>
+          <h1>Are you ready to end this study?</h1>
+          <a id='btn-abort-yes' class='btn btn-green'><span>Yes, I'm done.</span></a>
+          <a id='btn-abort-no' class='btn btn-blue'><span>No, not yet.</span></a>
         </div>
       </section>
 

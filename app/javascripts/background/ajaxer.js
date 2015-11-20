@@ -77,6 +77,13 @@ Ajaxer.prototype.notifyStep = function(resultStep) {
   });
 }
 
+Ajaxer.prototype.saveTitle = function(title, scenarioResultHashId) {
+  this.send('/studies/' + scenarioResultHashId, {
+    '_method': 'PATCH',
+    'title': title
+  });
+}
+
 Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
   this.send('/studies/' + scenarioResultHashId + '/video', {
     '_method': 'POST',
@@ -84,7 +91,7 @@ Ajaxer.prototype.finishVideo = function(scenarioResultHashId, steps, callback) {
   }, null, callback);
 }
 
-Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, file) {
+Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, steps, file) {
   var s3 = new AWS.S3({
     'accessKeyId': this.accessKeyId,
     'secretAccessKey': this.secretAccessKey,
@@ -97,7 +104,7 @@ Ajaxer.prototype.uploadVideo = function(scenarioResultHashId, uuid, file) {
     key: uuid,
     file: file,
     onProgress: $.proxy(this.uploadProgress, this),
-    onFinish: $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid),
+    onFinish: $.proxy(this.uploadFinish, this, scenarioResultHashId, uuid, steps),
     onError: function(error) {
       console.log(error);
     }
@@ -122,15 +129,10 @@ Ajaxer.prototype.uploadProgress = function (event) {
   }
 }
 
-Ajaxer.prototype.uploadFinish = function(scenarioResultHashId, uuid, err, data) {
-  if (err) {
-    console.log(err);
-  } else {
-    //debugger;
-    //var uuid = data.Location.split('/').pop();
-    this.send('/studies/' + scenarioResultHashId + '/video/' + uuid, {
-      '_method': 'PATCH'
-    });
-    this.eventBus.trigger('uploadFinish');
-  }
+Ajaxer.prototype.uploadFinish = function(scenarioResultHashId, uuid, steps) {
+  this.send('/studies/' + scenarioResultHashId + '/video/' + uuid, {
+    '_method': 'PATCH',
+    'steps_json': JSON.stringify(steps)
+  });
+  this.eventBus.trigger('uploadFinish');
 }

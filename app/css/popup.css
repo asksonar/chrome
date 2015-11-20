@@ -46,11 +46,27 @@
   font-size: 16px;
 }
 
+.titlebar-recording-muted {
+  color: #999;
+  float: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  display: none;
+}
+
+.muted .titlebar-recording-muted {
+  display: block;
+}
+
 .titlebar-recording-level {
   float: left;
   margin-left: 5px;
   margin-top: 2px;
   transform: rotate(180deg); /* so we can jQuery select in natural order */
+}
+
+.muted .titlebar-recording-level {
+  display: none;
 }
 
 .titlebar-recording-level div {
@@ -139,26 +155,31 @@ section {
 
 .btn-blue {
   background-color: #05647C;
-  display: inline-block;
-  padding: 6px 12px 2px 12px;
   color: #013E4C; /* for the box shadow: saturate 5%, darken 10% */
 }
 
 .btn-blue span {
-  font-family: BrandonGrotesque-Medium;
-  font-size: 18px;
   color: #FFF; /* for the text */
 }
 
 .btn-green {
   background-color: #31B6AE;
-  display: inline-block;
-  padding: 6px 12px 2px 12px;
   color: #219288;
 }
 
 .btn-green span {
-  font-family: BrandonGrotesque-Medium;
-  font-size: 18px;
+  color: #FFF;
+}
+
+.btn-grey {
+  background-color: #7F8C8D;
+  color: #657071;
+}
+
+.btn-grey.active {
+  background-color: #657071;
+}
+
+.btn-grey span {
   color: #FFF;
 }

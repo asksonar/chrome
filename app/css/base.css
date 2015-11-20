@@ -61,6 +61,9 @@ a[href]:hover {
   position: relative;
   box-shadow: 0px 3px 0px 0px;
   /* box-shadow inherits color attribute from element */
+  padding: 6px 12px 2px 12px;
+  font-family: BrandonGrotesque-Medium;
+  font-size: 16px;
 }
 
 .btn:hover {
@@ -68,9 +71,15 @@ a[href]:hover {
   box-shadow: 0px 3px 2px 0px;
 }
 
-.btn:active {
+.btn:active, .btn.active {
   top: 2px;
   box-shadow: 0px 1px 0px 0px;
+}
+
+.btn-med {
+  font-size: 18px;
+  padding-left: 26px;
+  padding-right: 26px;
 }
 
 .btn-text {

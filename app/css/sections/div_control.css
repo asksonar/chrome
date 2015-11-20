@@ -1,19 +1,7 @@
 #div-control {
   border: 3px solid #1CA5C9;
   border-top: 0px;
-  padding: 5px;
-}
-
-#div-control .btn span {
-  font-size: 16px;
-}
-
-#btn-show-note {
-  float: left;
-}
-
-#btn-finish {
-  float: right;
+  padding: 5px 10px 10px 10px;
 }
 
 #btn-hide-note {
@@ -28,6 +16,60 @@
 #input-note {
   font-size: 16px;
   padding: 4px 8px;
+  resize: none;
 }
 
+.btn-sub-text {
+  position: absolute;
+  top: 30px;
+  font-size: 14px !important;
+  left: 0px;
+  right: 0px;
+  color: #999 !important;
+  font-family: BrandonGrotesque-Regular !important;
+}
 
+.btn:active .btn-sub-text,
+.btn.active .btn-sub-text {
+  font-style: italic;
+  top: 28px;
+}
+
+#btn-recording {
+  width: 75px;
+}
+
+#btn-recording i {
+  color: #FF625D;
+}
+
+#btn-pause, #btn-stop {
+  width: 45px;
+}
+
+.ctn-control-btns {
+  height: 45px;
+}
+
+.ctn-control-btns .btn {
+  padding: 6px 12px;
+}
+
+.ctn-control-btns i {
+  font-size: 14px;
+}
+
+#btn-pause {
+  border-left: 1px solid;
+  border-right: 1px solid;
+  margin-right: 1px;
+}
+
+#btn-mute {
+  margin-left: 10px;
+}
+
+#btn-show-note {
+  margin-left: 10px;
+  width: 60px;
+}

@@ -6,8 +6,6 @@ FinishWithTitleView.prototype = Object.create(FinishView.prototype);
 FinishWithTitleView.prototype.constructor = FinishWithTitleView;
 
 FinishWithTitleView.prototype.init = function(flow) {
-  FinishView.prototype.init.call(this, flow);
-
   this.$titleBar = this.config.titleBar;
   this.$inputTitle = this.config.inputTitle;
   this.$btnSaveTitle = this.config.btnSaveTitle;
@@ -15,9 +13,9 @@ FinishWithTitleView.prototype.init = function(flow) {
 
   this.model = flow.model;
 
-  this.$divTitling.show();
+  FinishView.prototype.init.call(this, flow);
 
-  this.initHandlers();
+  this.$divTitling.show();
 };
 
 FinishWithTitleView.prototype.initHandlers = function() {
